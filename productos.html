@@ -21,7 +21,9 @@
 </head>
 <body>
   <!-- Barra de navegación -->
-  <div id="navbar-placeholder"></div>
+  <div id="navbar-placeholder">
+    <!-- La navegación se cargará aquí dinámicamente -->
+  </div>
 
   <!-- Contenido principal -->
   <main class="main-content">
@@ -86,66 +88,54 @@
   
   <!-- Script principal -->
   <script>
-    // Función para inicializar el menú móvil después de cargar la navegación
-    function initNavigation() {
-      console.log('Inicializando navegación...');
-      
-      // Cargar la barra de navegación
-      fetch('includes/nav.html')
-        .then(response => {
-          if (!response.ok) throw new Error('Error al cargar la navegación');
-          return response.text();
-        })
-        .then(html => {
-          // Insertar la navegación
-          const navbarPlaceholder = document.getElementById('navbar-placeholder');
-          if (!navbarPlaceholder) {
-            console.error('No se encontró el elemento navbar-placeholder');
-            return;
-          }
-          
-          navbarPlaceholder.innerHTML = html;
+    // Función para cargar la navegación
+    async function loadNavigation() {
+      try {
+        console.log('Cargando navegación...');
+        const [navResponse, footerResponse] = await Promise.all([
+          fetch('includes/nav.html'),
+          fetch('includes/footer.html')
+        ]);
+        
+        if (!navResponse.ok || !footerResponse.ok) {
+          throw new Error('Error al cargar la navegación o el footer');
+        }
+        
+        const [navHtml, footerHtml] = await Promise.all([
+          navResponse.text(),
+          footerResponse.text()
+        ]);
+        
+        // Insertar la navegación
+        const navbarPlaceholder = document.getElementById('navbar-placeholder');
+        if (navbarPlaceholder) {
+          navbarPlaceholder.innerHTML = navHtml;
           console.log('Navegación cargada correctamente');
           
-          // Inicializar el menú móvil
-          if (typeof setupMobileMenu === 'function') {
-            setupMobileMenu();
-          } else {
-            console.error('La función setupMobileMenu no está definida');
+          // Inicializar otros componentes
+          if (typeof mostrarProductos === 'function') {
+            mostrarProductos();
           }
-        })
-        .catch(error => {
-          console.error('Error al cargar la barra de navegación:', error);
-          // Mostrar un mensaje de error en la interfaz
-          const navbarPlaceholder = document.getElementById('navbar-placeholder');
-          if (navbarPlaceholder) {
-            navbarPlaceholder.innerHTML = `
-              <div style="background: #ffebee; color: #c62828; padding: 10px; border-radius: 4px;">
-                Error al cargar el menú de navegación. Por favor, recarga la página.
-              </div>
-            `;
+          
+          // Actualizar contador del carrito
+          if (typeof actualizarContadorCarrito === 'function') {
+            actualizarContadorCarrito();
           }
-        });
-      
-      // Cargar el footer
-      fetch('includes/footer.html')
-        .then(response => response.text())
-        .then(html => {
-          const footerPlaceholder = document.getElementById('footer-placeholder');
-          if (footerPlaceholder) {
-            footerPlaceholder.innerHTML = html;
-          }
-        })
-        .catch(error => console.error('Error al cargar el footer:', error));
+          
+          return true;
+        }
+        return false;
+      } catch (error) {
+        console.error('Error al cargar la navegación:', error);
+        return false;
+      }
+      } else {
+        console.error('No se pudo cargar la barra de navegación');
+      }
     }
     
-    // Inicializar la navegación cuando el DOM esté listo
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initNavigation);
-    } else {
-      // El DOM ya está listo
-      initNavigation();
-    }
+    // Iniciar la inicialización
+    initialize();
     
     // Función para el menú móvil
     function setupMobileMenu() {
