@@ -251,95 +251,289 @@ body {
   line-height: 1;
 }
 
-/* Menú móvil */
+/* ===================================
+   ESTILOS DEL MENÚ DE NAVEGACIÓN
+   =================================== */
+
+/* Estilos base del navbar */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  padding: 15px 0;
+}
+
+.navbar-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+/* Logo */
+.logo {
+  display: flex;
+  align-items: center;
+  z-index: 1002;
+}
+
+.logo-img {
+  height: 40px;
+  width: auto;
+}
+
+/* Menú de navegación principal */
+.main-nav {
+  display: flex;
+  align-items: center;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links li {
+  margin-left: 30px;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: color 0.3s ease;
+  position: relative;
+  padding: 5px 0;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: #8c33ff;
+}
+
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #8c33ff;
+}
+
+/* Botón de menú móvil */
 .menu-toggle {
   display: none;
   background: none;
   border: none;
-  font-size: 1.5rem;
   cursor: pointer;
-  color: #333;
-  padding: 5px;
-  z-index: 1001;
+  padding: 10px;
+  z-index: 1002;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30px;
+  height: 24px;
+  position: relative;
 }
 
-@media (max-width: 1200px) {
-  .navbar {
-    padding: 15px 30px;
-  }
-  
-  .nav-links {
-    gap: 25px;
-  }
+.hamburger {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background-color: #333;
+  transition: all 0.3s ease;
+  transform-origin: center;
+  pointer-events: none;
 }
 
+/* Animación del botón de menú */
+.menu-toggle.active .hamburger:nth-child(1) {
+  transform: translateY(11px) rotate(45deg);
+}
+
+.menu-toggle.active .hamburger:nth-child(2) {
+  opacity: 0;
+  transform: scale(0);
+}
+
+.menu-toggle.active .hamburger:nth-child(3) {
+  transform: translateY(-11px) rotate(-45deg);
+}
+
+/* Estilos para móviles */
 @media (max-width: 992px) {
   .menu-toggle {
-    display: block;
+    display: flex;
+  }
+  
+  .main-nav {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 70px);
+    background: #fff;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 40px 20px;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    overflow-y: auto;
+    z-index: 1001;
+  }
+  
+  .main-nav.active {
+    transform: translateX(0);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   }
   
   .nav-links {
-    position: fixed;
-    top: 0;
-    right: -300px;
-    width: 280px;
-    height: 100vh;
-    background-color: #ffffff;
-    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
-    padding: 80px 25px 30px;
-    transition: right 0.3s ease;
-    z-index: 1000;
-    overflow-y: auto;
     flex-direction: column;
-    gap: 0;
+    width: 100%;
+    max-width: 300px;
   }
   
-  .nav-links.active {
-    right: 0;
+  .nav-links li {
+    margin: 10px 0;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .nav-link {
+    display: block;
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+  }
+  
+  .nav-link:hover,
+  .nav-link.active {
+    background-color: #f8f9fa;
+    color: #8c33ff;
+  }
+  
+  .nav-link.active::after {
+    display: none;
+  }
+  
+  /* Ajustes para pantallas pequeñas */
+  @media (max-width: 480px) {
+    .navbar {
+      padding: 10px 0;
+    }
+    
+    .logo-img {
+      height: 35px;
+    }
+    
+    .main-nav {
+      top: 60px;
+      height: calc(100vh - 60px);
+      padding: 20px 15px;
+    }
+    
+    .nav-link {
+      padding: 10px 15px;
+      font-size: 15px;
+    }
+  }
+}
+
+/* Estilos para móviles */
+@media (max-width: 992px) {
+  .menu-toggle {
+    display: flex;
+  }
+  
+  .nav-container {
+    position: fixed;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 80px);
+    background: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000;
+    flex-direction: column;
+    padding: 2rem 0;
+    overflow-y: auto;
+  }
+  
+  .nav-container.active {
+    transform: translateX(0);
+  }
+  
+  .nav-links {
+    flex-direction: column;
+    width: 100%;
+    padding: 0 1.5rem;
   }
   
   .nav-links li {
     width: 100%;
     margin: 0;
-    border-bottom: 1px solid #f0f0f0;
   }
   
-  .nav-links > li > a {
+  .nav-links a {
     display: block;
-    padding: 15px 0;
-    font-size: 15px;
-  }
-  
-  .dropdown-content {
-    position: static;
-    display: none;
-    box-shadow: none;
-    border: none;
-    padding: 0 0 0 20px;
-    opacity: 1;
-    transform: none;
-    background-color: #f9f9f9;
-    margin: 5px 0;
+    padding: 1rem 1.5rem;
+    font-size: 1.1rem;
+    color: #333;
+    text-align: left;
+    transition: all 0.3s ease;
     border-radius: 4px;
+    margin: 0.25rem 0;
   }
   
-  .dropdown.active .dropdown-content {
-    display: block;
+  .nav-links a:hover,
+  .nav-links a.active {
+    background-color: #f8f9fa;
+    color: #8c33ff;
   }
   
-  .dropdown-content a {
-    padding: 10px 0;
-    font-size: 14px;
+  .nav-links a.active::after {
+    display: none;
   }
   
-  .icons {
+  /* Overlay cuando el menú está abierto */
+  body.menu-open {
+    overflow: hidden;
+    position: fixed;
     width: 100%;
-    justify-content: space-between;
-    padding: 15px 0;
+    height: 100%;
   }
   
-  .dropbtn i {
-    transform: rotate(0);
+  /* Ajustes para pantallas pequeñas */
+  @media (max-width: 480px) {
+    .navbar {
+      padding: 12px 1rem;
+      height: 70px;
+    }
+    
+    .nav-container {
+      top: 70px;
+      height: calc(100vh - 70px);
+    }
+    
+    .logo-img {
+      height: 35px;
+    }
   }
   
   .dropdown.active .dropbtn i {

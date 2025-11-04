@@ -1,0 +1,262 @@
+/* ===================================
+   ESTILOS RESPONSIVOS
+   =================================== */
+
+/* Ajustes generales para móviles */
+@media (max-width: 767px) {
+  /* Ajustes generales */
+  body {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  
+  /* Banner principal */
+  .banner-hero {
+    height: 70vh;
+    min-height: 400px;
+  }
+  
+  .banner-contenido {
+    padding: 0 20px;
+  }
+  
+  .titulo-banner {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .subtitulo-banner {
+    font-size: 1.2rem;
+  }
+  
+  /* Galería de inspiración */
+  .galeria-inspiracion {
+    padding: 2rem 1rem;
+  }
+  
+  .galeria-item, 
+  .galeria-item.inverso {
+    flex-direction: column;
+    margin-bottom: 2rem;
+  }
+  
+  .galeria-texto, 
+  .galeria-imagen {
+    width: 100%;
+    padding: 1.5rem;
+  }
+  
+  .galeria-imagen {
+    height: 300px;
+  }
+  
+  /* Productos destacados */
+  .productos-destacados {
+    padding: 2rem 1rem;
+  }
+  
+  .productos-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  
+  /* Frase inspiradora */
+  .frase-inspiradora {
+    padding: 3rem 1rem;
+  }
+  
+  .coco-card {
+    padding: 2rem 1.5rem;
+  }
+  
+  .quote-text {
+    font-size: 1.2rem;
+  }
+  
+  /* Newsletter */
+  .newsletter {
+    padding: 2rem 1rem;
+  }
+  
+  .newsletter-contenido {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .newsletter-form {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .newsletter-input {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+  
+  .newsletter-btn {
+    width: 100%;
+  }
+  
+  /* Footer */
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+}
+
+/* Tablets */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .productos-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .galeria-item, 
+  .galeria-item.inverso {
+    flex-direction: column;
+  }
+  
+  .galeria-texto, 
+  .galeria-imagen {
+    width: 100%;
+  }
+  
+  .galeria-imagen {
+    height: 400px;
+  }
+}
+
+/* Ajustes para pantallas muy pequeñas */
+@media (max-width: 480px) {
+  .productos-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .producto-card {
+    max-width: 100%;
+  }
+  
+  .frase-inspiradora {
+    padding: 2rem 1rem;
+  }
+  
+  .quote-text {
+    font-size: 1.1rem;
+  }
+  
+  .footer-content {
+    padding: 2rem 1rem;
+  }
+}
+
+/* Ajustes para la página de productos */
+@media (max-width: 767px) {
+  .filtros {
+    position: static;
+    width: 100%;
+    padding: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .productos-container {
+    flex-direction: column;
+  }
+  
+  .productos-grid {
+    width: 100%;
+    padding: 0 1rem;
+  }
+  
+  .filtro-toggle {
+    display: block;
+    margin-bottom: 1rem;
+  }
+  
+  .filtros {
+    display: none;
+  }
+  
+  .filtros.activo {
+    display: block;
+  }
+}
+
+/* Ajustes para la página de detalle de producto */
+@media (max-width: 767px) {
+  .producto-detalle {
+    flex-direction: column;
+  }
+  
+  .producto-galeria, 
+  .producto-info {
+    width: 100%;
+    padding: 1rem;
+  }
+  
+  .producto-precio {
+    font-size: 1.5rem;
+  }
+  
+  .producto-acciones {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .btn-agregar-carrito,
+  .btn-comprar-ahora {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .producto-detalles-tabs {
+    flex-direction: column;
+  }
+  
+  .producto-detalles-tab {
+    padding: 0.75rem 1rem;
+  }
+}
+
+/* Mejoras de accesibilidad en dispositivos táctiles */
+@media (hover: none) and (pointer: coarse) {
+  button, 
+  a, 
+  input[type="button"], 
+  input[type="submit"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  .producto-card {
+    padding: 1rem;
+  }
+  
+  .producto-imagen {
+    margin-bottom: 1rem;
+  }
+}
+
+/* Ajustes para modo oscuro en dispositivos móviles */
+@media (prefers-color-scheme: dark) and (max-width: 767px) {
+  body {
+    background-color: #121212;
+    color: #e0e0e0;
+  }
+  
+  .producto-card,
+  .coco-card,
+  .newsletter {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+  }
+  
+  .galeria-texto {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+  }
+}

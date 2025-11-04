@@ -1,23 +1,24 @@
 <!-- Barra de navegación -->
-<nav class="navbar">
-  <div class="logo">
-    <a href="index.html" class="logo-link">
+<header class="navbar">
+  <div class="navbar-container">
+    <!-- Logo -->
+    <a href="index.html" class="logo">
       <img src="img/vivae.jpg" alt="Vivae Logo" class="logo-img">
     </a>
-  </div>
 
-  <!-- Menú de navegación principal -->
-  <div class="nav-container">
-    <ul class="nav-links">
-      <li><a href="index.html" class="active">INICIO</a></li>
-      <li><a href="productos.html">PRODUCTOS</a></li>
-    </ul>
+    <!-- Menú de navegación principal -->
+    <nav class="main-nav" id="mainNav">
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link active">INICIO</a></li>
+        <li><a href="productos.html" class="nav-link">PRODUCTOS</a></li>
+      </ul>
+    </nav>
+    
+    <!-- Botón de menú móvil -->
+    <button class="menu-toggle" id="menuToggle" aria-label="Menú">
+      <span class="hamburger"></span>
+      <span class="hamburger"></span>
+      <span class="hamburger"></span>
+    </button>
   </div>
-  
-  <!-- Botón de menú móvil -->
-  <button class="menu-toggle" id="menuToggle" aria-label="Menú">
-    <span class="hamburger"></span>
-    <span class="hamburger"></span>
-    <span class="hamburger"></span>
-  </button>
-</nav>
+</header>
