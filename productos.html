@@ -493,39 +493,121 @@
       const boton = e.target.closest('.btn-agregar-carrito');
       if (!boton) return;
       
-      e.preventDefault();
-      e.stopPropagation();
-      
-      const productId = parseInt(boton.getAttribute('data-id'));
-      
-      // Buscar el producto por su ID
-      window.loadProducts()
-        .then(products => {
-          const producto = products.find(p => p.id === productId);
-          if (producto) {
-            // Agregar al carrito
-            if (window.carrito && window.carrito.agregarItem) {
-              window.carrito.agregarItem(producto);
-              actualizarContadorCarrito();
               
-              // Mostrar notificación
-              if (window.mostrarNotificacion) {
-                window.mostrarNotificacion(`"${producto.name}" añadido al carrito`, 'exito');
-              } else {
-                alert(`"${producto.name}" añadido al carrito`);
-              }
+              ${productData.colors && productData.colors.length > 0 ? `
+                <div class="details-section">
+                  <h4>Colores disponibles</h4>
+                  <div class="color-options">
+                    ${productData.colors.map(color => `
+                      <span class="color-option" style="background-color: ${color.code || '#ccc'}" title="${color.name || 'Color'}" data-color="${color.code || '#ccc'}"></span>
+                    `).join('')}
+                  </div>
+                </div>
+              ` : ''}
               
-              // Animar el botón
+              ${productData.sizes && productData.sizes.length > 0 ? `
+                <div class="details-section">
+                  <h4>Tallas disponibles</h4>
+                  <div class="size-options">
+                    ${productData.sizes.map(size => `
+                      <span class="size-option" data-size="${size}">${size}</span>
+                    `).join('')}
+                  </div>
+                </div>
+              ` : ''}
+              
+              <div class="details-actions">
+                <button class="btn-add-to-cart" data-id="${productData.id}" ${productData.stock <= 0 ? 'disabled' : ''}>
+                  <i class="fas fa-shopping-cart"></i> 
+                  ${productData.stock > 0 ? 'Añadir al carrito' : 'Sin stock'}
+                </button>
+              </div>
+              
+              <div class="details-footer">
+                <p class="shipping-info">
+                  <i class="fas fa-truck"></i> Envío gratuito a todo el país
+                </p>
+                <p class="return-info">
+                  <i class="fas fa-undo"></i> Devolución gratuita hasta 30 días
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+  
+  // Actualizar contador del carrito
+  actualizarContadorCarrito();
+  
+} catch (error) {
+  console.error('Error al cargar productos:', error);
+  if (productsGrid) {
+    productsGrid.innerHTML = `
+      <div class="error">
+        <p>Error al cargar los productos. Por favor, recarga la página.</p>
+        <button onclick="window.location.reload()">Reintentar</button>
+      </div>
+    `;
+  }
+}
+
+// Función para actualizar el contador del carrito
+function actualizarContadorCarrito() {
+  const contador = document.querySelector('.carrito-contador');
+  if (contador && window.carrito) {
+    const totalItems = window.carrito.obtenerTotalItems ? 
+      window.carrito.obtenerTotalItems() : 
+      (window.carrito.obtenerItems ? window.carrito.obtenerItems().length : 0);
+    contador.textContent = totalItems;
+    contador.style.display = totalItems > 0 ? 'flex' : 'none';
+  }
+}
+
+// Función para manejar el clic en el botón de añadir al carrito
+function manejarClickAgregarCarrito(e) {
+  const boton = e.target.closest('.btn-add-to-cart');
+  if (!boton) return;
+  
+  e.preventDefault();
+  e.stopPropagation();
+  
+  const productId = parseInt(boton.getAttribute('data-id'));
+  
+  // Solo proceder si se hizo clic en un botón
+  if (e && e.type === 'click') {
+    // Buscar el producto por su ID
+    window.loadProducts()
+      .then(products => {
+        const producto = products.find(p => p.id === productId);
+        if (producto) {
+          // Agregar al carrito
+          if (window.carrito && window.carrito.agregarItem) {
+            window.carrito.agregarItem(producto);
+            actualizarContadorCarrito();
+            
+            // Mostrar notificación
+            if (window.mostrarNotificacion) {
+              window.mostrarNotificacion(`"${producto.name}" añadido al carrito`, 'exito');
+            } else {
+              alert(`"${producto.name}" añadido al carrito`);
+            }
+            
+            // Animar el botón
+            const boton = e.target.closest('button');
+            if (boton) {
               boton.innerHTML = '<i class="fas fa-check"></i>';
               setTimeout(() => {
-                if (boton.classList.contains('btn-add-to-cart')) {
-                  boton.innerHTML = '<i class="fas fa-shopping-cart"></i>';
-                } else {
-                  boton.innerHTML = '<i class="fas fa-shopping-cart"></i> Añadido';
-                  setTimeout(() => {
-                    boton.innerHTML = '<i class="fas fa-shopping-cart"></i> Añadir al carrito';
-                  }, 1000);
-                }
+                boton.innerHTML = '<i class="fas fa-shopping-cart"></i> Añadir al carrito';
+                boton.disabled = false;
+              }, 2000);
+            } else {
+              boton.innerHTML = '<i class="fas fa-shopping-cart"></i> Añadido';
+              setTimeout(() => {
+                boton.innerHTML = '<i class="fas fa-shopping-cart"></i> Añadir al carrito';
               }, 1000);
             }
           }
