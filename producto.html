@@ -317,17 +317,10 @@
   <script>
     // Código para cargar el producto
     document.addEventListener('DOMContentLoaded', function() {
-      // Cargar la barra de navegación
-      fetch('includes/nav.html')
-        .then(response => response.text())
-        .then(html => {
-          document.getElementById('navbar-placeholder').innerHTML = html;
-        });
-
       // Obtener el ID del producto de la URL
       const urlParams = new URLSearchParams(window.location.search);
       const productId = urlParams.get('id');
-
+      
       if (productId) {
         // Cargar los datos del producto
         cargarProducto(productId);
@@ -335,57 +328,19 @@
         // Redirigir a la página de productos si no hay ID
         window.location.href = 'productos.html';
       }
-    });
-
-    function cargarProducto(productId) {
-      // Aquí iría la lógica para cargar los datos del producto
-      // Por ahora, mostramos el ID en la consola
-      console.log('Cargando producto con ID:', productId);
       
-      // Actualizar el título de la página
-      document.title = `Producto ${productId} - VIVAE`;
-    }
-
-    // Cargar la barra de navegación y el pie de página
-    document.addEventListener('DOMContentLoaded', function() {
       // Cargar la barra de navegación
       fetch('includes/nav.html')
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Error al cargar la barra de navegación');
-          }
-          return response.text();
-        })
+        .then(response => response.text())
         .then(html => {
           document.getElementById('navbar-placeholder').innerHTML = html;
-          
-          // Actualizar la clase activa en la navegación
-          const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-          document.querySelectorAll('.nav-links a').forEach(link => {
-            const linkHref = link.getAttribute('href');
-            if (linkHref === currentPage || 
-                (linkHref === 'index.html' && currentPage === '')) {
+          // Actualizar la navegación activa
+          document.querySelectorAll('.nav-link').forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === 'productos.html') {
               link.classList.add('active');
-            } else {
-              link.classList.remove('active');
             }
           });
-        })
-        .catch(error => {
-          console.error('Error al cargar la barra de navegación:', error);
-          document.getElementById('navbar-placeholder').innerHTML = `
-            <nav class="navbar">
-              <div class="container">
-                <a href="index.html" class="logo">
-                  <img src="img/logo.png" alt="VIVAE">
-                </a>
-                <div class="nav-links">
-                  <a href="index.html">Inicio</a>
-                  <a href="productos.html">Productos</a>
-                </div>
-              </div>
-            </nav>
-          `;
         });
       
       // Cargar el pie de página
@@ -393,11 +348,147 @@
         .then(response => response.text())
         .then(html => {
           document.getElementById('footer-placeholder').innerHTML = html;
+        });
+    });
+
+    function cargarProducto(productId) {
+      console.log('Cargando producto con ID:', productId);
+      
+      // Mostrar indicador de carga
+      const productoDetalle = document.getElementById('producto-detalle');
+      if (productoDetalle) {
+        productoDetalle.innerHTML = `
+          <div class="loading" style="text-align: center; padding: 2rem;">
+            <div class="spinner" style="width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #8c33ff; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 1rem;"></div>
+            <p style="color: #666;">Cargando producto...</p>
+          </div>
+          <style>
+            @keyframes spin {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(360deg); }
+            }
+          </style>
+        `;
+      }
+      
+      // Cargar los productos
+      fetch('data/productos.json')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('No se pudieron cargar los productos');
+          }
+          return response.json();
+        })
+        .then(productos => {
+          const producto = Array.isArray(productos) ? 
+            productos.find(p => p.id.toString() === productId) : null;
+          
+          if (producto) {
+            mostrarProducto({
+              ...producto,
+              // Mapear los nombres de propiedades si es necesario
+              nombre: producto.name,
+              descripcion: producto.description,
+              precio: producto.price,
+              imagen: producto.image,
+              imagenes: [producto.image] // Usar la imagen principal como única imagen por defecto
+            });
+          } else {
+            mostrarError('Producto no encontrado');
+          }
         })
         .catch(error => {
-          console.error('Error al cargar el pie de página:', error);
-          document.getElementById('footer-placeholder').innerHTML = `
-            <footer class="footer">
+          console.error('Error al cargar el producto:', error);
+          mostrarError('Error al cargar el producto. Por favor, inténtalo de nuevo.');
+        });
+    }
+
+    // Función para mostrar los datos del producto
+    function mostrarProducto(producto) {
+      try {
+        // Actualizar el título de la página
+        document.title = `${producto.nombre || 'Producto'} | VIVAE`;
+        
+        // Actualizar la información básica
+        const tituloElement = document.getElementById('producto-titulo');
+        const precioElement = document.getElementById('producto-precio');
+        const descripcionElement = document.getElementById('producto-descripcion');
+        const imagenPrincipal = document.getElementById('imagen-principal');
+        
+        if (tituloElement) tituloElement.textContent = producto.nombre || producto.name || 'Producto sin nombre';
+        if (precioElement) precioElement.textContent = producto.precio ? `$${parseFloat(producto.precio).toLocaleString()}` : 'Precio no disponible';
+        
+        // Mostrar tallas disponibles si existen
+        const tallasContainer = document.getElementById('tallas-disponibles');
+        if (tallasContainer && producto.sizes && producto.sizes.length > 0) {
+          tallasContainer.innerHTML = `
+            <div class="tallas">
+              <h4>Tallas disponibles:</h4>
+              <div class="tallas-lista">
+                ${producto.sizes.map(talla => 
+                  `<span class="talla-option">${talla}</span>`
+                ).join('')}
+              </div>
+            </div>
+          `;
+        }
+        
+        // Mejorar la descripción con detalles de tela y cuidados
+        if (descripcionElement) {
+          let descripcionHTML = `
+            <p>${producto.descripcion || 'Sin descripción disponible'}</p>
+            
+            <div class="detalles-tela">
+              <h4>Detalles del producto:</h4>
+              <ul>
+                <li><strong>Material:</strong> ${producto.material || 'Material no especificado'}</li>
+                <li><strong>Color:</strong> ${producto.color || 'Color no especificado'}</li>
+                <li><strong>Talla:</strong> ${producto.talla || 'Talla única'}</li>
+                <li><strong>Disponibilidad:</strong> ${producto.disponible ? 'En stock' : 'Agotado'}</li>
+              </ul>
+              
+              <h4>Instrucciones de cuidado:</h4>
+              <ul>
+                <li>Lavar a máquina en ciclo suave con agua fría</li>
+                <li>No usar blanqueador</li>
+                <li>Planchar a baja temperatura</li>
+                <li>No secar en secadora</li>
+                <li>Guardar en lugar fresco y seco</li>
+              </ul>
+            </div>
+          `;
+          descripcionElement.innerHTML = descripcionHTML;
+        }
+        
+        // Actualizar la imagen principal
+        if (imagenPrincipal) {
+          imagenPrincipal.src = producto.imagen || 'img/placeholder.jpg';
+          imagenPrincipal.alt = producto.nombre || 'Imagen del producto';
+        }
+        
+        // Limpiar miniaturas existentes
+        const miniaturasContainer = document.getElementById('miniaturas');
+        if (miniaturasContainer) {
+          miniaturasContainer.innerHTML = '';
+          
+          // Agregar miniaturas si hay imágenes adicionales
+          if (producto.imagenes && producto.imagenes.length > 0) {
+            producto.imagenes.forEach((imagen, index) => {
+              agregarMiniatura(imagen, index);
+            });
+          } else if (producto.imagen) {
+            // Si solo hay una imagen, usarla como miniatura también
+            agregarMiniatura(producto.imagen, 0);
+          }
+        }
+        
+        // Configurar eventos
+        configurarEventos();
+        
+      } catch (error) {
+        console.error('Error al mostrar el producto:', error);
+        mostrarError('Error al mostrar los detalles del producto');
+      }
               <div class="container">
                 <div class="footer-content">
                   <div class="footer-section">
