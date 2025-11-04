@@ -9,15 +9,37 @@ document.addEventListener('DOMContentLoaded', function() {
       
       // Inicializar el menú móvil
       const menuToggle = document.querySelector('.menu-toggle');
-      const mainNav = document.querySelector('.main-nav');
+      const navContainer = document.querySelector('.nav-container');
+      const body = document.body;
       
-      if (menuToggle && mainNav) {
-        menuToggle.addEventListener('click', function() {
-          this.classList.toggle('active');
-          mainNav.classList.toggle('active');
-          document.body.classList.toggle('menu-open');
-        });
+      // Función para alternar el menú
+      function toggleMenu() {
+        menuToggle.classList.toggle('active');
+        navContainer.classList.toggle('active');
+        body.classList.toggle('menu-open');
       }
+      
+      // Evento de clic en el botón de menú
+      if (menuToggle) {
+        menuToggle.addEventListener('click', toggleMenu);
+      }
+      
+      // Cerrar menú al hacer clic en un enlace
+      const navLinks = document.querySelectorAll('.nav-links a');
+      navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          if (body.classList.contains('menu-open')) {
+            toggleMenu();
+          }
+        });
+      });
+      
+      // Cerrar menú al redimensionar la ventana (en caso de que se cambie a escritorio)
+      window.addEventListener('resize', () => {
+        if (window.innerWidth > 992 && body.classList.contains('menu-open')) {
+          toggleMenu();
+        }
+      });
     })
     .catch(error => console.error('Error cargando la barra de navegación:', error));
 });
