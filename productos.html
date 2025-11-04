@@ -150,8 +150,8 @@
     // Función para el menú móvil
     function setupMobileMenu() {
       console.log('Inicializando menú móvil...');
-      const menuToggle = document.getElementById('menuToggle');
-      const mainNav = document.querySelector('.main-nav');
+      let menuToggle = document.getElementById('menuToggle');
+      let mainNav = document.querySelector('.main-nav');
       
       if (!menuToggle || !mainNav) {
         console.error('Elementos del menú no encontrados:', {
@@ -164,6 +164,8 @@
       // Asegurarse de que el botón de menú sea visible en móviles
       if (window.innerWidth <= 992) {
         menuToggle.style.display = 'flex';
+      } else {
+        menuToggle.style.display = 'none';
       }
       
       // Función para alternar el menú
@@ -189,9 +191,10 @@
       // Eliminar manejadores de eventos previos
       const newMenuToggle = menuToggle.cloneNode(true);
       menuToggle.parentNode.replaceChild(newMenuToggle, menuToggle);
+      menuToggle = newMenuToggle; // Actualizar la referencia
       
       // Agregar el manejador de eventos al nuevo botón
-      newMenuToggle.addEventListener('click', toggleMenu);
+      menuToggle.addEventListener('click', toggleMenu);
       
       // Cerrar menú al hacer clic en un enlace de navegación
       const navLinks = document.querySelectorAll('.nav-link');
@@ -206,7 +209,7 @@
       // Cerrar menú al hacer clic fuera
       document.addEventListener('click', (e) => {
         const isClickInsideNav = mainNav.contains(e.target);
-        const isClickOnToggle = newMenuToggle.contains(e.target);
+        const isClickOnToggle = menuToggle.contains(e.target);
         
         if (!isClickInsideNav && !isClickOnToggle && mainNav.classList.contains('active')) {
           toggleMenu();
@@ -221,22 +224,26 @@
       });
       
       // Manejar cambios de tamaño de la ventana
-      window.addEventListener('resize', () => {
+      const handleResize = () => {
         if (window.innerWidth > 992) {
           // En pantallas grandes, asegurarse de que el menú esté cerrado
           if (mainNav.classList.contains('active')) {
             toggleMenu();
           }
           // Ocultar el botón de menú en pantallas grandes
-          newMenuToggle.style.display = 'none';
+          menuToggle.style.display = 'none';
         } else {
           // Mostrar el botón de menú en móviles
-          newMenuToggle.style.display = 'flex';
+          menuToggle.style.display = 'flex';
         }
-      });
+      };
       
-      console.log('Menú móvil inicializado correctamente');
-    }
+      // Configurar el event listener para el redimensionamiento
+      window.removeEventListener('resize', handleResize); // Eliminar duplicados
+      window.addEventListener('resize', handleResize);
+      
+      // Asegurarse de que el estado inicial sea correcto
+      handleResize();
       
       console.log('Menú móvil inicializado correctamente');
     }
