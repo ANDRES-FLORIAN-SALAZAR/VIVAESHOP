@@ -21,9 +21,7 @@
 </head>
 <body>
   <!-- Barra de navegación -->
-  <div id="navbar-placeholder">
-    <!-- La navegación se cargará aquí dinámicamente -->
-  </div>
+  <div id="navbar-placeholder"></div>
 
   <!-- Contenido principal -->
   <main class="main-content">
@@ -88,10 +86,12 @@
   
   <!-- Script principal -->
   <script>
-    // Función para cargar la navegación
+    // Función para cargar la navegación y el footer
     async function loadNavigation() {
       try {
         console.log('Cargando navegación...');
+        
+        // Cargar navegación y footer en paralelo
         const [navResponse, footerResponse] = await Promise.all([
           fetch('includes/nav.html'),
           fetch('includes/footer.html')
@@ -108,27 +108,47 @@
         
         // Insertar la navegación
         const navbarPlaceholder = document.getElementById('navbar-placeholder');
-        if (navbarPlaceholder) {
-          navbarPlaceholder.innerHTML = navHtml;
-          console.log('Navegación cargada correctamente');
-          
-          // Inicializar otros componentes
-          if (typeof mostrarProductos === 'function') {
-            mostrarProductos();
-          }
-          
-          // Actualizar contador del carrito
-          if (typeof actualizarContadorCarrito === 'function') {
-            actualizarContadorCarrito();
-          }
-          
-          return true;
+        const footerPlaceholder = document.getElementById('footer-placeholder');
+        
+        if (!navbarPlaceholder || !footerPlaceholder) {
+          console.error('No se encontraron los placeholders de navegación o footer');
+          return false;
         }
-        return false;
+        
+        navbarPlaceholder.innerHTML = navHtml;
+        footerPlaceholder.innerHTML = footerHtml;
+        
+        console.log('Navegación y footer cargados correctamente');
+        return true;
+        
       } catch (error) {
         console.error('Error al cargar la navegación:', error);
         return false;
       }
+    }
+    
+    // Inicializar la navegación cuando el DOM esté listo
+    async function initialize() {
+      if (document.readyState === 'loading') {
+        await new Promise(resolve => document.addEventListener('DOMContentLoaded', resolve));
+      }
+      
+      // Cargar la navegación
+      const navLoaded = await loadNavigation();
+      
+      if (navLoaded) {
+        // Inicializar menú móvil después de cargar la navegación
+        setupMobileMenu();
+        
+        // Inicializar otros componentes
+        if (typeof mostrarProductos === 'function') {
+          mostrarProductos();
+        }
+        
+        // Actualizar contador del carrito
+        if (typeof actualizarContadorCarrito === 'function') {
+          actualizarContadorCarrito();
+        }
       } else {
         console.error('No se pudo cargar la barra de navegación');
       }
