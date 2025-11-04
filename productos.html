@@ -22,6 +22,27 @@
 <body>
   <!-- Barra de navegación -->
   <div id="navbar-placeholder"></div>
+  
+  <!-- Botón de menú móvil -->
+  <button id="menuToggle" class="menu-toggle" aria-label="Menú de navegación" aria-expanded="false" aria-controls="main-nav">
+    <span class="menu-icon"></span>
+    <span class="menu-icon"></span>
+    <span class="menu-icon"></span>
+  </button>
+  
+  <!-- Navegación principal -->
+  <nav id="main-nav" class="main-nav">
+    <ul class="nav-list">
+      <li><a href="index.html" class="nav-link">Inicio</a></li>
+      <li><a href="productos.html" class="nav-link active">Productos</a></li>
+      <li><a href="#" class="nav-link">Categorías</a>
+        <ul class="submenu" id="mobile-categories">
+          <!-- Las categorías se cargarán dinámicamente -->
+        </ul>
+      </li>
+      <li><a href="#" class="nav-link">Contacto</a></li>
+    </ul>
+  </nav>
 
   <!-- Contenido principal -->
   <main class="main-content">
@@ -47,7 +68,7 @@
           <h3 class="filter-title">Buscar producto</h3>
             <div class="search-box">
               <i class="fas fa-search search-icon"></i>
-              <input type="text" id="search" placeholder="Buscar por nombre o descripción..." class="search-input">
+              <input type="text" id="search" name="search" placeholder="Buscar por nombre o descripción..." class="search-input">
               <button class="clear-search" id="clear-search" aria-label="Limpiar búsqueda">
                 <i class="fas fa-times"></i>
               </button>
@@ -138,17 +159,38 @@
         console.log('Inicializando aplicación...');
         
         // 1. Cargar la navegación primero
+        console.log('Cargando navegación...');
         const navLoaded = await loadNavigation();
         
         if (!navLoaded) {
-          throw new Error('No se pudo cargar la navegación');
+          console.error('No se pudo cargar la navegación');
+          return;
         }
         
-        // 2. Inicializar menú móvil después de cargar la navegación
-        // Esperar un ciclo de evento para asegurar que el DOM se haya actualizado
-        await new Promise(resolve => setTimeout(resolve, 0));
+        // 2. Esperar a que los elementos del menú estén en el DOM
+        console.log('Esperando a que los elementos del menú estén listos...');
+        const maxAttempts = 10;
+        let attempts = 0;
         
-        console.log('Inicializando menú móvil...');
+        const checkMenuElements = () => {
+          const menuToggle = document.getElementById('menuToggle');
+          const mainNav = document.querySelector('.main-nav');
+          return menuToggle && mainNav;
+        };
+        
+        while (!checkMenuElements() && attempts < maxAttempts) {
+          await new Promise(resolve => setTimeout(resolve, 100));
+          attempts++;
+        }
+        
+        if (!checkMenuElements()) {
+          console.error('No se encontraron los elementos del menú después de varios intentos');
+          return;
+        }
+        
+        console.log('Elementos del menú encontrados, inicializando...');
+        
+        // 3. Inicializar menú móvil
         setupMobileMenu();
         
         // 3. Inicializar productos
@@ -171,20 +213,37 @@
       }
     }
     
+    // Variable para controlar si ya se inicializó
+    let isInitialized = false;
+    
     // Iniciar la inicialización
-    initialize();
+    if (!isInitialized) {
+      initialize();
+      isInitialized = true;
+    }
     
     // Función para el menú móvil
-    function setupMobileMenu() {
+    function setupMobileMenu(attempt = 1) {
       console.log('Inicializando menú móvil...');
-      let menuToggle = document.getElementById('menuToggle');
-      let mainNav = document.querySelector('.main-nav');
+      const menuToggle = document.querySelector('.menu-toggle');
+      const mainNav = document.querySelector('.main-nav');
       
       if (!menuToggle || !mainNav) {
-        console.error('Elementos del menú no encontrados:', {
-          menuToggle: !!menuToggle,
-          mainNav: !!mainNav
-        });
+        if (attempt === 1) {
+          console.log('Elementos del menú no encontrados, esperando a que cargue el DOM...');
+        }
+        
+        if (attempt <= 5) {
+          setTimeout(() => setupMobileMenu(attempt + 1), 300 * attempt);
+        } else {
+          console.warn('No se pudo inicializar el menú móvil después de varios intentos');
+        }
+        return;
+      }
+      
+      // Prevent multiple initializations
+      if (menuToggle.dataset.initialized === 'true') {
+        console.log('Menú móvil ya inicializado');
         return;
       }
       
@@ -275,12 +334,24 @@
       console.log('Menú móvil inicializado correctamente');
     }
     
+    // Variable para evitar cargar productos múltiples veces
+    let productosCargados = false;
+    
     // Función para mostrar los productos
     async function mostrarProductos() {
+      // Evitar cargar productos múltiples veces
+      if (productosCargados) {
+        console.log('Los productos ya fueron cargados, omitiendo carga duplicada');
+        return;
+      }
+      
       console.log('Mostrando productos...');
       const productsGrid = document.getElementById('products-grid');
       const loadingElement = document.getElementById('loading');
       const noResultsElement = document.getElementById('no-results');
+      
+      // Marcar que los productos están siendo cargados
+      productosCargados = true;
       
       if (!productsGrid || !loadingElement || !noResultsElement) {
         console.error('No se encontraron elementos necesarios');
@@ -454,8 +525,6 @@
                   </div>
                 </div>
               </div>
-                </div>
-              </div>
             </div>
           `;
         }).join('');
@@ -497,10 +566,13 @@
       e.stopPropagation();
       
       const productId = parseInt(boton.getAttribute('data-id'));
-      if (!productId) {
+      if (isNaN(productId)) {
         console.error('ID de producto no válido');
         return;
       }
+      
+      // Deshabilitar el botón temporalmente para evitar múltiples clics
+      boton.disabled = true;
       
       // Buscar el producto por su ID
       window.loadProducts()
@@ -523,18 +595,19 @@
             }
             
             // Animar el botón
-            const icono = boton.querySelector('i') || document.createElement('i');
             const textoOriginal = boton.textContent.trim();
-            
             boton.innerHTML = '<i class="fas fa-check"></i>';
             
             setTimeout(() => {
               boton.innerHTML = `<i class="fas fa-shopping-cart"></i> ${textoOriginal}`;
+              boton.disabled = false;
             }, 2000);
           }
         })
         .catch(error => {
           console.error('Error al agregar al carrito:', error);
+          boton.disabled = false;
+          
           if (window.mostrarNotificacion) {
             window.mostrarNotificacion('Error al agregar el producto al carrito', 'error');
           } else {
@@ -542,111 +615,106 @@
           }
         });
     }
-
-    // Función para actualizar el contador del carrito
-    function actualizarContadorCarrito() {
-      const contador = document.querySelector('.carrito-contador');
-      if (contador && window.carrito) {
-        const totalItems = window.carrito.obtenerTotalItems ? 
-          window.carrito.obtenerTotalItems() : 
-          (window.carrito.obtenerItems ? window.carrito.obtenerItems().length : 0);
-        contador.textContent = totalItems;
-        contador.style.display = totalItems > 0 ? 'flex' : 'none';
-      }
-    }
-
-
-// Función para manejar el clic en el botón de añadir al carrito
-function manejarClickAgregarCarrito(e) {
-  const boton = e.target.closest('.btn-add-to-cart');
-  if (!boton) return;
-  
-  e.preventDefault();
-  e.stopPropagation();
-  
-  const productId = parseInt(boton.getAttribute('data-id'));
-  if (isNaN(productId)) {
-    console.error('ID de producto no válido');
-    return;
-  }
-  
-  // Deshabilitar el botón temporalmente para evitar múltiples clics
-  boton.disabled = true;
-  
-  // Buscar el producto por su ID
-  window.loadProducts()
-    .then(products => {
-      const producto = products.find(p => p.id === productId);
-      if (!producto) {
-        throw new Error('Producto no encontrado');
-      }
-      
-      // Agregar al carrito
-      if (window.carrito && typeof window.carrito.agregarItem === 'function') {
-        window.carrito.agregarItem(producto);
-        actualizarContadorCarrito();
-        
-        // Mostrar notificación
-        if (window.mostrarNotificacion) {
-          window.mostrarNotificacion(`"${producto.name}" añadido al carrito`, 'exito');
-        } else {
-          alert(`"${producto.name}" añadido al carrito`);
-        }
-        
-        // Animar el botón
-        const textoOriginal = boton.textContent.trim();
-        boton.innerHTML = '<i class="fas fa-check"></i>';
-        
-        setTimeout(() => {
-          boton.innerHTML = `<i class="fas fa-shopping-cart"></i> ${textoOriginal}`;
-          boton.disabled = false;
-        }, 2000);
-      }
-    })
-    .catch(error => {
-      console.error('Error al agregar al carrito:', error);
-      boton.disabled = false;
-      
-      if (window.mostrarNotificacion) {
-        window.mostrarNotificacion('Error al agregar el producto al carrito', 'error');
-      } else {
-        alert('Error al agregar el producto al carrito');
-      }
-    });
-    }
     
     // Función para mostrar los detalles del producto
     function mostrarDetallesProducto(productId) {
+      console.log(`Mostrando detalles del producto ${productId}...`);
+      
+      // Verificar que el ID del producto sea válido
+      if (!productId) {
+        console.error('ID de producto no proporcionado');
+        return;
+      }
+      
+      // Buscar el modal de detalles
       const modal = document.getElementById(`details-${productId}`);
-      if (modal) {
+      
+      if (!modal) {
+        console.error(`No se encontró el modal para el producto con ID: ${productId}`);
+        return;
+      }
+      
+      try {
         // Desplazamiento suave al inicio de la página
         window.scrollTo({
           top: 0,
           behavior: 'smooth'
         });
         
-        // Mostrar el modal
+        // Ocultar cualquier otro modal abierto
+        document.querySelectorAll('.product-details').forEach(m => {
+          if (m !== modal) {
+            m.classList.remove('active');
+            m.style.display = 'none';
+          }
+        });
+        
+        // Mostrar el modal actual
         document.body.style.overflow = 'hidden';
         modal.style.display = 'block';
         
-        // Agregar clase active después de un pequeño retraso para la animación
-        setTimeout(() => {
-          modal.classList.add('active');
-        }, 10);
+        // Forzar un reflow para asegurar que la transición se aplique
+        void modal.offsetWidth;
+        
+        // Agregar clase active para la animación
+        modal.classList.add('active');
+        
+        // Enfocar el botón de cerrar para mejor accesibilidad
+        const closeButton = modal.querySelector('.close-details');
+        if (closeButton) {
+          closeButton.focus();
+        }
+        
+      } catch (error) {
+        console.error('Error al mostrar los detalles del producto:', error);
       }
     }
     
     // Función para cerrar los detalles del producto
     function cerrarDetallesProducto() {
+      console.log('Cerrando detalles del producto...');
+      
+      // Obtener todos los modales de detalles
       const modales = document.querySelectorAll('.product-details');
-      modales.forEach(modal => {
-        modal.classList.remove('active');
-        
-        // Esperar a que termine la animación antes de ocultar
-        setTimeout(() => {
-          modal.style.display = 'none';
-          document.body.style.overflow = '';
-        }, 300);
+      
+      // Si no hay modales, salir
+      (modales || []).forEach(modal => {
+        try {
+          // Iniciar la animación de cierre
+          modal.classList.remove('active');
+          
+          // Esperar a que termine la animación antes de ocultar
+          setTimeout(() => {
+            // Verificar si el modal sigue en el DOM
+            if (document.body.contains(modal)) {
+              modal.style.display = 'none';
+            }
+            
+            // Restaurar el scroll de la página solo si no hay otros modales abiertos
+            const hasOpenModal = Array.from(document.querySelectorAll('.product-details')).some(
+              m => m.style.display === 'block' || m.classList.contains('active')
+            );
+            
+            if (!hasOpenModal) {
+              document.body.style.overflow = '';
+            }
+            
+            // Enfocar el botón que abrió el modal para mejor accesibilidad
+            const activeElement = document.activeElement;
+            if (activeElement && activeElement.classList.contains('close-details')) {
+              const productCard = activeElement.closest('.product-card');
+              if (productCard) {
+                const viewDetailsBtn = productCard.querySelector('.btn-view-details');
+                if (viewDetailsBtn) {
+                  viewDetailsBtn.focus();
+                }
+              }
+            }
+          }, 300);
+          
+        } catch (error) {
+          console.error('Error al cerrar el modal:', error);
+        }
       });
     }
     

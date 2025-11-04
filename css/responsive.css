@@ -2,27 +2,202 @@
    ESTILOS RESPONSIVOS
    =================================== */
 
-/* ==================== */
-/* ESTILOS DEL MENÚ MÓVIL */
-/* ==================== */
+/* Reset y estilos base */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
-/* Estilos base del botón de menú */
+:root {
+  /* Espaciados responsivos */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
+  --spacing-xxl: 4rem;
+  
+  /* Tamaños de fuente responsivos */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+}
+
+/* Ajustes generales para el body */
+body {
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  font-size: var(--text-base);
+  line-height: 1.6;
+}
+
+/* Contenedor principal */
+.container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+}
+
+/* Imágenes responsivas */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Enlaces */
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--color-primario);
+}
+
+/* Botones */
+button, .btn {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+button:focus, .btn:focus {
+  outline: 2px solid var(--color-primario);
+  outline-offset: 2px;
+}
+
+/* Formularios */
+input, textarea, select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--color-borde);
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: inherit;
+  transition: border-color 0.2s ease;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--color-primario);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(74, 111, 165, 0.2);
+}
+
+/* ====================
+   ESTILOS DEL MENÚ MÓVIL
+   ==================== */
+
+/* Botón del menú móvil */
 .menu-toggle {
-  display: none; /* Oculto por defecto, se muestra en móviles */
+  display: none;
   background: transparent;
   border: none;
   cursor: pointer;
-  padding: 15px;
+  padding: 12px;
   z-index: 1001;
-  position: relative;
-  outline: none;
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  width: 44px;
+  height: 44px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
 }
 
-/* Estilos del ícono del menú */
+.menu-toggle:active {
+  transform: scale(0.95);
+}
+
 .menu-toggle .fa-bars {
-  font-size: 24px;
-  color: #333;
+  font-size: 1.5rem;
+  color: var(--color-primario);
   transition: transform 0.3s ease;
+}
+
+/* Menú de navegación móvil */
+.main-nav {
+  position: fixed;
+  top: 0;
+  right: -300px;
+  width: 300px;
+  height: 100vh;
+  background: var(--color-blanco);
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  transition: right 0.3s ease-in-out;
+  padding: 4rem 1.5rem 2rem;
+  overflow-y: auto;
+}
+
+.main-nav.active {
+  right: 0;
+}
+
+.main-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.main-nav li {
+  margin-bottom: 1rem;
+}
+
+.main-nav a {
+  display: block;
+  padding: 0.75rem 1rem;
+  color: var(--color-texto);
+  font-weight: 500;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.main-nav a:hover,
+.main-nav a:focus {
+  background-color: var(--color-fondo-secundario);
+  color: var(--color-primario);
+}
+
+/* Overlay para el menú móvil */
+.nav-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.nav-overlay.active {
+  display: block;
+  opacity: 1;
 }
 
 /* Animación del botón de menú cuando está activo */
@@ -30,14 +205,539 @@
   transform: rotate(90deg);
 }
 
-/* Estilos para el menú de navegación en móviles */
-@media (max-width: 992px) {
+/* ==================== */
+/* MEDIA QUERIES */
+/* ==================== */
+
+/* ==================== */
+/* ESTILOS PARA DETALLES DE PRODUCTO */
+/* ==================== */
+
+.producto-detalle {
+  padding: 2rem 0;
+}
+
+.producto-contenedor {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.producto-galeria {
+  position: relative;
+}
+
+.producto-imagen-principal {
+  width: 100%;
+  height: 500px;
+  object-fit: contain;
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.producto-miniaturas {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+}
+
+.miniatura {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.miniatura:hover,
+.miniatura.activa {
+  border-color: var(--color-primario);
+}
+
+.producto-info {
+  padding: 1rem;
+}
+
+.producto-titulo {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--color-texto);
+}
+
+.producto-precio {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-primario);
+  margin-bottom: 1.5rem;
+}
+
+.producto-descripcion {
+  margin-bottom: 2rem;
+  line-height: 1.6;
+  color: var(--color-texto-claro);
+}
+
+/* Sección de tallas */
+.tallas-seccion {
+  margin-bottom: 2rem;
+}
+
+.tallas-titulo {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: var(--color-texto);
+}
+
+.tallas-lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.talla-option {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--color-borde);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.talla-option:hover,
+.talla-option.activa {
+  background-color: var(--color-primario);
+  color: white;
+  border-color: var(--color-primario);
+}
+
+/* Contador de cantidad */
+.producto-cantidad {
+  display: flex;
+  align-items: center;
+  margin: 2rem 0;
+}
+
+.cantidad-btn {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-fondo-secundario);
+  border: 1px solid var(--color-borde);
+  border-radius: 4px;
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cantidad-btn:hover {
+  background-color: var(--color-borde);
+}
+
+.cantidad-input {
+  width: 60px;
+  height: 40px;
+  text-align: center;
+  margin: 0 0.5rem;
+  -webkit-appearance: textfield;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.cantidad-input::-webkit-outer-spin-button,
+.cantidad-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Botón de acción principal */
+.btn-agregar-carrito {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 1rem;
+  background-color: var(--color-primario);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 1.5rem;
+}
+
+.btn-agregar-carrito:hover {
+  background-color: var(--color-primario-oscuro);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.btn-agregar-carrito i {
+  margin-right: 0.5rem;
+}
+
+/* Sección de envío y devoluciones */
+.info-envio {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  color: var(--color-texto-claro);
+  font-size: 0.875rem;
+}
+
+.info-envio i {
+  margin-right: 0.5rem;
+  color: var(--color-primario);
+}
+
+/* Pestañas de información */
+.producto-tabs {
+  margin-top: 3rem;
+}
+
+.tabs-header {
+  display: flex;
+  border-bottom: 1px solid var(--color-borde);
+  margin-bottom: 1.5rem;
+}
+
+.tab-btn {
+  padding: 0.75rem 1.5rem;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  font-weight: 600;
+  color: var(--color-texto-claro);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tab-btn.activo {
+  color: var(--color-primario);
+  border-bottom-color: var(--color-primario);
+}
+
+.tab-contenido {
+  display: none;
+  padding: 1.5rem 0;
+  color: var(--color-texto-claro);
+  line-height: 1.6;
+}
+
+.tab-contenido.activo {
+  display: block;
+}
+
+/* ==================== */
+/* MEDIA QUERIES */
+/* ==================== */
+
+/* Pantallas grandes (desktops) */
+/* Pantallas muy grandes (desktops grandes) */
+@media (min-width: 1440px) {
+  .container {
+    max-width: 1400px;
+  }
+}
+
+/* Desktops estándar */
+@media (min-width: 1200px) and (max-width: 1439px) {
+  .container {
+    max-width: 1140px;
+  }
+}
+
+/* Tablets en modo apaisado y pantallas pequeñas */
+@media (max-width: 1199px) {
+  .container {
+    max-width: 960px;
+  }
+  
+  .producto-imagen-principal {
+    height: 450px;
+  }
+  
+  .producto-titulo {
+    font-size: 1.75rem;
+  }
+  
+  .producto-precio {
+    font-size: 1.5rem;
+  }
+}
+
+/* Tablets en modo vertical */
+@media (max-width: 991px) {
+  .container {
+    max-width: 720px;
+  }
+  
+  .producto-contenedor {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .producto-imagen-principal {
+    height: 500px;
+  }
+  
+  .producto-info {
+    padding: 0;
+  }
+  
+  .tabs-header {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 4px;
+  }
+  
+  .tab-btn {
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Tablets pequeñas y móviles grandes */
+@media (max-width: 767px) {
+  .container {
+    max-width: 540px;
+    padding: 0 1rem;
+  }
+  
+  .producto-titulo {
+    font-size: 1.5rem;
+  }
+  
+  .producto-precio {
+    font-size: 1.4rem;
+  }
+  
+  .producto-imagen-principal {
+    height: 400px;
+  }
+  
+  .miniatura {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .tab-btn {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* Móviles medianos */
+@media (max-width: 575px) {
+  .container {
+    max-width: 100%;
+    padding: 0 1rem;
+  }
+  
+  .producto-imagen-principal {
+    height: 350px;
+  }
+  
+  .producto-titulo {
+    font-size: 1.4rem;
+  }
+  
+  .producto-precio {
+    font-size: 1.3rem;
+    margin-bottom: 1.25rem;
+  }
+  
+  .producto-descripcion {
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .talla-option {
+    width: 36px;
+    height: 36px;
+    font-size: 0.8rem;
+  }
+  
+  .cantidad-btn, .cantidad-input {
+    height: 36px;
+  }
+  
+  .miniatura {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+/* Móviles pequeños */
+@media (max-width: 375px) {
+  .producto-imagen-principal {
+    height: 300px;
+  }
+  
+  .producto-titulo {
+    font-size: 1.3rem;
+  }
+  
+  .producto-precio {
+    font-size: 1.2rem;
+  }
+  
+  .talla-option {
+    width: 32px;
+    height: 32px;
+    font-size: 0.75rem;
+  }
+  
+  .cantidad-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+  
+  .cantidad-input {
+    width: 50px;
+    height: 36px;
+  }
+  
+  .btn-agregar-carrito {
+    padding: 0.8rem;
+    font-size: 0.95rem;
+  }
+  
+  .tab-btn {
+    padding: 0.5rem 0.6rem;
+    font-size: 0.8rem;
+  }
+  
+  .tab-contenido {
+    font-size: 0.9rem;
+  }
+}
+
+/* Móviles muy pequeños */
+@media (max-width: 320px) {
+  .producto-imagen-principal {
+    height: 250px;
+  }
+  
+  .miniatura {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .talla-option {
+    width: 30px;
+    height: 30px;
+    font-size: 0.7rem;
+  }
+  
+  .cantidad-btn {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .cantidad-input {
+    width: 40px;
+    height: 32px;
+  }
+}
+
+/* Ajustes de impresión */
+@media print {
+  .menu-toggle,
+  .main-nav,
+  .btn-agregar-carrito,
+  .producto-miniaturas {
+    display: none !important;
+  }
+  
+  .producto-contenedor {
+    display: block;
+  }
+  
+  .producto-imagen-principal {
+    max-height: 300px;
+    margin: 0 auto 1rem;
+  }
+  
+  .producto-info {
+    padding: 0;
+  }
+  
+  .producto-titulo {
+    font-size: 1.5rem;
+  }
+  
+  .producto-precio {
+    font-size: 1.25rem;
+  }
+}
+
+/* Ajuste para navegadores WebKit (Safari, Chrome) */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  .cantidad-input {
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+    appearance: textfield;
+    margin: 0;
+  }
+}
+
+/* Ajuste para Firefox */
+@-moz-document url-prefix() {
+  .cantidad-input {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+}
+
+/* Ajuste para Microsoft Edge */
+@supports (-ms-ime-align: auto) {
+  .cantidad-input {
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+}
+
+/* Ajuste para la cuadrícula de productos en tablets */
+@media (max-width: 991px) {
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  
+  /* Navigation */
+  .main-nav {
+    width: 300px;
+  }
+  
+  /* Product cards */
+  .product-card {
+    margin-bottom: 1.5rem;
+  }
   /* Mostrar el botón de menú en móviles */
   .menu-toggle {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 10px;
+    margin-right: 10px;
   }
   
   /* Estilos del menú desplegable */
@@ -66,8 +766,9 @@
   .nav-links {
     flex-direction: column;
     padding: 0;
-    margin: 0;
+    margin: 20px 0;
     list-style: none;
+    width: 100%;
   }
   
   .nav-links li {
@@ -143,10 +844,57 @@
 
 /* Ajustes generales para móviles */
 @media (max-width: 767px) {
+  .container {
+    max-width: 720px;
+  }
+  
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.75rem; }
+  h3 { font-size: 1.5rem; }
+  
   /* Ajustes generales */
-  body {
-    font-size: 16px;
-    line-height: 1.5;
+  .container {
+    padding: 0 15px;
+  }
+  
+  /* Ajustes del encabezado */
+  .navbar {
+    padding: 10px 15px;
+    height: 70px;
+  }
+  
+  .logo img {
+    max-height: 40px;
+  }
+  
+  /* Ajustes del contenido principal */
+  .main-content {
+    padding: 20px 0;
+  }
+  
+  .page-title {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Filtros */
+  .filters-content {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .filter-group {
+    width: 100%;
+  }
+  
+  /* Productos */
+  .productos-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+  
+  .product-card {
+    margin-bottom: 15px;
   }
   
   /* Banner principal */
@@ -249,35 +997,67 @@
   }
 }
 
-/* Tablets */
-@media (min-width: 768px) and (max-width: 1023px) {
-  .productos-grid {
-    grid-template-columns: repeat(3, 1fr);
+/* Móviles medianos */
+@media (max-width: 575px) {
+  .container {
+    max-width: 540px;
   }
   
-  .galeria-item, 
-  .galeria-item.inverso {
-    flex-direction: column;
-  }
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.25rem; }
   
-  .galeria-texto, 
-  .galeria-imagen {
-    width: 100%;
-  }
-  
-  .galeria-imagen {
-    height: 400px;
+  .btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
   }
 }
 
-/* Ajustes para pantallas muy pequeñas */
+/* Móviles pequeños */
 @media (max-width: 480px) {
-  .productos-grid {
-    grid-template-columns: 1fr;
+  .container {
+    padding: 0 10px;
   }
   
-  .producto-card {
-    max-width: 100%;
+  h1 { font-size: 1.5rem; }
+  h2 { font-size: 1.3rem; }
+  
+  .btn {
+    width: 100%;
+    margin: 5px 0;
+  }
+  /* Product grid adjustments */
+  .products-grid {
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1rem;
+    padding: 0 10px;
+  }
+  
+  .product-card {
+    width: 100%;
+    margin: 0 auto;
+  }
+  
+  /* Main content adjustments */
+  .main-content {
+    padding: 20px 0;
+  }
+  
+  /* Filter section */
+  .filters-content {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .filter-group {
+    width: 100%;
+  }
+  
+  /* Buttons */
+  .btn {
+    display: block;
+    width: 100%;
+    margin: 5px 0;
   }
   
   .frase-inspiradora {

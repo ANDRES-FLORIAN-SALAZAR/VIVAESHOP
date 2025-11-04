@@ -6,16 +6,45 @@
   <title>Detalles del Producto - VIVAE</title>
   <link rel="icon" type="image/jpg" href="img/vivae.jpg">
   
-  <!-- Fuentes -->
+  <!-- Preconnect to external resources -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Preload critical CSS -->
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"></noscript>
+  <!-- Load Font Awesome with defer -->
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
   
-  <!-- Hojas de estilo -->
-  <link rel="stylesheet" href="css/normalize.css">
-  <link rel="stylesheet" href="css/estilos.css">
-  <link rel="stylesheet" href="css/footer.css">
+  <!-- Critical CSS Inline -->
+  <style>
+    /* Critical CSS for initial render */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; }
+    .menu-toggle { display: none; }
+    .main-nav { display: none; }
+    .main-nav.active { display: block; }
+    .loading-spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+  
+  <!-- Defer non-critical CSS -->
+  <link rel="preload" href="css/normalize.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="css/estilos.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="css/footer.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="stylesheet" href="css/footer.css">
+  </noscript>
   <style>
     /* Estilos específicos para la página de detalles del producto */
     .producto-detalle {
@@ -262,7 +291,7 @@
     <div class="producto-detalle">
       <div class="producto-contenedor">
         <div class="producto-galeria">
-          <img id="imagen-principal" src="" alt="" class="producto-imagen-principal">
+          <img id="imagen-principal" src="" alt="" class="producto-imagen-principal" loading="lazy" width="600" height="600">
           <div class="producto-miniaturas" id="miniaturas">
             <!-- Las miniaturas se generarán dinámicamente -->
           </div>
@@ -287,7 +316,7 @@
                   </div>
           <div class="producto-cantidad">
             <button class="cantidad-btn" id="disminuir-cantidad">-</button>
-            <input type="number" class="cantidad-input" id="cantidad" value="1" min="1">
+            <input type="number" class="cantidad-input" id="cantidad" name="cantidad" value="1" min="1">
             <button class="cantidad-btn" id="aumentar-cantidad">+</button>
           </div>
           
@@ -312,10 +341,97 @@
   <!-- Pie de página -->
   <div id="footer-placeholder">
     <!-- El pie de página se cargará aquí dinámicamente -->
-  <!-- Scripts -->
-  <script src="js/notificaciones.js"></script>
+  </div>
+
+  <!-- Load scripts with defer -->
+  <script src="js/navbar.js" defer></script>
+  <script src="js/footer.js" defer></script>
+  <script src="js/productos.js" defer></script>
+  
+  <!-- Inline critical JavaScript -->
   <script>
-    // Código para cargar el producto
+    // Mobile menu functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      // Cache DOM elements
+      const menuToggle = document.querySelector('.menu-toggle');
+      const mainNav = document.querySelector('.main-nav');
+      const navOverlay = document.querySelector('.nav-overlay');
+      
+      // Initialize mobile menu
+      function initMobileMenu() {
+        if (!menuToggle || !mainNav) return;
+        
+        // Toggle menu function
+        function toggleMenu() {
+          const isOpen = menuToggle.classList.toggle('active');
+          mainNav.classList.toggle('active', isOpen);
+          document.body.style.overflow = isOpen ? 'hidden' : '';
+          
+          // Toggle aria-expanded for accessibility
+          menuToggle.setAttribute('aria-expanded', isOpen);
+          
+          // Focus management for accessibility
+          if (isOpen) {
+            // Focus first focusable element in the menu
+            const firstFocusable = mainNav.querySelector('a, button, [tabindex="0"]');
+            if (firstFocusable) firstFocusable.focus();
+          } else {
+            // Return focus to menu toggle when closing
+            menuToggle.focus();
+          }
+        }
+        
+        // Close menu when clicking outside
+        function handleClickOutside(e) {
+          if (mainNav.classList.contains('active') && !mainNav.contains(e.target) && e.target !== menuToggle) {
+            toggleMenu();
+          }
+        }
+        
+        // Close menu on escape key
+        function handleEscapeKey(e) {
+          if (e.key === 'Escape' && mainNav.classList.contains('active')) {
+            toggleMenu();
+          }
+        }
+        
+        // Event listeners
+        menuToggle.addEventListener('click', toggleMenu);
+        document.addEventListener('click', handleClickOutside);
+        document.addEventListener('keydown', handleEscapeKey);
+        
+        // Close menu when clicking on nav links (for single page apps)
+        const navLinks = mainNav.querySelectorAll('a[href^="#"]');
+        navLinks.forEach(link => {
+          link.addEventListener('click', () => {
+            if (window.innerWidth <= 991) {
+              toggleMenu();
+            }
+          });
+        });
+      }
+      
+      // Initialize mobile menu
+      initMobileMenu();
+      
+      // Handle window resize
+      let resizeTimer;
+      window.addEventListener('resize', function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function() {
+          if (window.innerWidth > 991 && menuToggle && menuToggle.classList.contains('active')) {
+            menuToggle.classList.remove('active');
+            mainNav.classList.remove('active');
+            document.body.style.overflow = '';
+            menuToggle.setAttribute('aria-expanded', 'false');
+          }
+        }, 250);
+      });
+    });
+  </script>
+
+  <script>
+    // Cargar el producto
     document.addEventListener('DOMContentLoaded', function() {
       // Obtener el ID del producto de la URL
       const urlParams = new URLSearchParams(window.location.search);
@@ -329,46 +445,79 @@
         window.location.href = 'productos.html';
       }
       
-      // Cargar la barra de navegación
-      fetch('includes/nav.html')
-        .then(response => response.text())
-        .then(html => {
-          document.getElementById('navbar-placeholder').innerHTML = html;
-          // Actualizar la navegación activa
-          document.querySelectorAll('.nav-link').forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href') === 'productos.html') {
-              link.classList.add('active');
-            }
-          });
-        });
+      // Cargar la barra de navegación de forma asíncrona
+    function loadNavbar() {
+      const navbarPlaceholder = document.getElementById('navbar-placeholder');
+      if (!navbarPlaceholder) return;
       
-      // Cargar el pie de página
-      fetch('includes/footer.html')
-        .then(response => response.text())
+      // Mostrar un indicador de carga sutil
+      navbarPlaceholder.innerHTML = '<div style="height: 60px; background: #f8f9fa;"></div>';
+      
+      // Cargar la barra de navegación
+      fetch('includes/navbar.html')
+        .then(response => {
+          if (!response.ok) throw new Error('Error al cargar la barra de navegación');
+          return response.text();
+        })
         .then(html => {
-          document.getElementById('footer-placeholder').innerHTML = html;
+          navbarPlaceholder.innerHTML = html;
+          // Inicializar menú móvil después de cargar la barra de navegación
+          initMobileMenu();
+        })
+        .catch(error => {
+          console.error('Error al cargar la barra de navegación:', error);
+          navbarPlaceholder.innerHTML = `
+            <nav class="error-nav">
+              <div class="container">
+                <a href="/" class="logo">VIVAE</a>
+                <div class="nav-links">
+                  <a href="productos.html">Productos</a>
+                  <a href="#" class="btn-carrito">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="carrito-contador">0</span>
+                  </a>
+                </div>
+              </div>
+            </nav>
+          `;
         });
-    });
-
-    function cargarProducto(productId) {
-      console.log('Cargando producto con ID:', productId);
+    }
+    
+    // Cargar la barra de navegación y pie de página cuando el contenido esté listo
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        loadNavbar();
+        loadFooter();
+      });
+    } else {
+      loadNavbar();
+      loadFooter();
+    }
+    
+    // Cargar el pie de página de forma asíncrona
+    function loadFooter() {
+      const footerPlaceholder = document.getElementById('footer-placeholder');
+      if (!footerPlaceholder) return;
       
       // Mostrar indicador de carga
-      const productoDetalle = document.getElementById('producto-detalle');
-      if (productoDetalle) {
-        productoDetalle.innerHTML = `
-          <div class="loading" style="text-align: center; padding: 2rem;">
-            <div class="spinner" style="width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #8c33ff; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 1rem;"></div>
-            <p style="color: #666;">Cargando producto...</p>
-          </div>
-          <style>
-            @keyframes spin {
-              0% { transform: rotate(0deg); }
-              100% { transform: rotate(360deg); }
-            }
-          </style>
-        `;
+      const loadingIndicator = document.createElement('div');
+      loadingIndicator.style.textAlign = 'center';
+      loadingIndicator.style.padding = '2rem';
+      footerPlaceholder.appendChild(loadingIndicator);
+      
+      fetch('includes/footer.html')
+      
+      // Cargar los productos
+      const urlParams = new URLSearchParams(window.location.search);
+      const productId = urlParams.get('id');
+      
+      if (!productId) {
+        mostrarError('No se ha especificado un producto');
+        // Redirigir a la página de productos después de 3 segundos
+        setTimeout(() => {
+          window.location.href = 'productos.html';
+        }, 3000);
+        return;
       }
       
       // Cargar los productos
@@ -384,15 +533,7 @@
             productos.find(p => p.id.toString() === productId) : null;
           
           if (producto) {
-            mostrarProducto({
-              ...producto,
-              // Mapear los nombres de propiedades si es necesario
-              nombre: producto.name,
-              descripcion: producto.description,
-              precio: producto.price,
-              imagen: producto.image,
-              imagenes: [producto.image] // Usar la imagen principal como única imagen por defecto
-            });
+            mostrarProducto(producto);
           } else {
             mostrarError('Producto no encontrado');
           }
@@ -405,194 +546,43 @@
 
     // Función para mostrar los datos del producto
     function mostrarProducto(producto) {
+      if (!producto) {
+        console.error('No se proporcionó un producto válido');
+        mostrarError('Error al cargar el producto');
+        return;
+      }
+      
+      console.log('Mostrando producto:', producto);
+      
       try {
         // Actualizar el título de la página
-        document.title = `${producto.nombre || 'Producto'} | VIVAE`;
+        document.title = `${producto.name || 'Producto'} | VIVAE`;
         
-        // Actualizar la información básica
+        // Obtener referencias a los elementos del DOM una sola vez
         const tituloElement = document.getElementById('producto-titulo');
         const precioElement = document.getElementById('producto-precio');
-        const descripcionElement = document.getElementById('producto-descripcion');
+        const descripcionElement = document.getElementById('descripcion-detallada');
         const imagenPrincipal = document.getElementById('imagen-principal');
-        
-        if (tituloElement) tituloElement.textContent = producto.nombre || producto.name || 'Producto sin nombre';
-        if (precioElement) precioElement.textContent = producto.precio ? `$${parseFloat(producto.precio).toLocaleString()}` : 'Precio no disponible';
-        
-        // Mostrar tallas disponibles si existen
-        const tallasContainer = document.getElementById('tallas-disponibles');
-        if (tallasContainer && producto.sizes && producto.sizes.length > 0) {
-          tallasContainer.innerHTML = `
-            <div class="tallas">
-              <h4>Tallas disponibles:</h4>
-              <div class="tallas-lista">
-                ${producto.sizes.map(talla => 
-                  `<span class="talla-option">${talla}</span>`
-                ).join('')}
-              </div>
-            </div>
-          `;
-        }
-        
-        // Mejorar la descripción con detalles de tela y cuidados
-        if (descripcionElement) {
-          let descripcionHTML = `
-            <p>${producto.descripcion || 'Sin descripción disponible'}</p>
-            
-            <div class="detalles-tela">
-              <h4>Detalles del producto:</h4>
-              <ul>
-                <li><strong>Material:</strong> ${producto.material || 'Material no especificado'}</li>
-                <li><strong>Color:</strong> ${producto.color || 'Color no especificado'}</li>
-                <li><strong>Talla:</strong> ${producto.talla || 'Talla única'}</li>
-                <li><strong>Disponibilidad:</strong> ${producto.disponible ? 'En stock' : 'Agotado'}</li>
-              </ul>
-              
-              <h4>Instrucciones de cuidado:</h4>
-              <ul>
-                <li>Lavar a máquina en ciclo suave con agua fría</li>
-                <li>No usar blanqueador</li>
-                <li>Planchar a baja temperatura</li>
-                <li>No secar en secadora</li>
-                <li>Guardar en lugar fresco y seco</li>
-              </ul>
-            </div>
-          `;
-          descripcionElement.innerHTML = descripcionHTML;
-        }
-        
-        // Actualizar la imagen principal
-        if (imagenPrincipal) {
-          imagenPrincipal.src = producto.imagen || 'img/placeholder.jpg';
-          imagenPrincipal.alt = producto.nombre || 'Imagen del producto';
-        }
-        
-        // Limpiar miniaturas existentes
+        const categoriaElement = document.getElementById('producto-categoria');
         const miniaturasContainer = document.getElementById('miniaturas');
-        if (miniaturasContainer) {
-          miniaturasContainer.innerHTML = '';
-          
-          // Agregar miniaturas si hay imágenes adicionales
-          if (producto.imagenes && producto.imagenes.length > 0) {
-            producto.imagenes.forEach((imagen, index) => {
-              agregarMiniatura(imagen, index);
-            });
-          } else if (producto.imagen) {
-            // Si solo hay una imagen, usarla como miniatura también
-            agregarMiniatura(producto.imagen, 0);
-          }
-        }
+        const whatsappBtn = document.getElementById('whatsapp-btn');
         
-        // Configurar eventos
-        configurarEventos();
-        
-      } catch (error) {
-        console.error('Error al mostrar el producto:', error);
-        mostrarError('Error al mostrar los detalles del producto');
-      }
-              <div class="container">
-                <div class="footer-content">
-                  <div class="footer-section">
-                    <h3>VIVAE</h3>
-                    <p>Tienda de ropa y accesorios de moda</p>
-                  </div>
-                  <div class="footer-section">
-                    <h4>Enlaces rápidos</h4>
-                    <a href="index.html">Inicio</a>
-                    <a href="productos.html">Productos</a>
-                    <a href="#">Contacto</a>
-                  </div>
-                  <div class="footer-section">
-                    <h4>Contacto</h4>
-                    <p>Email: info@vivae.com</p>
-                    <p>Teléfono: +57 123 456 7890</p>
-                  </div>
-                </div>
-                <div class="footer-bottom">
-                  <p>&copy; ${new Date().getFullYear()} VIVAE. Todos los derechos reservados.</p>
-                </div>
-              </div>
-            </footer>
-          `;
-        });
-      
-      // Cargar los datos del producto
-      const urlParams = new URLSearchParams(window.location.search);
-      const productId = urlParams.get('id');
-      
-      if (productId) {
-        cargarProducto(productId);
-      } else {
-        mostrarError('No se ha especificado un producto');
-        // Redirigir a la página de productos después de 3 segundos
-        setTimeout(() => {
-          window.location.href = 'productos.html';
-        }, 3000);
-      }
-      
-      // Configurar eventos
-      configurarEventos();
-    });
-    
-    // Función para cargar los datos del producto
-    function cargarProducto(productId) {
-      fetch('data/productos.json')
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Error al cargar los productos');
-          }
-          return response.json();
-        })
-        .then(products => {
-          // Buscar el producto por ID
-          const producto = Array.isArray(products) ? 
-            products.find(p => p.id.toString() === productId) : null;
-          
-          if (!producto) {
-            throw new Error('Producto no encontrado');
-          }
-          
-          // Mostrar los datos del producto
-          mostrarProducto(producto);
-        })
-        .catch(error => {
-          console.error('Error al cargar el producto:', error);
-          mostrarError('Error al cargar el producto: ' + error.message);
-          
-          // Redirigir a la página de productos después de 3 segundos
-          setTimeout(() => {
-            window.location.href = 'productos.html';
-          }, 3000);
-        });
-    }
-    
-    // Función para mostrar los datos del producto
-    function mostrarProducto(producto) {
-      try {
-        // Actualizar el título de la página
-        document.title = `${producto.name} | VIVAE`;
-        
-        // Actualizar la información básica
-        const tituloElement = document.getElementById('producto-titulo');
-        const precioElement = document.getElementById('producto-precio');
-        const descripcionElement = document.getElementById('producto-descripcion');
-        const imagenPrincipal = document.getElementById('imagen-principal');
-        
+        // Actualizar información básica
         if (tituloElement) tituloElement.textContent = producto.name || 'Producto sin nombre';
-        if (precioElement) precioElement.textContent = producto.price ? `$${parseFloat(producto.price).toLocaleString()}` : 'Precio no disponible';
+        if (precioElement) precioElement.textContent = producto.price ? `$${parseInt(producto.price).toLocaleString()}` : 'Precio no disponible';
+        if (categoriaElement) categoriaElement.textContent = producto.category || '';
         
-        // Mejorar la descripción con detalles de tela y cuidados
+        // Actualizar descripción
         if (descripcionElement) {
-          let descripcionHTML = `
+          const descripcionHTML = `
             <p>${producto.description || 'Sin descripción disponible'}</p>
-            
             <div class="detalles-tela">
               <h4>Detalles del producto:</h4>
               <ul>
-                <li><strong>Material:</strong> ${producto.material || 'Poliéster de alta calidad'}</li>
-                <li><strong>Composición:</strong> ${producto.composicion || '95% Poliéster, 5% Elastano'}</li>
-                <li><strong>Grosor:</strong> ${producto.grosor || 'Ligero'}</li>
-                <li><strong>Estampado:</strong> ${producto.estampado || 'Liso'}</li>
-                <li><strong>Transpirabilidad:</strong> ${producto.transpirabilidad || 'Alta'}</li>
+                ${producto.material ? `<li><strong>Material:</strong> ${producto.material}</li>` : ''}
+                ${producto.colors && producto.colors.length ? `<li><strong>Colores disponibles:</strong> ${producto.colors.join(', ')}</li>` : ''}
+                ${producto.sizes && producto.sizes.length ? `<li><strong>Tallas disponibles:</strong> ${producto.sizes.join(', ')}</li>` : ''}
+                <li><strong>Disponibilidad:</strong> En stock</li>
               </ul>
               
               <h4>Instrucciones de cuidado:</h4>
@@ -603,26 +593,12 @@
                 <li>No secar en secadora</li>
                 <li>Guardar en lugar fresco y seco</li>
               </ul>
-              
-              <h4>Características adicionales:</h4>
-              <ul>
-                <li>${producto.caracteristica1 || 'Corte favorecedor'}</li>
-                <li>${producto.caracteristica2 || 'Tela cómoda y suave al tacto'}</li>
-                <li>${producto.caracteristica3 || 'Diseño versátil para múltiples ocasiones'}</li>
-              </ul>
-            </div>
-          `;
+            </div>`;
+          
           descripcionElement.innerHTML = descripcionHTML;
         }
         
-        // Actualizar la imagen principal
-        if (imagenPrincipal) {
-          imagenPrincipal.src = producto.image || 'img/placeholder.jpg';
-          imagenPrincipal.alt = producto.name || 'Imagen del producto';
-        }
-        
-        // Actualizar miniaturas si existen
-        const miniaturasContainer = document.getElementById('miniaturas');
+        // Actualizar miniaturas
         if (miniaturasContainer) {
           miniaturasContainer.innerHTML = ''; // Limpiar miniaturas existentes
           
@@ -634,87 +610,117 @@
           // Agregar imágenes adicionales si existen
           if (Array.isArray(producto.imagenes) && producto.imagenes.length > 0) {
             producto.imagenes.forEach((img, index) => {
-              agregarMiniatura(img, index + 1);
+              if (img) {
+                agregarMiniatura(img, index + 1);
+              }
             });
           }
         }
         
-        // Actualizar categoría si existe
-        const categoriaElement = document.getElementById('producto-categoria');
-        if (categoriaElement && producto.category) {
-          categoriaElement.textContent = producto.category;
-        }
-        
-        // Configurar el botón de WhatsApp
-        const whatsappBtn = document.getElementById('whatsapp-btn');
+        // Configurar botón de WhatsApp
         if (whatsappBtn) {
-          const mensaje = `Hola, estoy interesado en el producto: ${producto.name} (${window.location.href})`;
+          const mensaje = `Hola, estoy interesado en el producto: ${producto.name || ''} (${window.location.href})`;
           whatsappBtn.href = `https://wa.me/573175535562?text=${encodeURIComponent(mensaje)}`;
         }
         
         // Mostrar el contenido principal
-        document.querySelector('.producto-detalle').style.display = 'block';
-        
+        const productoDetalle = document.querySelector('.producto-detalle');
+        if (productoDetalle) {
+          productoDetalle.style.display = 'block';
+        }
       } catch (error) {
         console.error('Error al mostrar el producto:', error);
         mostrarError('Error al mostrar la información del producto');
       }
-      document.getElementById('descripcion-detallada').textContent = producto.detailedDescription || producto.description || 'No hay una descripción detallada disponible para este producto.';
+    }
+    
+    // Función para manejar errores
+    function mostrarError(mensaje) {
+      console.error(mensaje);
+      const errorContainer = document.createElement('div');
+      errorContainer.className = 'error-message';
+      errorContainer.style.padding = '1rem';
+      errorContainer.style.background = '#ffebee';
+      errorContainer.style.borderLeft = '4px solid #f44336';
+      errorContainer.style.margin = '1rem 0';
+      errorContainer.textContent = mensaje;
       
-      // Actualizar la categoría si está disponible
-      if (producto.category) {
-        document.getElementById('producto-categoria').textContent = producto.category;
-      }
+      const mainContent = document.querySelector('main') || document.body;
+      mainContent.insertBefore(errorContainer, mainContent.firstChild);
       
-      // Actualizar la imagen principal
-      const imagenPrincipal = document.getElementById('imagen-principal');
-      imagenPrincipal.src = producto.image;
-      imagenPrincipal.alt = producto.name;
-      
-      // Generar miniaturas
-      const miniaturasContainer = document.getElementById('miniaturas');
-      miniaturasContainer.innerHTML = '';
-      
-      // Agregar la imagen principal como miniatura
-      agregarMiniatura(producto.image, 0);
-      
-      // Agregar imágenes adicionales si existen
-      if (producto.images && producto.images.length > 0) {
-        producto.images.forEach((img, index) => {
-          agregarMiniatura(img, index + 1);
-        });
-      }
-      
-      // Generar especificaciones si existen
-      if (producto.specs) {
-        const especificacionesLista = document.getElementById('especificaciones-lista');
-        especificacionesLista.innerHTML = '';
-        
-        Object.entries(producto.specs).forEach(([key, value]) => {
-          const li = document.createElement('li');
-          li.innerHTML = `<strong>${key}:</strong> ${value}`;
-          especificacionesLista.appendChild(li);
-        });
-      }
+      // Desaparecer después de 5 segundos
+      setTimeout(() => {
+        errorContainer.style.transition = 'opacity 0.5s';
+        errorContainer.style.opacity = '0';
+        setTimeout(() => errorContainer.remove(), 500);
+      }, 5000);
     }
     
     // Función para agregar una miniatura
     function agregarMiniatura(src, index) {
       const miniaturasContainer = document.getElementById('miniaturas');
+      if (!miniaturasContainer) return;
+      
       const miniatura = document.createElement('div');
       miniatura.className = 'miniatura' + (index === 0 ? ' activa' : '');
       miniatura.innerHTML = `<img src="${src}" alt="Miniatura ${index + 1}">`;
       
       miniatura.addEventListener('click', () => {
         // Actualizar la imagen principal
-        document.getElementById('imagen-principal').src = src;
-        
-        // Actualizar la miniatura activa
-        document.querySelectorAll('.miniatura').forEach(m => m.classList.remove('activa'));
-        miniatura.classList.add('activa');
+        const imagenPrincipal = document.getElementById('imagen-principal');
+        if (imagenPrincipal) {
+          imagenPrincipal.src = src;
+          
+          // Actualizar la miniatura activa
+          document.querySelectorAll('.miniatura').forEach(m => m.classList.remove('activa'));
+          miniatura.classList.add('activa');
+        }
       });
       
       miniaturasContainer.appendChild(miniatura);
+    }
+    
+    // Función para cargar los productos
+    function cargarProducto(productId) {
+      console.log('Cargando producto con ID:', productId);
+      
+      // Mostrar indicador de carga
+      const productoContenedor = document.querySelector('.producto-contenedor');
+      if (productoContenedor) {
+        const loadingHtml = `
+          <div class="loading" style="text-align: center; padding: 2rem; grid-column: 1 / -1;">
+            <div class="spinner" style="width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #8c33ff; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 1rem;"></div>
+            <p style="color: #666;">Cargando producto...</p>
+          </div>
+          <style>
+            @keyframes spin {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(360deg); }
+            }
+          </style>`;
+        productoContenedor.innerHTML = loadingHtml;
+      }
+      
+      // Simular carga de producto
+      setTimeout(() => {
+        // Simular datos del producto
+        const producto = {
+          id: productId,
+          name: 'Producto de ejemplo',
+          description: 'Este es un producto de ejemplo',
+          image: 'img/producto.jpg',
+          images: ['img/producto1.jpg', 'img/producto2.jpg'],
+          category: 'Categoría de ejemplo',
+          specs: {
+            'Talla': 'M',
+            'Color': 'Azul',
+            'Material': 'Algodón'
+          }
+        };
+        
+        // Mostrar el producto
+        mostrarProducto(producto);
+      }, 2000);
     }
     
     // Función para configurar los eventos
@@ -762,18 +768,6 @@
           }
         });
       }
-    }
-    
-    // Función para mostrar un mensaje de error
-    function mostrarError(mensaje) {
-      const contenedor = document.querySelector('.producto-detalle');
-      contenedor.innerHTML = `
-        <div class="error-mensaje" style="text-align: center; padding: 2rem;">
-          <h2>Error</h2>
-          <p>${mensaje}</p>
-          <a href="productos.html" class="btn" style="margin-top: 1rem; display: inline-block;">Volver a la tienda</a>
-        </div>
-      `;
     }
   </script>
 </body>
