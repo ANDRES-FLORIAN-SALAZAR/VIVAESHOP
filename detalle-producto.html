@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalles del Producto - VIVAE</title>
+
+  <!-- Estilos -->
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/estilos.css">
+  <link rel="stylesheet" href="css/productos/detalle.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <!-- Navbar -->
+  <div id="navbar-placeholder"></div>
+
+  <!-- Contenido principal -->
+  <main class="product-detail-container">
+    <a href="productos.html" class="back-button">
+      <i class="fas fa-arrow-left"></i> Volver a productos
+    </a>
+    
+    <div class="product-detail">
+      <!-- Imagen principal -->
+      <div class="product-gallery">
+        <div class="main-image">
+          <img id="product-image" src="" alt="Producto" loading="lazy">
+        </div>
+      </div>
+      
+      <!-- Información del producto -->
+      <div class="product-info">
+        <h1 id="product-name"></h1>
+        <div class="product-price" id="product-price"></div>
+        
+        
+        <!-- Descripción -->
+        <div class="product-section">
+          <h2>Descripción</h2>
+          <p id="product-description"></p>
+        </div>
+        
+        <!-- Botón de WhatsApp -->
+        <div class="product-actions">
+          <a href="https://wa.me/573175535562?text=Hola%20VIVAE,%20estoy%20interesado%20en%20este%20producto" 
+             class="whatsapp-button" 
+             target="_blank">
+            <i class="fab fa-whatsapp"></i> Consultar por WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <div id="footer-placeholder"></div>
+
+  <!-- Scripts -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Cargar navbar y footer
+      cargarContenido('navbar-placeholder', 'includes/nav.html');
+      cargarContenido('footer-placeholder', 'includes/footer.html');
+      
+      // Obtener el ID del producto de la URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const productId = urlParams.get('id');
+      
+      if (productId) {
+        cargarProducto(productId);
+      } else {
+        window.location.href = 'productos.html';
+      }
+    });
+
+    async function cargarContenido(elementId, url) {
+      try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('No se pudo cargar el contenido');
+        const html = await response.text();
+        document.getElementById(elementId).innerHTML = html;
+      } catch (error) {
+        console.error('Error al cargar el contenido:', error);
+      }
+    }
+
+    async function cargarProducto(productId) {
+      try {
+        const response = await fetch('data/productos.json');
+        const productos = await response.json();
+        
+        const producto = productos.find(p => p.id == productId);
+        
+        if (producto) {
+          document.title = `${producto.name} - VIVAE`;
+          document.getElementById('product-name').textContent = producto.name;
+          document.getElementById('product-price').textContent = `$${producto.price.toLocaleString()}`;
+          document.getElementById('product-category').textContent = producto.category || '';
+          
+          const descripcion = producto.description || 'No hay descripción disponible para este producto.';
+          document.getElementById('product-description').textContent = descripcion;
+          
+          const productImage = document.getElementById('product-image');
+          if (producto.image) {
+            productImage.src = producto.image;
+            productImage.alt = producto.name;
+          } else {
+            productImage.src = 'img/placeholder.jpg';
+            productImage.alt = 'Imagen no disponible';
+          }
+          
+          // Actualizar enlace de WhatsApp
+          const whatsappButton = document.querySelector('.whatsapp-button');
+          const mensaje = `Hola VIVAE, estoy interesado en el producto: ${producto.name} (${window.location.href})`;
+          whatsappButton.href = `https://wa.me/573175535562?text=${encodeURIComponent(mensaje)}`;
+        } else {
+          window.location.href = 'productos.html';
+        }
+      } catch (error) {
+        console.error('Error al cargar el producto:', error);
+        window.location.href = 'productos.html';
+      }
+    }
+  </script>
+</body>
+</html>

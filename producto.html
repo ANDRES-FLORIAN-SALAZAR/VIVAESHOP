@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalles del Producto - VIVAE</title>
+  <link rel="icon" type="image/jpg" href="img/vivae.jpg">
+  
+  <!-- Fuentes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Hojas de estilo -->
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/estilos.css">
+  <link rel="stylesheet" href="css/footer.css">
+  <style>
+    /* Estilos específicos para la página de detalles del producto */
+    .producto-detalle {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    
+    .producto-contenedor {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 2rem;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .producto-galeria {
+      position: relative;
+      padding: 1rem;
+    }
+    
+    .producto-imagen-principal {
+      width: 100%;
+      height: 400px;
+      object-fit: contain;
+      margin-bottom: 1rem;
+    }
+    
+    .producto-miniaturas {
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+      padding: 0.5rem 0;
+    }
+    
+    .miniatura {
+      width: 70px;
+      height: 70px;
+      border: 1px solid #e2e8f0;
+      border-radius: 4px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-color 0.3s ease;
+    }
+    
+    .miniatura:hover, .miniatura.activa {
+      border-color: var(--color-primario);
+    }
+    
+    .miniatura img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .producto-info {
+      padding: 2rem;
+    }
+    
+    .producto-categoria {
+      color: var(--color-primario);
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.5px;
+    }
+    
+    .producto-titulo {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--color-texto);
+      margin: 0 0 1rem 0;
+    }
+    
+    .producto-precio {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--color-primario);
+      margin: 1rem 0;
+    }
+    
+    .producto-descripcion {
+      color: var(--color-texto-claro);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+    
+    .producto-meta {
+      margin: 1.5rem 0;
+    }
+    
+    .meta-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.75rem;
+      color: var(--color-texto);
+    }
+    
+    .meta-item i {
+      color: var(--color-primario);
+      margin-right: 0.75rem;
+      width: 20px;
+      text-align: center;
+    }
+    
+    .producto-cantidad {
+      display: flex;
+      align-items: center;
+      margin: 1.5rem 0;
+    }
+    
+    .cantidad-btn {
+      background: #f1f5f9;
+      border: none;
+      width: 40px;
+      height: 40px;
+      font-size: 1.25rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.2s ease;
+    }
+    
+    .cantidad-btn:hover {
+      background: #e2e8f0;
+    }
+    
+    .cantidad-input {
+      width: 60px;
+      height: 40px;
+      text-align: center;
+      border: 1px solid #e2e8f0;
+      border-left: none;
+      border-right: none;
+      font-size: 1rem;
+      font-weight: 500;
+    }
+    
+    .producto-acciones {
+      display: flex;
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+    
+    .btn-agregar-carrito {
+      flex: 1;
+      background: var(--color-primario);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-agregar-carrito:hover {
+      background: var(--color-primario-oscuro);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2);
+    }
+    
+    .btn-agregar-carrito i {
+      margin-right: 0.5rem;
+    }
+    
+    .producto-detalles-adicionales {
+      margin-top: 3rem;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 2rem;
+    }
+    
+    .detalles-tabs {
+      display: flex;
+      border-bottom: 1px solid #e2e8f0;
+      margin-bottom: 1.5rem;
+    }
+    
+    .tab-btn {
+      padding: 0.75rem 1.5rem;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--color-texto-claro);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .tab-btn.activo {
+      color: var(--color-primario);
+      border-bottom-color: var(--color-primario);
+    }
+    
+    .tab-contenido {
+      display: none;
+      padding: 1.5rem 0;
+      line-height: 1.6;
+      color: var(--color-texto-claro);
+    }
+    
+    .tab-contenido.activo {
+      display: block;
+    }
+    
+    /* Estilos responsivos */
+    @media (max-width: 768px) {
+      .producto-contenedor {
+        grid-template-columns: 1fr;
+      }
+      
+      .producto-imagen-principal {
+        height: 300px;
+      }
+      
+      .producto-acciones {
+        flex-direction: column;
+      }
+      
+      .btn-agregar-carrito {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Barra de navegación -->
+  <div id="navbar-placeholder">
+    <!-- La barra de navegación se cargará aquí dinámicamente -->
+  </div>
+
+  <!-- Contenido principal -->
+  <main class="main-content">
+    <div class="producto-detalle">
+      <div class="producto-contenedor">
+        <div class="producto-galeria">
+          <img id="imagen-principal" src="" alt="" class="producto-imagen-principal">
+          <div class="producto-miniaturas" id="miniaturas">
+            <!-- Las miniaturas se generarán dinámicamente -->
+          </div>
+        </div>
+        
+        <div class="producto-info">
+          <span class="producto-categoria" id="producto-categoria"></span>
+          <h1 class="producto-titulo" id="producto-titulo"></h1>
+          
+          <div class="producto-precio" id="producto-precio"></div>
+          
+          <div class="caracteristicas-destacadas">
+                  <div class="consejos-cuidado">
+                    <h3>Consejos de cuidado</h3>
+                    <ul>
+                      <li><i class="fas fa-tshirt"></i> Lavar a máquina a 30°C</li>
+                      <li><i class="fas fa-tshirt"></i> No usar lejía</li>
+                      <li><i class="fas fa-tshirt"></i> Planchar a temperatura media</li>
+                      <li><i class="fas fa-tshirt"></i> No secar en secadora</li>
+                    </ul>
+                  </div>
+                  </div>
+          <div class="producto-cantidad">
+            <button class="cantidad-btn" id="disminuir-cantidad">-</button>
+            <input type="number" class="cantidad-input" id="cantidad" value="1" min="1">
+            <button class="cantidad-btn" id="aumentar-cantidad">+</button>
+          </div>
+          
+          
+          <!-- Botón de acción eliminado -->
+            
+            <div class="tab-contenido activo" id="descripcion">
+              <div class="descripcion-detallada">
+                <div class="descripcion-contenido">
+                  <div class="descripcion-texto" id="descripcion-detallada"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Pie de página -->
+  <div id="footer-placeholder">
+    <!-- El pie de página se cargará aquí dinámicamente -->
+  <!-- Scripts -->
+  <script src="js/notificaciones.js"></script>
+  <script>
+    // Código para cargar el producto
+    document.addEventListener('DOMContentLoaded', function() {
+      // Cargar la barra de navegación
+      fetch('includes/nav.html')
+        .then(response => response.text())
+        .then(html => {
+          document.getElementById('navbar-placeholder').innerHTML = html;
+        });
+
+      // Obtener el ID del producto de la URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const productId = urlParams.get('id');
+
+      if (productId) {
+        // Cargar los datos del producto
+        cargarProducto(productId);
+      } else {
+        // Redirigir a la página de productos si no hay ID
+        window.location.href = 'productos.html';
+      }
+    });
+
+    function cargarProducto(productId) {
+      // Aquí iría la lógica para cargar los datos del producto
+      // Por ahora, mostramos el ID en la consola
+      console.log('Cargando producto con ID:', productId);
+      
+      // Actualizar el título de la página
+      document.title = `Producto ${productId} - VIVAE`;
+    }
+
+    // Cargar la barra de navegación y el pie de página
+    document.addEventListener('DOMContentLoaded', function() {
+      // Cargar la barra de navegación
+      fetch('includes/nav.html')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Error al cargar la barra de navegación');
+          }
+          return response.text();
+        })
+        .then(html => {
+          document.getElementById('navbar-placeholder').innerHTML = html;
+          
+          // Actualizar la clase activa en la navegación
+          const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+          document.querySelectorAll('.nav-links a').forEach(link => {
+            const linkHref = link.getAttribute('href');
+            if (linkHref === currentPage || 
+                (linkHref === 'index.html' && currentPage === '')) {
+              link.classList.add('active');
+            } else {
+              link.classList.remove('active');
+            }
+          });
+        })
+        .catch(error => {
+          console.error('Error al cargar la barra de navegación:', error);
+          document.getElementById('navbar-placeholder').innerHTML = `
+            <nav class="navbar">
+              <div class="container">
+                <a href="index.html" class="logo">
+                  <img src="img/logo.png" alt="VIVAE">
+                </a>
+                <div class="nav-links">
+                  <a href="index.html">Inicio</a>
+                  <a href="productos.html">Productos</a>
+                </div>
+              </div>
+            </nav>
+          `;
+        });
+      
+      // Cargar el pie de página
+      fetch('includes/footer.html')
+        .then(response => response.text())
+        .then(html => {
+          document.getElementById('footer-placeholder').innerHTML = html;
+        })
+        .catch(error => {
+          console.error('Error al cargar el pie de página:', error);
+          document.getElementById('footer-placeholder').innerHTML = `
+            <footer class="footer">
+              <div class="container">
+                <div class="footer-content">
+                  <div class="footer-section">
+                    <h3>VIVAE</h3>
+                    <p>Tienda de ropa y accesorios de moda</p>
+                  </div>
+                  <div class="footer-section">
+                    <h4>Enlaces rápidos</h4>
+                    <a href="index.html">Inicio</a>
+                    <a href="productos.html">Productos</a>
+                    <a href="#">Contacto</a>
+                  </div>
+                  <div class="footer-section">
+                    <h4>Contacto</h4>
+                    <p>Email: info@vivae.com</p>
+                    <p>Teléfono: +57 123 456 7890</p>
+                  </div>
+                </div>
+                <div class="footer-bottom">
+                  <p>&copy; ${new Date().getFullYear()} VIVAE. Todos los derechos reservados.</p>
+                </div>
+              </div>
+            </footer>
+          `;
+        });
+      
+      // Cargar los datos del producto
+      const urlParams = new URLSearchParams(window.location.search);
+      const productId = urlParams.get('id');
+      
+      if (productId) {
+        cargarProducto(productId);
+      } else {
+        mostrarError('No se ha especificado un producto');
+        // Redirigir a la página de productos después de 3 segundos
+        setTimeout(() => {
+          window.location.href = 'productos.html';
+        }, 3000);
+      }
+      
+      // Configurar eventos
+      configurarEventos();
+    });
+    
+    // Función para cargar los datos del producto
+    function cargarProducto(productId) {
+      fetch('data/productos.json')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Error al cargar los productos');
+          }
+          return response.json();
+        })
+        .then(products => {
+          // Buscar el producto por ID
+          const producto = Array.isArray(products) ? 
+            products.find(p => p.id.toString() === productId) : null;
+          
+          if (!producto) {
+            throw new Error('Producto no encontrado');
+          }
+          
+          // Mostrar los datos del producto
+          mostrarProducto(producto);
+        })
+        .catch(error => {
+          console.error('Error al cargar el producto:', error);
+          mostrarError('Error al cargar el producto: ' + error.message);
+          
+          // Redirigir a la página de productos después de 3 segundos
+          setTimeout(() => {
+            window.location.href = 'productos.html';
+          }, 3000);
+        });
+    }
+    
+    // Función para mostrar los datos del producto
+    function mostrarProducto(producto) {
+      try {
+        // Actualizar el título de la página
+        document.title = `${producto.name} | VIVAE`;
+        
+        // Actualizar la información básica
+        const tituloElement = document.getElementById('producto-titulo');
+        const precioElement = document.getElementById('producto-precio');
+        const descripcionElement = document.getElementById('producto-descripcion');
+        const imagenPrincipal = document.getElementById('imagen-principal');
+        
+        if (tituloElement) tituloElement.textContent = producto.name || 'Producto sin nombre';
+        if (precioElement) precioElement.textContent = producto.price ? `$${parseFloat(producto.price).toLocaleString()}` : 'Precio no disponible';
+        
+        // Mejorar la descripción con detalles de tela y cuidados
+        if (descripcionElement) {
+          let descripcionHTML = `
+            <p>${producto.description || 'Sin descripción disponible'}</p>
+            
+            <div class="detalles-tela">
+              <h4>Detalles del producto:</h4>
+              <ul>
+                <li><strong>Material:</strong> ${producto.material || 'Poliéster de alta calidad'}</li>
+                <li><strong>Composición:</strong> ${producto.composicion || '95% Poliéster, 5% Elastano'}</li>
+                <li><strong>Grosor:</strong> ${producto.grosor || 'Ligero'}</li>
+                <li><strong>Estampado:</strong> ${producto.estampado || 'Liso'}</li>
+                <li><strong>Transpirabilidad:</strong> ${producto.transpirabilidad || 'Alta'}</li>
+              </ul>
+              
+              <h4>Instrucciones de cuidado:</h4>
+              <ul>
+                <li>Lavar a máquina en ciclo suave con agua fría</li>
+                <li>No usar blanqueador</li>
+                <li>Planchar a baja temperatura</li>
+                <li>No secar en secadora</li>
+                <li>Guardar en lugar fresco y seco</li>
+              </ul>
+              
+              <h4>Características adicionales:</h4>
+              <ul>
+                <li>${producto.caracteristica1 || 'Corte favorecedor'}</li>
+                <li>${producto.caracteristica2 || 'Tela cómoda y suave al tacto'}</li>
+                <li>${producto.caracteristica3 || 'Diseño versátil para múltiples ocasiones'}</li>
+              </ul>
+            </div>
+          `;
+          descripcionElement.innerHTML = descripcionHTML;
+        }
+        
+        // Actualizar la imagen principal
+        if (imagenPrincipal) {
+          imagenPrincipal.src = producto.image || 'img/placeholder.jpg';
+          imagenPrincipal.alt = producto.name || 'Imagen del producto';
+        }
+        
+        // Actualizar miniaturas si existen
+        const miniaturasContainer = document.getElementById('miniaturas');
+        if (miniaturasContainer) {
+          miniaturasContainer.innerHTML = ''; // Limpiar miniaturas existentes
+          
+          // Agregar la imagen principal como primera miniatura
+          if (producto.image) {
+            agregarMiniatura(producto.image, 0);
+          }
+          
+          // Agregar imágenes adicionales si existen
+          if (Array.isArray(producto.imagenes) && producto.imagenes.length > 0) {
+            producto.imagenes.forEach((img, index) => {
+              agregarMiniatura(img, index + 1);
+            });
+          }
+        }
+        
+        // Actualizar categoría si existe
+        const categoriaElement = document.getElementById('producto-categoria');
+        if (categoriaElement && producto.category) {
+          categoriaElement.textContent = producto.category;
+        }
+        
+        // Configurar el botón de WhatsApp
+        const whatsappBtn = document.getElementById('whatsapp-btn');
+        if (whatsappBtn) {
+          const mensaje = `Hola, estoy interesado en el producto: ${producto.name} (${window.location.href})`;
+          whatsappBtn.href = `https://wa.me/573175535562?text=${encodeURIComponent(mensaje)}`;
+        }
+        
+        // Mostrar el contenido principal
+        document.querySelector('.producto-detalle').style.display = 'block';
+        
+      } catch (error) {
+        console.error('Error al mostrar el producto:', error);
+        mostrarError('Error al mostrar la información del producto');
+      }
+      document.getElementById('descripcion-detallada').textContent = producto.detailedDescription || producto.description || 'No hay una descripción detallada disponible para este producto.';
+      
+      // Actualizar la categoría si está disponible
+      if (producto.category) {
+        document.getElementById('producto-categoria').textContent = producto.category;
+      }
+      
+      // Actualizar la imagen principal
+      const imagenPrincipal = document.getElementById('imagen-principal');
+      imagenPrincipal.src = producto.image;
+      imagenPrincipal.alt = producto.name;
+      
+      // Generar miniaturas
+      const miniaturasContainer = document.getElementById('miniaturas');
+      miniaturasContainer.innerHTML = '';
+      
+      // Agregar la imagen principal como miniatura
+      agregarMiniatura(producto.image, 0);
+      
+      // Agregar imágenes adicionales si existen
+      if (producto.images && producto.images.length > 0) {
+        producto.images.forEach((img, index) => {
+          agregarMiniatura(img, index + 1);
+        });
+      }
+      
+      // Generar especificaciones si existen
+      if (producto.specs) {
+        const especificacionesLista = document.getElementById('especificaciones-lista');
+        especificacionesLista.innerHTML = '';
+        
+        Object.entries(producto.specs).forEach(([key, value]) => {
+          const li = document.createElement('li');
+          li.innerHTML = `<strong>${key}:</strong> ${value}`;
+          especificacionesLista.appendChild(li);
+        });
+      }
+    }
+    
+    // Función para agregar una miniatura
+    function agregarMiniatura(src, index) {
+      const miniaturasContainer = document.getElementById('miniaturas');
+      const miniatura = document.createElement('div');
+      miniatura.className = 'miniatura' + (index === 0 ? ' activa' : '');
+      miniatura.innerHTML = `<img src="${src}" alt="Miniatura ${index + 1}">`;
+      
+      miniatura.addEventListener('click', () => {
+        // Actualizar la imagen principal
+        document.getElementById('imagen-principal').src = src;
+        
+        // Actualizar la miniatura activa
+        document.querySelectorAll('.miniatura').forEach(m => m.classList.remove('activa'));
+        miniatura.classList.add('activa');
+      });
+      
+      miniaturasContainer.appendChild(miniatura);
+    }
+    
+    // Función para configurar los eventos
+    function configurarEventos() {
+      // Configurar pestañas
+      const tabButtons = document.querySelectorAll('.tab-boton');
+      
+      tabButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          // Ocultar todos los contenidos de pestañas
+          document.querySelectorAll('.tab-contenido').forEach(content => {
+            content.classList.remove('activo');
+          });
+          
+          // Desactivar todos los botones
+          tabButtons.forEach(b => {
+            b.classList.remove('activo');
+          });
+          
+          // Activar la pestaña seleccionada
+          const tabId = btn.getAttribute('data-tab');
+          if (tabId) {
+            btn.classList.add('activo');
+            const tabContent = document.getElementById(tabId);
+            if (tabContent) tabContent.classList.add('activo');
+          }
+        });
+      });
+      
+      // Configurar botones de cantidad
+      const cantidadInput = document.getElementById('cantidad');
+      const aumentarBtn = document.getElementById('aumentar-cantidad');
+      const disminuirBtn = document.getElementById('disminuir-cantidad');
+      
+      if (aumentarBtn && cantidadInput) {
+        aumentarBtn.addEventListener('click', () => {
+          cantidadInput.value = parseInt(cantidadInput.value) + 1;
+        });
+      }
+      
+      if (disminuirBtn && cantidadInput) {
+        disminuirBtn.addEventListener('click', () => {
+          if (parseInt(cantidadInput.value) > 1) {
+            cantidadInput.value = parseInt(cantidadInput.value) - 1;
+          }
+        });
+      }
+    }
+    
+    // Función para mostrar un mensaje de error
+    function mostrarError(mensaje) {
+      const contenedor = document.querySelector('.producto-detalle');
+      contenedor.innerHTML = `
+        <div class="error-mensaje" style="text-align: center; padding: 2rem;">
+          <h2>Error</h2>
+          <p>${mensaje}</p>
+          <a href="productos.html" class="btn" style="margin-top: 1rem; display: inline-block;">Volver a la tienda</a>
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>

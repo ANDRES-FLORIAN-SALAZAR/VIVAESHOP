@@ -1,0 +1,435 @@
+[
+  {
+    "id": 1,
+    "name": "Blusa Casual",
+    "description": "Blusa casual de manga corta, perfecta para un look fresco y juvenil.",
+    "price": 65000,
+    "category": "Blusas",
+    "image": "img/BlusaCasual.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["Blanco", "Negro"],
+    "featured": true
+  },
+  {
+    "id": 2,
+    "name": "Blusa con Lentejuelas",
+    "description": "Elegante blusa con detalles en lentejuelas, ideal para ocasiones especiales.",
+    "price": 35000,
+    "category": "Blusas",
+    "image": "img/BlusaConLentejuelas.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["Negro", "Dorado"]
+  },
+  {
+    "id": 3,
+    "name": "Blusa Manga Larga",
+    "description": "Blusa de manga larga en lino, perfecta para cualquier ocasión.",
+    "price": 60000,
+    "category": "Blusas",
+    "image": "img/CamisaMangaLarga.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["Beige", "Blanco"]
+  },
+  {
+    "id": 4,
+    "name": "Blusa Ombliguera",
+    "description": "Blusa corta estilo ombliguera, ideal para looks juveniles y frescos.",
+    "price": 60000,
+    "category": "Blusas",
+    "image": "img/CamisaOmbliguera.jpg",
+    "sizes": ["S", "M"],
+    "colors": ["Blanco", "Negro"]
+  },
+  {
+    "id": 5,
+    "name": "Conjunto Beige Deportivo",
+    "description": "Conjunto deportivo en tono beige, cómodo y con estilo.",
+    "price": 70000,
+    "category": "Conjuntos",
+    "image": "img/ConjuntoBeigeDeportivo.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["Beige"],
+    "featured": true
+  },
+  {
+    "id": 6,
+    "name": "Conjunto Beige Licrado",
+    "description": "Conjunto licrado en tono beige, ajustado y cómodo.",
+    "price": 95000,
+    "category": "Conjuntos",
+    "image": "img/ConjuntoBeigeLicrado.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["Beige"]
+  },
+  {
+    "id": 7,
+    "name": "Conjunto Blanco Cuerina",
+    "description": "Conjunto blanco en material cuerina, ideal para looks atrevidos.",
+    "price": 75000,
+    "category": "Conjuntos",
+    "image": "img/ConjuntoBlancoCuerina.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["Blanco"]
+  },
+  {
+    "id": 8,
+    "name": "Conjunto Negro Cuerina",
+    "description": "Conjunto negro en material cuerina, elegante y sofisticado.",
+    "price": 75000,
+    "category": "Conjuntos",
+    "image": "img/ConjuntoNegroCuerina.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["Negro"]
+  },
+  {
+    "id": 9,
+    "name": "Conjunto Rojo Cuerina",
+    "description": "Conjunto rojo en material cuerina, ideal para destacar.",
+    "price": 75000,
+    "category": "Conjuntos",
+    "image": "img/ConjuntoRojoCuerina.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["Rojo"]
+  },
+  {
+    "id": 10,
+    "name": "Falda Azul Casual",
+    "description": "Falda azul casual, perfecta para el día a día.",
+    "price": 55000,
+    "category": "Faldas",
+    "image": "img/FaldaAzulCasual.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["Azul"]
+  },
+  {
+    "id": 11,
+    "name": "Falda Beige Short",
+    "description": "Short falda en tono beige, ideal para el verano.",
+    "price": 60000,
+    "category": "Faldas",
+    "image": "img/FaldaBeigeShort.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["Beige"]
+  },
+  {
+    "id": 12,
+    "name": "Falda Blanca Casual",
+    "description": "Falda blanca casual, combina con todo.",
+    "price": 55000,
+    "category": "Faldas",
+    "image": "img/FaldaBlancaCasual.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["Blanco"]
+  },
+  {
+    "id": 13,
+    "name": "Pantalón Beige Sudadera",
+    "description": "Pantalón tipo sudadera en tono beige, cómodo y moderno.",
+    "price": 50000,
+    "category": "Pantalones",
+    "image": "img/PantalonBeigeSudadera.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["Beige"]
+  },
+  {
+    "id": 14,
+    "name": "Pantalón Blanco Sudadera",
+    "description": "Pantalón tipo sudadera en color blanco, ideal para looks relajados.",
+    "price": 50000,
+    "category": "Pantalones",
+    "image": "img/PantalonBlancoSudadera.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["Blanco"]
+  },
+  {
+    "id": 15,
+    "name": "Vestido Blanco Liso",
+    "description": "Elegante vestido blanco liso, perfecto para ocasiones especiales.",
+    "price": 70000,
+    "category": "Vestidos",
+    "image": "img/VestidoBlancoLiso.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["Blanco"]
+  },
+  {
+    "id": 16,
+    "name": "Vestido Estampado",
+    "description": "Vestido con estampado moderno y juvenil.",
+    "price": 70000,
+    "category": "Vestidos",
+    "image": "img/VestidoEstampado.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["Multicolor"]
+  },
+  {
+    "id": 17,
+    "name": "Vestido Floral",
+    "description": "Hermoso vestido con estampado floral, ideal para el día.",
+    "price": 70000,
+    "category": "Vestidos",
+    "image": "img/VestidoFloral.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["Floral"]
+  },
+  {
+    "id": 18,
+    "name": "Vestido Negro Liso",
+    "description": "Elegante vestido negro liso, imprescindible en tu guardarropa.",
+    "price": 70000,
+    "category": "Vestidos",
+    "image": "img/VestidoNegroLiso.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["Negro"]
+  },
+  {
+    "id": 19,
+    "name": "Vestido Formal2",
+    "description": "  vestido formal de color negro con estampado de flores.",
+    "price": 70000,
+    "category": "Vestidos",
+    "image": "img/VestidoFormal2.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["Negro"]
+  },
+  {
+    "id": 20,
+    "name": "Vestido Formal",
+    "description": "  vestido formal de color blanco.",
+    "price": 70000,
+    "category": "Vestidos",
+    "image": "img/VestidoFormal.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["Blanco"]
+  },
+  {
+    "id": 21,
+    "name": "Pantalón Sudadera",
+    "description": "  Pantalón tipo sudadera en color blanco, ideal para looks relajados.",
+    "price": 50000,
+    "category": "Pantalones",
+    "image": "img/PantalonSudadera.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["Blanco"]
+  },
+  {
+    "id": 22,
+    "name": "Falda Verde Con Flecos",
+    "description": "  Falda verde con flecos, ideal para looks relajados.",
+    "price": 70000,
+    "category": "Falda",
+    "image": "img/FaldaVerdeConFlecos.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["Verde"]
+  },
+  {
+    "id": 23,
+    "name": "Falda Verde Casual",
+    "description": "  Falda verde casual, ideal para looks relajados.",
+    "price": 55000,
+    "category": "Falda",
+    "image": "img/FaldaVerdeCasual.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["Verde"]
+  },
+  {
+    "id": 24,
+    "name": "Falda Negra Short",
+    "description": "  Falda negra short, ideal para looks relajados.",
+    "price": 60000,
+    "category": "Falda",
+    "image": "img/FaldaNegraShort.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["Azul"]
+  },
+  {
+    "id": 25,
+    "name": "Falda Negra Con Flecos",
+    "description": "  Falda negra con flecos, ideal para looks relajados.",
+    "price": 70000,
+    "category": "Falda",
+    "image": "img/FaldaNegraConFlecos.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["Negro"]
+  },
+  {
+    "id": 26,
+    "name": "Falda Gris Short",
+    "description": "  Falda gris short, ideal para looks relajados.",
+    "price": 60000,
+    "category": "Falda",
+    "image": "img/FaldaGrisShort.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["Gris"]
+  },
+  {
+    "id": 27,
+    "name": "Falda Cafe Con Flecos",
+    "description": "  Falda cafe con flecos, ideal para looks relajados.",
+    "price": 70000,
+    "category": "Falda",
+    "image": "img/FaldaCafeConFlecos.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["Cafe"]
+  },
+  {
+    "id": 28,
+    "name": "Conjunto Verde Deportivo",
+    "description": "  Conjunto verde deportivo, ideal para looks relajados.",
+    "price": 70000,
+    "category": "Conjuntos",
+    "image": "img/ConjuntoVerdeDeportivo.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["Verde"]
+  },
+  {
+    "id": 29,
+    "name": "Conjunto Negro Licrado",
+    "description": "  Conjunto negro licrado, ideal para looks relajados.",
+    "price": 80000,
+    "category": "Conjuntos",
+    "image": "img/ConjuntoNegroLicrado.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["Negro"]
+  },
+  {
+    "id": 30,
+    "name": "Conjunto Negro En Hilo",
+    "description": "  Conjunto negro en hilo, ideal para looks relajados.",
+    "price": 95000,
+    "category": "Conjuntos",
+    "image": "img/ConjuntoNegroEnHilo.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["Negro"]
+  },
+  {
+    "id": 31,
+    "name": "Conjunto Negro Deportivo",
+    "description": "  Conjunto negro Deportivo, ideal para looks relajados.",
+    "price": 70000,
+    "category": "Conjuntos",
+    "image": "img/ConjuntoNegroDeportivo.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["Negro"]
+  },
+  {
+    "id": 32,
+    "name": "Conjunto Naranja Licrado",
+    "description": "  Conjunto naranja licrado, ideal para looks relajados.",
+    "price": 80000,
+    "category": "Conjuntos",
+    "image": "img/ConjuntoNaranjaLicrado.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["Naranja"]
+  },
+  {
+    "id": 33,
+    "name": "Conjunto Linea Negra",
+    "description": "  Conjunto linea negra, ideal para looks relajados.",
+    "price": 95000,
+    "category": "Conjuntos",
+    "image": "img/ConjuntoLineaNegra.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["Negro"]
+  },
+  {
+    "id": 34,
+    "name": "Conjunto Linea Blanca",
+    "description": "  Conjunto linea Blanca, ideal para looks relajados.",
+    "price": 95000,
+    "category": "Conjuntos",
+    "image": "img/ConjuntoLineaBlanca.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["Blanco"]
+  },
+  {
+    "id": 35,
+    "name": "Conjunto Licrado V",
+    "description": "  Conjunto licrado V, ideal para looks relajados.",
+    "price": 80000,
+    "category": "Conjuntos",
+    "image": "img/ConjuntoLicradoV.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["Verde"]
+  },
+  {
+    "id": 36,
+    "name": "Conjunto Cafe En Hilo",
+    "description": "  Conjunto cafe en hilo, ideal para looks relajados.",
+    "price": 95000,
+    "category": "Conjuntos",
+    "image": "img/ConjuntoCafeEnHilo.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["Cafe"]
+  },
+  {
+    "id": 37,
+    "name": "Conjunto Blanco Deportivo",
+    "description": "  Conjunto cafe hilo, ideal para looks relajados.",
+    "price": 70000,
+    "category": "Conjuntos",
+    "image": "img/ConjuntoBlancoDeportivo.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["Blanco"]
+  },
+  {
+    "id": 38,
+    "name": "Vestido Formal Blanco",
+    "description": "  Vestido formal blanco, ideal para looks relajados.",
+    "price": 90000,
+    "category": "Vestidos",
+    "image": "img/VestidoFormal3.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["Blanco"]
+  },
+  {
+    "id": 39,
+    "name": "Blusa Manga Corta Estampada",
+    "description": "Blusa manga corta estampada, ideal para looks relajados.",
+    "price": 40000,
+    "category": "Blusas",
+    "image": "img/BlusaMangaCortaEstampada.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["Multicolor"]
+  },
+  {
+    "id": 40,
+    "name": "Licra Deportiva",
+    "description": "Licra deportiva, ideal para looks relajados.",
+    "price": 50000,
+    "category": "Licra",
+    "image": "img/LicraDeportiva.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["Multicolor"]
+  },
+  {
+    "id": 41,
+    "name": "Pantalon Brillante",
+    "description": "Pantalon brillante, ideal para looks relajados.",
+    "price": 50000,
+    "category": "Pantalones",
+    "image": "img/PantalonBrillante.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["Multicolor"]
+  },
+  {
+    "id": 42,
+    "name": "Blusa Con Lentejuelas",
+    "description": "Blusa con lentejuelas, ideal para looks relajados.",
+    "price": 35000,
+    "category": "Blusas",
+    "image": "img/BlusaLentejuelas3.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["Multicolor"]
+  },
+  {
+    "id": 43,
+    "name": "Blusa Estraple",
+    "description": "Blusa estraple, ideal para looks relajados.",
+    "price": 40000,
+    "category": "Blusas",
+    "image": "img/BlusaEstraple.jpg",
+    "sizes": ["S", "M", "L"],
+    "colors": ["Multicolor"]
+  }
+
+]
