@@ -18,29 +18,16 @@
   outline: none;
 }
 
-/* Estilos de las barras del menú hamburguesa */
-.hamburger {
-  display: block;
-  width: 25px;
-  height: 3px;
-  background-color: #333;
-  margin: 5px 0;
-  transition: all 0.3s ease;
-  position: relative;
+/* Estilos del ícono del menú */
+.menu-toggle .fa-bars {
+  font-size: 24px;
+  color: #333;
+  transition: transform 0.3s ease;
 }
 
 /* Animación del botón de menú cuando está activo */
-.menu-toggle.active .hamburger:nth-child(1) {
-  transform: translateY(8px) rotate(45deg);
-}
-
-.menu-toggle.active .hamburger:nth-child(2) {
-  opacity: 0;
-  transform: translateX(-20px);
-}
-
-.menu-toggle.active .hamburger:nth-child(3) {
-  transform: translateY(-8px) rotate(-45deg);
+.menu-toggle.active .fa-bars {
+  transform: rotate(90deg);
 }
 
 /* Estilos para el menú de navegación en móviles */
