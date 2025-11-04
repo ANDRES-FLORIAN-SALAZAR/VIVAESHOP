@@ -129,28 +129,45 @@
     
     // Inicializar la navegación cuando el DOM esté listo
     async function initialize() {
-      if (document.readyState === 'loading') {
-        await new Promise(resolve => document.addEventListener('DOMContentLoaded', resolve));
-      }
-      
-      // Cargar la navegación
-      const navLoaded = await loadNavigation();
-      
-      if (navLoaded) {
-        // Inicializar menú móvil después de cargar la navegación
-        setupMobileMenu();
-        
-        // Inicializar otros componentes
-        if (typeof mostrarProductos === 'function') {
-          mostrarProductos();
+      try {
+        // Esperar a que el DOM esté completamente cargado
+        if (document.readyState === 'loading') {
+          await new Promise(resolve => document.addEventListener('DOMContentLoaded', resolve));
         }
         
-        // Actualizar contador del carrito
+        console.log('Inicializando aplicación...');
+        
+        // 1. Cargar la navegación primero
+        const navLoaded = await loadNavigation();
+        
+        if (!navLoaded) {
+          throw new Error('No se pudo cargar la navegación');
+        }
+        
+        // 2. Inicializar menú móvil después de cargar la navegación
+        // Esperar un ciclo de evento para asegurar que el DOM se haya actualizado
+        await new Promise(resolve => setTimeout(resolve, 0));
+        
+        console.log('Inicializando menú móvil...');
+        setupMobileMenu();
+        
+        // 3. Inicializar productos
+        if (typeof mostrarProductos === 'function') {
+          console.log('Inicializando productos...');
+          mostrarProductos();
+        } else {
+          console.error('La función mostrarProductos no está definida');
+        }
+        
+        // 4. Actualizar contador del carrito
         if (typeof actualizarContadorCarrito === 'function') {
           actualizarContadorCarrito();
         }
-      } else {
-        console.error('No se pudo cargar la barra de navegación');
+        
+        console.log('Aplicación inicializada correctamente');
+        
+      } catch (error) {
+        console.error('Error durante la inicialización:', error);
       }
     }
     
