@@ -96,35 +96,136 @@
 
   <!-- Script principal -->
   <script>
-    // Cargar la barra de navegación
-    fetch('includes/nav.html')
-      .then(response => response.text())
-      .then(html => {
-        document.getElementById('navbar-placeholder').innerHTML = html;
-        
-        // Activar el menú móvil
-        const menuToggle = document.querySelector('.menu-toggle');
-        const nav = document.querySelector('.nav');
-        
-        if (menuToggle && nav) {
-          menuToggle.addEventListener('click', () => {
-            nav.classList.toggle('active');
-            menuToggle.classList.toggle('active');
-          });
-        }
-      })
-      .catch(error => console.error('Error al cargar la barra de navegación:', error));
+    // Función para inicializar el menú móvil después de cargar la navegación
+    function initNavigation() {
+      // Cargar la barra de navegación
+      fetch('includes/nav.html')
+        .then(response => response.text())
+        .then(html => {
+          // Insertar la navegación
+          document.getElementById('navbar-placeholder').innerHTML = html;
+          
+          // Inicializar el menú móvil
+          setupMobileMenu();
+          
+          // Forzar visibilidad del botón de menú en móviles
+          const menuToggle = document.getElementById('menuToggle');
+          if (menuToggle) {
+            menuToggle.style.display = 'flex';
+            console.log('Botón de menú móvil inicializado correctamente');
+          }
+        })
+        .catch(error => console.error('Error al cargar la barra de navegación:', error));
+      
+      // Cargar el footer
+      fetch('includes/footer.html')
+        .then(response => response.text())
+        .then(html => {
+          document.getElementById('footer-placeholder').innerHTML = html;
+        })
+        .catch(error => console.error('Error al cargar el footer:', error));
+    }
     
-    // Cargar el footer
-    fetch('includes/footer.html')
-      .then(response => response.text())
-      .then(html => {
-        document.getElementById('footer-placeholder').innerHTML = html;
-      })
-      .catch(error => console.error('Error al cargar el footer:', error));
+    // Inicializar la navegación cuando el DOM esté listo
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initNavigation);
+    } else {
+      initNavigation();
+    }
   </script>
   
   <script>
+    // Función para el menú móvil
+    function setupMobileMenu() {
+      console.log('Inicializando menú móvil...');
+      const menuToggle = document.getElementById('menuToggle');
+      const mainNav = document.querySelector('.main-nav');
+      
+      if (!menuToggle || !mainNav) {
+        console.error('Elementos del menú no encontrados:', {
+          menuToggle: !!menuToggle,
+          mainNav: !!mainNav
+        });
+        return;
+      }
+      
+      // Asegurarse de que el botón de menú sea visible en móviles
+      if (window.innerWidth <= 992) {
+        menuToggle.style.display = 'flex';
+      }
+      
+      // Función para alternar el menú
+      const toggleMenu = (e) => {
+        if (e) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+        
+        const isOpening = !mainNav.classList.contains('active');
+        
+        // Alternar clases
+        mainNav.classList.toggle('active');
+        menuToggle.classList.toggle('active');
+        document.body.classList.toggle('menu-open');
+        
+        // Actualizar atributo aria-expanded para accesibilidad
+        menuToggle.setAttribute('aria-expanded', isOpening);
+        
+        console.log('Menú ' + (isOpening ? 'abierto' : 'cerrado'));
+      };
+      
+      // Eliminar manejadores de eventos previos
+      const newMenuToggle = menuToggle.cloneNode(true);
+      menuToggle.parentNode.replaceChild(newMenuToggle, menuToggle);
+      
+      // Agregar el manejador de eventos al nuevo botón
+      newMenuToggle.addEventListener('click', toggleMenu);
+      
+      // Cerrar menú al hacer clic en un enlace de navegación
+      const navLinks = document.querySelectorAll('.nav-link');
+      navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          if (mainNav.classList.contains('active')) {
+            toggleMenu();
+          }
+        });
+      });
+      
+      // Cerrar menú al hacer clic fuera
+      document.addEventListener('click', (e) => {
+        const isClickInsideNav = mainNav.contains(e.target);
+        const isClickOnToggle = newMenuToggle.contains(e.target);
+        
+        if (!isClickInsideNav && !isClickOnToggle && mainNav.classList.contains('active')) {
+          toggleMenu();
+        }
+      });
+      
+      // Cerrar menú al presionar la tecla Escape
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && mainNav.classList.contains('active')) {
+          toggleMenu();
+        }
+      });
+      
+      // Manejar cambios de tamaño de la ventana
+      window.addEventListener('resize', () => {
+        if (window.innerWidth > 992) {
+          // En pantallas grandes, asegurarse de que el menú esté cerrado
+          if (mainNav.classList.contains('active')) {
+            toggleMenu();
+          }
+          // Ocultar el botón de menú en pantallas grandes
+          newMenuToggle.style.display = 'none';
+        } else {
+          // Mostrar el botón de menú en móviles
+          newMenuToggle.style.display = 'flex';
+        }
+      });
+      
+      console.log('Menú móvil inicializado correctamente');
+    }
+    
     // Función para mostrar los productos
     async function mostrarProductos() {
       console.log('Mostrando productos...');
@@ -237,7 +338,7 @@
                 <h3>${productData.name}</h3>
                 <div class="product-price">$${productData.price.toLocaleString()}</div>
                 <div class="product-actions">
-                  <a href="/producto.html?id=${productData.id}" class="btn-view-details">
+                  <a href="producto.html?id=${productData.id}" class="btn-view-details">
                     <i class="fas fa-eye"></i> Ver detalles
                   </a>
                 </div>
@@ -458,16 +559,85 @@
     }
     
     // Inicializar cuando el DOM esté listo
+    // Función para actualizar los filtros activos
+    function updateActiveFilters() {
+      const activeFiltersContainer = document.querySelector('.active-filters');
+      if (!activeFiltersContainer) return;
+      
+      // Clear existing active filters
+      activeFiltersContainer.innerHTML = '';
+      
+      // Get selected category
+      const categorySelect = document.getElementById('category-filter');
+      const selectedCategory = categorySelect ? categorySelect.value : 'all';
+      
+      // Add category filter if selected
+      if (selectedCategory && selectedCategory !== 'all') {
+        const filterChip = document.createElement('span');
+        filterChip.className = 'filter-chip';
+        filterChip.textContent = `Categoría: ${selectedCategory}`;
+        
+        const removeBtn = document.createElement('button');
+        removeBtn.className = 'remove-filter';
+        removeBtn.innerHTML = '&times;';
+        removeBtn.onclick = () => {
+          if (categorySelect) {
+            categorySelect.value = 'all';
+            categorySelect.dispatchEvent(new Event('change'));
+          }
+        };
+        
+        filterChip.appendChild(removeBtn);
+        activeFiltersContainer.appendChild(filterChip);
+      }
+      
+      // Show/hide active filters container based on if there are any active filters
+      activeFiltersContainer.style.display = activeFiltersContainer.children.length > 0 ? 'flex' : 'none';
+    }
+    
+    // Función para manejar clics en la página
+    function handleDocumentClick(e) {
+      // Manejar clic en botón de agregar al carrito
+      if (e.target.closest('.btn-add-to-cart')) {
+        e.preventDefault();
+        manejarClickAgregarCarrito(e);
+        return;
+      }
+      
+      // Manejar clic en botón de ver detalles
+      const viewDetailsBtn = e.target.closest('.btn-view-details');
+      if (viewDetailsBtn) {
+        e.preventDefault();
+        const productCard = viewDetailsBtn.closest('.product-card');
+        if (productCard) {
+          const productId = productCard.getAttribute('data-id');
+          if (productId) {
+            mostrarDetallesProducto(productId);
+          }
+        }
+        return;
+      }
+      
+      // Manejar clic en botón de cerrar detalles
+      if (e.target.closest('.close-details')) {
+        e.preventDefault();
+        cerrarDetallesProducto();
+        return;
+      }
+    }
+    
     document.addEventListener('DOMContentLoaded', function() {
+      // Inicializar menú móvil
+      setupMobileMenu();
+      
       // Mostrar productos
       mostrarProductos();
       
-      // Manejar clic en botón de agregar al carrito
-      document.addEventListener('click', manejarClickAgregarCarrito);
+      // Manejar clics en la página
+      document.addEventListener('click', handleDocumentClick);
       
       // Manejar la carga de imágenes
-      document.addEventListener('DOMContentLoaded', () => {
-        const images = document.querySelectorAll('img[loading="lazy"]');
+      const images = document.querySelectorAll('img[loading="lazy"]');
         images.forEach(img => {
           if (img.complete) {
             handleImageLoad(img);
@@ -549,12 +719,9 @@
         .then(products => {
           console.log('Productos cargados para categorías:', products);
           
-          // Obtener categorías únicas, ordenadas alfabéticamente y excluir 'FALDA'
-          const categories = [...new Set(products
-            .map(p => p.category)
-            .filter(category => category && category.trim() !== '' && category.toUpperCase() !== 'FALDA')
-            .sort((a, b) => a.localeCompare(b))
-          )];
+          // Obtener categorías únicas, ordenadas alfabéticamente
+          const categories = [...new Set(products.map(p => p.category).filter(Boolean))]
+            .sort((a, b) => a.localeCompare(b));
           
           console.log('Categorías encontradas:', categories);
           
@@ -584,14 +751,15 @@
               // Mostrar/ocultar productos según la categoría seleccionada
               document.querySelectorAll('.product-card').forEach(card => {
                 const cardCategory = card.getAttribute('data-category');
-                if (!selectedCategory || cardCategory === selectedCategory) {
-                  card.style.display = 'block';
-                } else {
-                  card.style.display = 'none';
-                }
+                // Mostrar si no hay categoría seleccionada o si la categoría coincide
+                // También manejar variaciones de nombre de categoría (ej: 'Falda' vs 'Faldas')
+                const shouldShow = !selectedCategory || 
+                                 cardCategory === selectedCategory ||
+                                 (selectedCategory === 'Falda' && cardCategory === 'Faldas') ||
+                                 (selectedCategory === 'Faldas' && cardCategory === 'Falda');
+                card.style.display = shouldShow ? 'block' : 'none';
               });
               
-              // Actualizar filtros activos
               updateActiveFilters();
             });
             // Limpiar opciones existentes (excepto la primera)
@@ -626,7 +794,7 @@
         .catch(error => {
           console.error('Error al cargar categorías:', error);
         });
-    });
+    ;
   </script>
 </body>
 </html>

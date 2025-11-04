@@ -2,6 +2,158 @@
    ESTILOS RESPONSIVOS
    =================================== */
 
+/* ==================== */
+/* ESTILOS DEL MENÚ MÓVIL */
+/* ==================== */
+
+/* Estilos base del botón de menú */
+.menu-toggle {
+  display: none; /* Oculto por defecto, se muestra en móviles */
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 15px;
+  z-index: 1001;
+  position: relative;
+  outline: none;
+}
+
+/* Estilos de las barras del menú hamburguesa */
+.hamburger {
+  display: block;
+  width: 25px;
+  height: 3px;
+  background-color: #333;
+  margin: 5px 0;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+/* Animación del botón de menú cuando está activo */
+.menu-toggle.active .hamburger:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.menu-toggle.active .hamburger:nth-child(2) {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+.menu-toggle.active .hamburger:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+/* Estilos para el menú de navegación en móviles */
+@media (max-width: 992px) {
+  /* Mostrar el botón de menú en móviles */
+  .menu-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Estilos del menú desplegable */
+  .main-nav {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 80%;
+    max-width: 300px;
+    height: 100vh;
+    background: #fff;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+    transition: right 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+    z-index: 1000;
+    padding: 80px 20px 30px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Estado activo del menú */
+  .main-nav.active {
+    right: 0;
+  }
+  
+  /* Estilos para la lista de navegación */
+  .nav-links {
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+  
+  .nav-links li {
+    margin: 15px 0;
+    opacity: 0;
+    transform: translateX(20px);
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+  
+  .main-nav.active .nav-links li {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  
+  /* Retraso para la animación de los elementos del menú */
+  .main-nav.active .nav-links li:nth-child(1) { transition-delay: 0.1s; }
+  .main-nav.active .nav-links li:nth-child(2) { transition-delay: 0.2s; }
+  .main-nav.active .nav-links li:nth-child(3) { transition-delay: 0.3s; }
+  .main-nav.active .nav-links li:nth-child(4) { transition-delay: 0.4s; }
+  
+  /* Estilos de los enlaces del menú */
+  .nav-link {
+    display: block;
+    padding: 12px 0;
+    color: #333;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    position: relative;
+  }
+  
+  .nav-link:active,
+  .nav-link:hover {
+    color: #007bff;
+  }
+  
+  .nav-link.active {
+    color: #007bff;
+    font-weight: 600;
+  }
+  
+  /* Overlay para cerrar el menú al hacer clic fuera */
+  .menu-overlay {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 999;
+  }
+  
+  .menu-open .menu-overlay {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  /* Ajustes para el body cuando el menú está abierto */
+  body.menu-open {
+    overflow: hidden;
+  }
+  
+  /* Ajustes para el logo en móviles */
+  .logo {
+    z-index: 1002;
+  }
+}
+
 /* Ajustes generales para móviles */
 @media (max-width: 767px) {
   /* Ajustes generales */
