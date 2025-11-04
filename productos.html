@@ -547,13 +547,14 @@
     function actualizarContadorCarrito() {
       const contador = document.querySelector('.carrito-contador');
       if (contador && window.carrito) {
-    const totalItems = window.carrito.obtenerTotalItems ? 
-      window.carrito.obtenerTotalItems() : 
-      (window.carrito.obtenerItems ? window.carrito.obtenerItems().length : 0);
-    contador.textContent = totalItems;
-    contador.style.display = totalItems > 0 ? 'flex' : 'none';
-  }
-}
+        const totalItems = window.carrito.obtenerTotalItems ? 
+          window.carrito.obtenerTotalItems() : 
+          (window.carrito.obtenerItems ? window.carrito.obtenerItems().length : 0);
+        contador.textContent = totalItems;
+        contador.style.display = totalItems > 0 ? 'flex' : 'none';
+      }
+    }
+
 
 // Función para manejar el clic en el botón de añadir al carrito
 function manejarClickAgregarCarrito(e) {
