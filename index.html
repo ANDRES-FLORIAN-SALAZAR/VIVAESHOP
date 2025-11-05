@@ -5,922 +5,198 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vivae - Moda Femenina</title>
     <link rel="icon" type="image/jpg" href="img/vivae.jpg">
-    <link rel="icon" href="data:image/svg+xml,svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👗</text></svg>">
+    <link rel="shortcut icon" type="image/jpg" href="img/vivae.jpg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="css/estilos.css">
     <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/index.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Encabezado -->
-    <div id="navbar-placeholder"></div>
+    <!-- Navigation will be loaded here -->
+    <div id="navbar-placeholder">
+      <!-- Nav will be loaded by JavaScript -->
+    </div>
 
-  <!-- Contenido principal -->
-  <main>
-    <!-- Banner principal con texto superpuesto -->
-    <section class="banner-hero">
-      <div class="banner-imagen" style="background-image: url('img/VestidoFloral.jpg');"></div>
-      <div class="banner-contenido">
-        <h1 class="titulo-banner">VIVAE</h1>
-        <p class="subtitulo-banner">Moda como expresión de arte</p>
-      </div>
-    </section>
+    <!-- Contenido principal -->
+    <main>
+        <!-- Banner principal con texto superpuesto -->
+        <section class="banner-hero">
+            <div class="banner-imagen" id="banner-imagen"></div>
+            <div class="banner-contenido">
+                <h1 class="titulo-banner">VIVAE</h1>
+                <p class="subtitulo-banner">Moda como expresión de arte</p>
+            </div>
+        </section>
 
-    <!-- Galería de inspiración -->
-    <section class="galeria-inspiracion">
-      <div class="galeria-item">
-        <div class="galeria-texto">
-          <h2>Arte en movimiento</h2>
-          <p>Cada prenda cuenta una historia, cada diseño expresa una emoción.</p>
-          <a href="productos.html" class="btn-explorar">Explorar colección</a>
-        </div>
-        <div class="galeria-imagen" style="background-image: url('img/BlusaCasual.jpg');"></div>
-      </div>
-      
-      <div class="galeria-item inverso">
-        <div class="galeria-texto">
-          <h2>Materiales con propósito</h2>
-          <p>Trabajamos con telas sostenibles que respetan el medio ambiente sin comprometer el estilo.</p>
-        </div>
-        <div class="galeria-imagen" style="background-image: url('img/ConjuntoBeigeDeportivo.jpg');"></div>
-      </div>
-    </section>
-
-    <!-- Frase inspiradora -->
-    <section class="frase-inspiradora">
-      <div class="container">
-        <div class="coco-card">
-          <div class="border-glow"></div>
-          <div class="glow-top"></div>
-          <span class="quote-mark left">"</span>
-          <span class="quote-mark right">"</span>
-          
-          <div class="content">
-            <p class="quote-text">La moda no es algo que existe solo en los vestidos. La moda está en el cielo, en la calle, la moda tiene que ver con las ideas, con la forma en que vivimos, lo que está sucediendo.</p>
-            
-            <div class="divider-container">
-              <div class="divider"></div>
-              <div class="diamond"></div>
-              <div class="divider"></div>
+        <!-- Galería de inspiración -->
+        <section class="galeria-inspiracion">
+            <div class="galeria-item">
+                <div class="galeria-texto">
+                    <h2>Arte en movimiento</h2>
+                    <p>Cada prenda cuenta una historia, cada diseño expresa una emoción.</p>
+                    <a href="productos.html" class="btn-explorar">Explorar colección</a>
+                </div>
+                <div class="galeria-imagen" id="galeria-imagen-1"></div>
             </div>
             
-            <p class="author">— Coco Chanel</p>
-          </div>
+            <div class="galeria-item inverso">
+                <div class="galeria-texto">
+                    <h2>Materiales con propósito</h2>
+                    <p>Trabajamos con telas sostenibles que respetan el medio ambiente sin comprometer el estilo.</p>
+                </div>
+                <div class="galeria-imagen" id="galeria-imagen-2"></div>
+            </div>
+        </section>
+
+        <!-- Frase inspiradora -->
+        <section class="frase-inspiradora">
+            <div class="container">
+                <div class="coco-card">
+                    <div class="border-glow"></div>
+                    <div class="glow-top"></div>
+                    <span class="quote-mark left">"</span>
+                    <span class="quote-mark right">"</span>
+                    
+                    <div class="content">
+                        <p class="quote-text">La moda no es algo que existe solo en los vestidos. La moda está en el cielo, en la calle, la moda tiene que ver con las ideas, con la forma en que vivimos, lo que está sucediendo.</p>
+                        
+                        <div class="divider-container">
+                            <div class="divider"></div>
+                            <div class="diamond"></div>
+                            <div class="divider"></div>
+                        </div>
+                        
+                        <p class="author">— Coco Chanel</p>
+                    </div>
+                    
+                    <div class="sparkle"></div>
+                    <div class="sparkle"></div>
+                    <div class="sparkle"></div>
+                    <div class="sparkle"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Proceso creativo -->
+        <section class="proceso-creativo">
+            <h2>Nuestro Proceso</h2>
+            <div class="proceso-grid">
+                <div class="proceso-paso">
+                    <div class="proceso-icono">✏️</div>
+                    <h3>Diseño</h3>
+                    <p>Cada pieza comienza como un boceto, una idea que cobra vida en nuestras manos.</p>
+                </div>
+                <div class="proceso-paso">
+                    <div class="proceso-icono">✂️</div>
+                    <h3>Confección</h3>
+                    <p>Hecho a mano con atención al detalle y materiales de la más alta calidad.</p>
+                </div>
+                <div class="proceso-paso">
+                    <div class="proceso-icono">✨</div>
+                    <h3>Estilo</h3>
+                    <p>Piezas únicas que se adaptan a tu personalidad y estilo de vida.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer will be loaded here -->
+    <footer id="footer-placeholder">
+      <!-- Footer will be loaded by JavaScript -->
+    </footer>
+
+    <script>
+      // Función para cargar la navegación
+      async function cargarNavegacion() {
+        try {
+          const response = await fetch('includes/nav.html');
+          if (!response.ok) throw new Error('No se pudo cargar la navegación');
           
-          <div class="sparkle"></div>
-          <div class="sparkle"></div>
-          <div class="sparkle"></div>
-          <div class="sparkle"></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Proceso creativo -->
-    <section class="proceso-creativo">
-      <h2>Nuestro Proceso</h2>
-      <div class="proceso-grid">
-        <div class="proceso-paso">
-          <div class="proceso-icono">✏️</div>
-          <h3>Diseño</h3>
-          <p>Cada pieza comienza como un boceto, una idea que cobra vida en nuestras manos.</p>
-        </div>
-        <div class="proceso-paso">
-          <div class="proceso-icono">✂️</div>
-          <h3>Confección</h3>
-          <p>Hecho a mano con atención al detalle y materiales de la más alta calidad.</p>
-        </div>
-        <div class="proceso-paso">
-          <div class="proceso-icono">✨</div>
-          <h3>Estilo</h3>
-          <p>Piezas únicas que se adaptan a tu personalidad y estilo de vida.</p>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <style>
-    /* Estilos para el banner */
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
-    
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    
-    .banner-hero {
-      position: relative;
-      height: 90vh;
-      min-height: 600px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      text-align: center;
-    }
-    
-    @keyframes floatBackground {
-      0%, 100% {
-        transform: translate3d(0, 0, 0) scale(1.05);
-      }
-      25% {
-        transform: translate3d(-1%, -1%, 0) scale(1.06);
-      }
-      50% {
-        transform: translate3d(1%, 1%, 0) scale(1.05);
-      }
-      75% {
-        transform: translate3d(1%, -1%, 0) scale(1.04);
-      }
-    }
-    
-    .banner-imagen {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 110%;
-      height: 110%;
-      background-size: cover;
-      background-position: center;
-      z-index: 1;
-      filter: brightness(0.9);
-      animation: floatBackground 20s ease-in-out infinite;
-      will-change: transform;
-    }
-    
-    .banner-contenido {
-      position: relative;
-      z-index: 2;
-      max-width: 90%;
-      padding: 2rem;
-      opacity: 0.95;
-      animation: fadeInUp 1.2s ease-out forwards;
-    }
-    
-    .titulo-banner {
-      font-size: 5.5rem;
-      font-weight: 800;
-      color: #000000;
-      margin: 0 0 1rem 0;
-      line-height: 1.1;
-      text-transform: uppercase;
-      letter-spacing: 4px;
-      font-family: 'Playfair Display', serif;
-      text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.3);
-      display: inline-block;
-      animation: float 3s ease-in-out infinite;
-      transition: all 0.3s ease;
-    }
-    
-    .titulo-banner:hover {
-      transform: translateY(-5px);
-      text-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    }
-    
-    .subtitulo-banner {
-      font-size: 1.8rem;
-      color: #000000;
-      margin: 1.5rem 0 0;
-      font-weight: 400;
-      letter-spacing: 2px;
-      text-transform: none;
-      opacity: 0;
-      animation: fadeInUp 1s ease-out 0.5s forwards;
-      position: relative;
-      display: inline-block;
-    }
-    
-    .subtitulo-banner::after {
-      content: '';
-      position: absolute;
-      bottom: -10px;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background: #000000;
-      animation: lineGrow 1s ease-out 1.5s forwards;
-    }
-    
-    @keyframes lineGrow {
-      to { width: 100%; }
-    }
-    
-    .linea-decorativa {
-      width: 80px;
-      height: 3px;
-      background: linear-gradient(45deg, #6c5ce7, #a29bfe);
-      margin: 1.5rem auto;
-      border-radius: 3px;
-    }
-    
-    .descripcion {
-      color: #636e72;
-      font-size: 1.1rem;
-      line-height: 1.6;
-      margin-bottom: 2rem;
-    }
-    
-    .boton-destacado {
-      display: inline-block;
-      background: #2d3436;
-      color: white;
-      padding: 1rem 2.5rem;
-      border-radius: 30px;
-      text-decoration: none;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      transition: all 0.3s ease;
-      border: 2px solid #2d3436;
-    }
-    
-    .boton-destacado:hover {
-      background: transparent;
-      color: #2d3436;
-      transform: translateY(-3px);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    }
-    
-    @keyframes aparecer {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    
-    @media (max-width: 768px) {
-      .banner-hero {
-        height: 80vh;
-        min-height: 500px;
-      }
-      
-      .titulo-destacado {
-        font-size: 3rem;
-      }
-      
-      .subtitulo-destacado {
-        font-size: 1.2rem;
-      }
-      
-      .tarjeta-contenido {
-        padding: 2rem 1.5rem;
-      }
-    }
-
-    .portada-contenido {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 2;
-      color: white;
-      text-align: center;
-      padding: 2rem;
-      background: linear-gradient(to right, rgba(0,0,0,0.7), rgba(0,0,0,0.5));
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    }
-
-    .titulo-principal {
-      font-size: 5.5rem;
-      font-weight: 700;
-      letter-spacing: 0.5rem;
-      margin: 0;
-      text-transform: uppercase;
-      font-family: 'Playfair Display', serif;
-      animation: fadeIn 2s ease-out;
-      color: #fff;
-      text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
-      margin-bottom: 1rem;
-    }
-
-    .subtitulo {
-      font-size: 1.5rem;
-      font-weight: 500;
-      letter-spacing: 0.3rem;
-      margin: 0;
-      text-transform: uppercase;
-      animation: fadeIn 2s ease-out 0.5s both;
-      color: #fff;
-      background: rgba(0, 0, 0, 0.6);
-      padding: 1rem 2rem;
-      border-radius: 30px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .portada-imagen {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
-      z-index: 1;
-      filter: brightness(0.8);
-    }
-
-    .galeria-inspiracion {
-      padding: 6rem 2rem;
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-
-    .galeria-item {
-      display: flex;
-      min-height: 70vh;
-      margin-bottom: 6rem;
-      align-items: center;
-    }
-
-    .galeria-item.inverso {
-      flex-direction: row-reverse;
-    }
-
-    .galeria-texto {
-      flex: 1;
-      padding: 3rem;
-    }
-
-    .galeria-texto h2 {
-      font-size: 2.5rem;
-      font-weight: 300;
-      margin-bottom: 1.5rem;
-      font-family: 'Playfair Display', serif;
-    }
-
-    .galeria-texto p {
-      font-size: 1.1rem;
-      line-height: 1.8;
-      color: #555;
-      margin-bottom: 2rem;
-      max-width: 500px;
-    }
-
-    .galeria-imagen {
-      flex: 1;
-      height: 70vh;
-      background-size: cover;
-      background-position: center;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-    }
-
-    .btn-explorar {
-      display: inline-block;
-      padding: 12px 30px;
-      border: 1px solid #333;
-      color: #333;
-      text-decoration: none;
-      text-transform: uppercase;
-      font-size: 0.9rem;
-      letter-spacing: 2px;
-      transition: all 0.3s ease;
-    }
-
-    .btn-explorar:hover {
-      background: #333;
-      color: white;
-    }
-
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,600&family=Poppins:wght@300;500&display=swap');
-
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,700&family=Poppins:wght@300;500&display=swap');
-
-    .frase-inspiradora {
-      background: #f8f5f2;
-      padding: 8rem 2rem;
-      text-align: center;
-      font-family: 'Poppins', sans-serif;
-    }
-
-    .card {
-      background: #ffffff;
-      border-radius: 0;
-      box-shadow: none;
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 70px 60px;
-      text-align: center;
-      position: relative;
-      border: none;
-      transition: all 0.4s ease;
-    }
-
-    .card:hover {
-      transform: none;
-    }
-
-    .quote {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.1rem;
-      font-style: italic;
-      color: #2d2d2d;
-      line-height: 1.7;
-      margin: 0;
-      position: relative;
-      font-weight: 500;
-      letter-spacing: -0.3px;
-      border: none; /* Ensure no borders on the quote */
-    }
-
-    .author {
-      margin-top: 25px;
-      font-weight: 500;
-      color: #d4a373;
-      letter-spacing: 0.8px;
-      font-size: 1.2rem;
-      position: relative;
-      display: inline-block;
-      font-style: italic;
-    }
-
-    .proceso-creativo {
-      padding: 6rem 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
-      text-align: center;
-    }
-
-    .proceso-creativo h2 {
-      font-size: 2.5rem;
-      font-weight: 300;
-      margin-bottom: 4rem;
-      font-family: 'Playfair Display', serif;
-    }
-
-    .proceso-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 3rem;
-    }
-
-    .proceso-paso {
-      padding: 2rem;
-    }
-
-    .proceso-icono {
-      font-size: 2.5rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .proceso-paso h3 {
-      font-size: 1.5rem;
-      font-weight: 400;
-      margin-bottom: 1rem;
-      font-family: 'Playfair Display', serif;
-    }
-
-    .proceso-paso p {
-      color: #666;
-      line-height: 1.6;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @media (max-width: 768px) {
-      .galeria-item {
-        flex-direction: column;
-        margin-bottom: 3rem;
-      }
-
-      .galeria-item.inverso {
-        flex-direction: column;
-      }
-
-      .galeria-imagen {
-        width: 100%;
-        height: 50vh;
-        margin-top: 2rem;
-      }
-
-      .titulo-principal {
-        font-size: 3.5rem;
-      }
-
-      .frase-inspiradora blockquote {
-        font-size: 1.4rem;
-      }
-    }
-  </style>
-
-  <style>
-    /* Estilos para las nuevas secciones */
-    .badge-nuevo {
-      background: #ff4d4d;
-      color: white;
-      padding: 5px 15px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 1rem;
-      display: inline-block;
-    }
-
-    .hero-banner {
-      position: relative;
-      height: 80vh;
-      background-size: cover;
-      background-position: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      color: white;
-      margin-bottom: 4rem;
-    }
-
-    .hero-content {
-      max-width: 800px;
-      padding: 2rem;
-    }
-
-    .hero-text h1 {
-      font-size: 3.5rem;
-      margin-bottom: 1.5rem;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-      animation: fadeInUp 1s ease;
-    }
-
-    .hero-text p {
-      font-size: 1.2rem;
-      margin-bottom: 2rem;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-    }
-
-    .hero-buttons {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .btn-hero {
-      display: inline-block;
-      padding: 12px 30px;
-      background-color: var(--color-primario);
-      color: white;
-      text-decoration: none;
-      border-radius: 30px;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      border: 2px solid var(--color-primario);
-    }
-
-    .btn-hero:hover {
-      background-color: transparent;
-      color: white;
-      transform: translateY(-3px);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    }
-
-    .btn-secundario {
-      background-color: transparent;
-      border: 2px solid white;
-    }
-
-    .btn-secundario:hover {
-      background-color: white;
-      color: var(--color-primario) !important;
-    }
-
-    .beneficios-seccion {
-      padding: 4rem 0;
-      background-color: #f9f9f9;
-    }
-
-    .beneficios-seccion .container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 1.5rem;
-    }
-
-    .beneficio {
-      text-align: center;
-      padding: 2rem 1rem;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-      transition: transform 0.3s ease;
-    }
-
-    .beneficio:hover {
-      transform: translateY(-5px);
-    }
-
-    .beneficio-icono {
-      font-size: 2.5rem;
-      color: var(--color-primario);
-      margin-bottom: 1rem;
-    }
-
-    .beneficio h3 {
-      font-size: 1.2rem;
-      margin-bottom: 0.5rem;
-      color: #333;
-    }
-
-    .beneficio p {
-      color: #666;
-      font-size: 0.9rem;
-    }
-
-    .destacados-seccion {
-      padding: 6rem 0;
-    }
-
-    .seccion-titulo {
-      text-align: center;
-      margin-bottom: 3rem;
-    }
-
-    .seccion-titulo h2 {
-      font-size: 2.5rem;
-      color: #333;
-      margin-bottom: 1rem;
-      position: relative;
-      display: inline-block;
-    }
-
-    .seccion-titulo h2:after {
-      content: '';
-      position: absolute;
-      width: 60%;
-      height: 3px;
-      background: var(--color-primario);
-      bottom: -10px;
-      left: 20%;
-    }
-
-    .seccion-titulo p {
-      color: #666;
-      font-size: 1.1rem;
-      max-width: 700px;
-      margin: 0 auto;
-    }
-
-    .productos-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 2rem;
-      margin-top: 2rem;
-    }
-
-    .banner-oferta {
-      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('img/oferta-bg.jpg');
-      background-size: cover;
-      background-position: center;
-      color: white;
-      padding: 6rem 1rem;
-      text-align: center;
-      margin: 4rem 0;
-    }
-
-    .banner-contenido h2 {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-    }
-
-    .banner-contenido p {
-      font-size: 1.2rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .cuenta-regresiva {
-      font-size: 1.3rem;
-      font-weight: 600;
-      margin: 2rem 0;
-      letter-spacing: 1px;
-    }
-
-    .btn-blanco {
-      display: inline-block;
-      padding: 12px 30px;
-      background-color: white;
-      color: var(--color-primario);
-      text-decoration: none;
-      border-radius: 30px;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      border: 2px solid white;
-    }
-
-    .btn-blanco:hover {
-      background-color: transparent;
-      color: white;
-    }
-
-    .newsletter-seccion {
-      padding: 4rem 0;
-      background-color: #f5f5f5;
-    }
-
-    .newsletter-contenido {
-      max-width: 800px;
-      margin: 0 auto;
-      background: white;
-      padding: 3rem;
-      border-radius: 10px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-      text-align: center;
-    }
-
-    .newsletter-texto h3 {
-      font-size: 1.8rem;
-      color: #333;
-      margin-bottom: 1rem;
-    }
-
-    .newsletter-texto p {
-      color: #666;
-      margin-bottom: 2rem;
-    }
-
-    .newsletter-form {
-      display: flex;
-      max-width: 500px;
-      margin: 0 auto;
-      gap: 1rem;
-    }
-
-    .newsletter-form input {
-      flex: 1;
-      padding: 12px 20px;
-      border: 1px solid #ddd;
-      border-radius: 30px;
-      font-size: 1rem;
-      outline: none;
-    }
-
-    .btn-newsletter {
-      background-color: var(--color-primario);
-      color: white;
-      border: none;
-      padding: 0 30px;
-      border-radius: 30px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .btn-newsletter:hover {
-      background-color: var(--color-primario-oscuro);
-      transform: translateY(-2px);
-    }
-
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @media (max-width: 768px) {
-      .hero-text h1 {
-        font-size: 2.5rem;
-      }
-      
-      .hero-buttons {
-        flex-direction: column;
-      }
-      
-      .newsletter-form {
-        flex-direction: column;
-      }
-      
-      .btn-newsletter, .newsletter-form input {
-        width: 100%;
-      }
-    }
-  </style>
-
-  <script>
-    // Efecto de movimiento automático suave para la imagen de fondo
-    function animateBackground() {
-      const banner = document.querySelector('.banner-imagen');
-      if (!banner) return;
-      
-      // Asegurar que la animación CSS esté activa
-      banner.style.animation = 'floatBackground 20s ease-in-out infinite';
-      
-      // Opcional: Añadir un efecto de parallax sutil al mover el ratón
-      document.querySelector('.banner-hero')?.addEventListener('mousemove', function(e) {
-        const rect = this.getBoundingClientRect();
-        const x = (e.clientX - rect.left) / rect.width - 0.5;
-        const y = (e.clientY - rect.top) / rect.height - 0.5;
-        
-        // Movimiento más sutil que el anterior
-        banner.style.transform = `translate3d(${-x * 20}px, ${-y * 20}px, 0) scale(1.05)`;
-      });
-      
-      // Resetear la posición cuando el ratón sale
-      document.querySelector('.banner-hero')?.addEventListener('mouseleave', function() {
-        banner.style.transform = 'translate3d(0, 0, 0) scale(1.05)';
-      });
-    }
-    
-    // Iniciar la animación cuando el documento esté listo
-    document.addEventListener('DOMContentLoaded', animateBackground);
-
-    // Efecto de desplazamiento suave para enlaces internos
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        document.querySelector(this.getAttribute('href')).scrollIntoView({
-          behavior: 'smooth'
-        });
-      });
-    });
-
-    // Animación de aparición al hacer scroll
-    document.addEventListener('DOMContentLoaded', function() {
-      const elementos = document.querySelectorAll('.galeria-item, .proceso-paso, blockquote');
-      
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.style.opacity = 1;
-            entry.target.style.transform = 'translateY(0)';
+          const html = await response.text();
+          const nav = document.getElementById('navbar-placeholder');
+          if (nav) {
+            nav.innerHTML = html;
+            // Inicializar menú móvil
+            const menuToggle = document.querySelector('.menu-toggle');
+            const mainNav = document.querySelector('.main-nav');
+            const menuOverlay = document.querySelector('.menu-overlay');
+            
+            if (menuToggle && mainNav) {
+              menuToggle.addEventListener('click', () => {
+                mainNav.classList.toggle('active');
+                menuToggle.classList.toggle('active');
+                if (menuOverlay) {
+                  menuOverlay.classList.toggle('active');
+                }
+                document.body.classList.toggle('no-scroll');
+              });
+            }
+            
+            if (menuOverlay) {
+              menuOverlay.addEventListener('click', () => {
+                mainNav.classList.remove('active');
+                menuToggle.classList.remove('active');
+                menuOverlay.classList.remove('active');
+                document.body.classList.remove('no-scroll');
+              });
+            }
           }
-        });
-      }, { threshold: 0.1 });
-
-      elementos.forEach(elemento => {
-        elemento.style.opacity = 0;
-        elemento.style.transform = 'translateY(30px)';
-        elemento.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-        observer.observe(elemento);
-      });
-    });
-  </script>
-
-  <!-- Pie de página -->
-  <div id="footer-placeholder"></div>
-
-
-
-  <!-- Scripts -->
-  <script src="js/main-clean.js" type="module"></script>
-  <script src="js/navigation.js"></script>
-  
-  <!-- Script para cargar la navegación y el pie de página -->
-  <script>
-    // Cargar barra de navegación
-    fetch('includes/nav.html')
-      .then(response => response.text())
-      .then(html => {
-        document.getElementById('navbar-placeholder').innerHTML = html;
-        
-        // Activar el menú móvil
-        const menuToggle = document.querySelector('.menu-toggle');
-        const nav = document.querySelector('.nav');
-        if (menuToggle && nav) {
-          menuToggle.addEventListener('click', () => {
-            nav.classList.toggle('active');
-            menuToggle.classList.toggle('active');
-          });
+        } catch (error) {
+          console.error('Error al cargar la navegación:', error);
         }
-      });
+      }
 
-    // Cargar pie de página
-    fetch('includes/footer.html')
-      .then(response => response.text())
-      .then(html => {
-        document.getElementById('footer-placeholder').innerHTML = html;
+      // Función para cargar el pie de página
+      async function cargarFooter() {
+        try {
+          const response = await fetch('includes/footer.html');
+          if (!response.ok) throw new Error('No se pudo cargar el pie de página');
+          
+          const html = await response.text();
+          const footer = document.getElementById('footer-placeholder');
+          if (footer) {
+            footer.innerHTML = html;
+          }
+        } catch (error) {
+          console.error('Error al cargar el pie de página:', error);
+        }
+      }
+
+      // Función para configurar las imágenes de fondo
+      function configurarImagenes() {
+        // Establecer imagen del banner
+        const bannerImagen = document.getElementById('banner-imagen');
+        if (bannerImagen) {
+          bannerImagen.style.backgroundImage = "url('img/VestidoFloral.jpg')";
+        }
         
-      })
-      .catch(error => console.error('Error al cargar el footer:', error));
-  </script>
+        // Establecer imágenes de la galería
+        const galeriaImagen1 = document.getElementById('galeria-imagen-1');
+        if (galeriaImagen1) {
+          galeriaImagen1.style.backgroundImage = "url('img/BlusaCasual.jpg')";
+        }
+        
+        const galeriaImagen2 = document.getElementById('galeria-imagen-2');
+        if (galeriaImagen2) {
+          galeriaImagen2.style.backgroundImage = "url('img/ConjuntoBeigeDeportivo.jpg')";
+        }
+      }
+
+      // Inicialización cuando el DOM esté listo
+      document.addEventListener('DOMContentLoaded', function() {
+        // Cargar navegación y pie de página
+        cargarNavegacion();
+        cargarFooter();
+        
+        // Configurar imágenes de fondo
+        configurarImagenes();
+      });
+    </script>
+    <script src="js/main.js"></script>
+    <script src="js/index.js"></script>
 </body>
 </html>

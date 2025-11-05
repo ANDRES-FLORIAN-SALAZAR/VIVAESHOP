@@ -9,8 +9,8 @@
   --color-secundario: #ff7e5f;      /* Coral anaranjado */
   --color-fondo: #f8f9fa;           /* Gris muy claro */
   --color-fondo-secundario: #e9ecef; /* Gris claro */
-  --color-texto: #495057;           /* Gris oscuro */
-  --color-texto-claro: #6c757d;     /* Gris medio */
+  --color-texto: #000000;           /* Black for main text */
+  --color-texto-claro: #333333;     /* Dark gray for secondary text */
   --color-borde: #dee2e6;           /* Gris claro para bordes */
   --color-blanco: #ffffff;          /* Blanco puro */
   --color-exito: #28a745;           /* Verde */
@@ -20,7 +20,7 @@
   --color-sombra: rgba(0, 0, 0, 0.05); /* Sombra sutil */
   
   /* Ajustes de contraste */
-  --contraste-texto: #2d3436;       /* Texto principal */
+  --contraste-texto: #000000;       /* Texto principal en negro */
   --contraste-fondo: #f5f6fa;       /* Fondo principal */
   
   /* Sombras */
@@ -91,10 +91,10 @@
 
 /* Ajustar el main cuando el navbar está fijo */
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: var(--fuente-texto);
   line-height: 1.6;
-  color: #333;
-  background-color: #ffffff !important;
+  color: #000000; /* Texto negro */
+  background-color: var(--color-fondo);
   margin: 0;
   padding: 0;
   min-height: 100vh;
@@ -213,15 +213,78 @@ body {
   color: #8c33ff;
 }
 
-/* Espacio reservado para futuros estilos de navegación */
+/* Estilos del logo */
+.logo-img {
+    border-radius: 50%;
+    transition: transform 0.5s ease-in-out;
+    animation: float 4s ease-in-out infinite;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
 
 /* Iconos de la barra de navegación */
-.icons {
+.nav-search {
+  position: relative;
+  width: 250px;
+  margin-right: 20px;
+}
+
+.search-form {
+  position: relative;
+  width: 100%;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 40px 10px 15px;
+  border: 1px solid var(--color-borde);
+  border-radius: 30px;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  background-color: #f8f9fa;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--color-primario);
+  box-shadow: 0 0 0 2px rgba(74, 111, 165, 0.2);
+  background-color: white;
+}
+
+.search-button {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--color-primario);
+  cursor: pointer;
+  padding: 5px;
   display: flex;
   align-items: center;
-  gap: 20px;
-  color: #444;
-  font-size: 18px;
+  justify-content: center;
+}
+
+.search-button:hover {
+  color: var(--color-primario-oscuro);
+}
+
+.nav-icons {
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
 .search-btn,
@@ -1462,15 +1525,18 @@ body {
   margin-top: 3rem;
 }
 
-.category-card {
-  position: relative;
+.producto-card {
+  background: white;
   border-radius: var(--radio-borde);
   overflow: hidden;
   box-shadow: var(--sombra);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: var(--transicion);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
-.category-card:hover {
+.producto-card:hover {
   transform: translateY(-5px);
   box-shadow: var(--sombra-md);
 }
@@ -1940,33 +2006,6 @@ body {
   z-index: 2;
 }
 
-/* Estilos para el botón de añadir al carrito */
-.add-to-cart-btn {
-  display: block;
-  width: 100%;
-  padding: 10px 15px;
-  background-color: var(--color-primario);
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  margin-top: 10px;
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.add-to-cart-btn:hover {
-  background-color: var(--color-primario-oscuro);
-  transform: translateY(-1px);
-}
-
-.add-to-cart-btn:active {
-  transform: translateY(0);
-}
 
 /* Asegurar que el contenedor del botón tenga un ancho completo */
 .product-info {
@@ -2256,10 +2295,6 @@ body {
   z-index: 1 !important;
 }
 
-/* Estilo para cuando hay un botón de añadir al carrito antes */
-.product-card .btn-agregar-carrito + .btn-view-details {
-  margin-top: 0.5rem !important;
-}
 
 /* Filtros */
 .filters {
@@ -4569,7 +4604,6 @@ main {
   outline: none;
   box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.4);
 }
-/* Estilos del contador del carrito */
 .nav-right {
   display: flex;
   align-items: center;
@@ -4628,185 +4662,8 @@ input, select {
 }
 
 input:focus, select:focus {
-  outline: none;
-  border-color: var(--morado-claro);
-  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
-}
-
-/* Estilos para el ícono del carrito */
-.carrito-icon {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  color: var(--color-texto);
-  font-size: 1.25rem;
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-.carrito-icon:hover {
-  color: var(--color-primario);
-}
-
-.carrito-contador {
-  position: absolute;
-  top: -5px;
-  right: -5px;
-  background-color: var(--color-peligro);
-  color: white;
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  font-size: 0.7rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  display: none; /* Oculto por defecto */
-}
-
-/* Mostrar el contador solo cuando hay elementos en el carrito */
-.carrito-contador:not(:empty) {
-  display: flex;
-}
-
 /* Estilos para la navegación en móviles */
 @media (max-width: 768px) {
-  .carrito-icon {
-    margin-left: auto;
-    margin-right: 15px;
-  }
-}
-
-/* Contador del carrito */
-#cart-count {
-  background: var(--color-blanco);
-  color: var(--color-primario);
-  padding: 0.2rem 0.6rem;
-  border-radius: 50%;
-  font-size: 0.8rem;
-  font-weight: 700;
-  margin-left: 0.3rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 20px;
-  height: 20px;
-}
-
-/* Estilos para el botón de añadir al carrito */
-.btn-agregar-carrito {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  background-color: var(--color-primario);
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 10px 16px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  width: 100%;
-  margin-top: 10px;
-}
-
-.btn-agregar-carrito:hover {
-  background-color: var(--color-primario-oscuro);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2);
-}
-
-.btn-agregar-carrito i {
-  font-size: 1rem;
-}
-
-/* Contador del carrito en el navbar */
-.carrito-contador {
-  position: absolute;
-  top: -8px;
-  right: -8px;
-  background-color: var(--color-peligro);
-  color: white;
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.7rem;
-  font-weight: 600;
-  display: none; /* Oculto por defecto */
-}
-
-/* Estilos para el contenedor del ícono del carrito */
-.cart-icon-container {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  transition: background-color 0.2s ease;
-}
-
-.cart-icon-container:hover {
-  background-color: rgba(0, 0, 0, 0.05);
-}
-
-/* Ajustes para el ícono del carrito en el navbar */
-.nav-cart {
-  position: relative;
-  margin-left: 15px;
-  color: var(--color-texto);
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-}
-
-/* Efecto hover para el ícono del carrito */
-.nav-cart:hover {
-  color: var(--color-primario);
-}
-
-/* Estilos para el botón de añadir al carrito en la tarjeta de producto */
-.product-overlay .btn-agregar-carrito {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%) translateY(10px);
-  opacity: 0;
-  transition: all 0.3s ease;
-  width: calc(100% - 40px);
-  max-width: 200px;
-  margin: 0;
-}
-
-.product-card:hover .btn-agregar-carrito {
-  transform: translateX(-50%) translateY(0);
-  opacity: 1;
-}
-
-/* Ajustes para móviles */
-@media (max-width: 768px) {
-  .btn-agregar-carrito {
-    padding: 8px 12px;
-    font-size: 0.85rem;
-  }
-  
-  .product-overlay .btn-agregar-carrito {
-    position: static;
-    transform: none;
-    opacity: 1;
-    width: 100%;
-    margin-top: 10px;
-  }
 }
 
 /* Estilos para el modal de detalles del producto */
@@ -4925,6 +4782,129 @@ input:focus, select:focus {
   display: flex;
   gap: 0.5rem;
   flex-wrap: wrap;
+}
+
+/* ======================
+   FILTROS Y CATEGORÍAS
+   ====================== */
+.filtros-container {
+  margin-bottom: 2rem;
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 1rem;
+}
+
+.filtros-categorias {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  justify-content: center;
+}
+
+.filtro-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border: 2px solid var(--color-borde);
+  border-radius: 50px;
+  background-color: var(--color-blanco);
+  color: var(--color-texto);
+  font-weight: 500;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: capitalize;
+}
+
+.filtro-btn i {
+  font-size: 1.1rem;
+}
+
+.filtro-btn:hover {
+  background-color: var(--color-fondo-secundario);
+  border-color: var(--color-primario);
+  color: var(--color-primario);
+}
+
+.filtro-btn.active {
+  background-color: var(--color-primario);
+  border-color: var(--color-primario);
+  color: var(--color-blanco);
+}
+
+.filtro-btn.active i {
+  color: var(--color-blanco);
+}
+
+/* Estilos para el buscador */
+.buscador {
+  position: relative;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.buscador input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 3rem;
+  border: 2px solid var(--color-borde);
+  border-radius: 50px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: var(--color-fondo);
+}
+
+.buscador input:focus {
+  outline: none;
+  border-color: var(--color-primario);
+  box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.2);
+}
+
+.buscador i {
+  position: absolute;
+  left: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-texto-claro);
+}
+
+/* Estilos responsivos para filtros */
+@media (max-width: 768px) {
+  .filtros-categorias {
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    justify-content: flex-start;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-primario) var(--color-fondo-secundario);
+  }
+  
+  .filtros-categorias::-webkit-scrollbar {
+    height: 6px;
+  }
+  
+  .filtros-categorias::-webkit-scrollbar-track {
+    background: var(--color-fondo-secundario);
+    border-radius: 10px;
+  }
+  
+  .filtros-categorias::-webkit-scrollbar-thumb {
+    background-color: var(--color-primario);
+    border-radius: 10px;
+  }
+  
+  .filtro-btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+  
+  .filtro-btn i {
+    font-size: 1rem;
+  }
 }
 
 .size-option {
@@ -5208,5 +5188,4 @@ body.modal-open {
     pointer-events: auto;
   }
 }
-
-/* End of file */
+}

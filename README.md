@@ -1,7 +1,7 @@
 <div align="center">
   <img src="img/vivae.jpg" alt="VIVAE Logo" width="200">
-  <h1>VIVAE - Tienda de Moda Elegante</h1>
-  <p>Tienda en línea de moda con diseño moderno y responsivo</p>
+  <h1>VIVAE - Moda Elegante</h1>
+  <p>Catálogo de productos con contacto directo por WhatsApp</p>
   
   [![GitHub license](https://img.shields.io/github/license/ANDRES-FLORIAN-SALAZAR/VIVAE-SHOP?style=for-the-badge)](https://github.com/ANDRES-FLORIAN-SALAZAR/VIVAE-SHOP/blob/main/LICENSE)
   [![GitHub stars](https://img.shields.io/github/stars/ANDRES-FLORIAN-SALAZAR/VIVAE-SHOP?style=for-the-badge)](https://github.com/ANDRES-FLORIAN-SALAZAR/VIVAE-SHOP/stargazers)
@@ -10,44 +10,55 @@
 
 ## 🌟 Características
 
-- 🛍️ Catálogo de productos interactivo
 - 📱 Diseño completamente responsivo
 - ⚡ Carga rápida y optimizada
+- 💬 Contacto directo por WhatsApp
+- 🔍 Búsqueda y filtrado de productos
 - 🎨 Interfaz de usuario moderna y atractiva
-- 📦 Fácil de personalizar y desplegar
 
-## 🚀 Despliegue Rápido
+## 🚀 Cómo Usar
 
-### Opción 1: GitHub Pages (Recomendado)
+1. Clona el repositorio:
+   ```bash
+   git clone https://github.com/ANDRES-FLORIAN-SALAZAR/VIVAE-SHOP.git
+   cd VIVAE-SHOP
+   ```
+
+2. Abre `index.html` en tu navegador o despliega en un servidor web
+
+3. Para personalizar el número de WhatsApp, edita la constante `WHATSAPP_NUMBER` en `js/main.js`
+
+## 🌐 Despliegue
+
+### GitHub Pages (Recomendado)
 1. Crea un nuevo repositorio en GitHub
-2. Sube los archivos (puedes arrastrar y soltar en la interfaz web o usar git)
+2. Sube los archivos
 3. Ve a `Settings` → `Pages`
 4. En `Source`, selecciona la rama `main` y la carpeta raíz `/`
-5. ¡Listo! Tu tienda estará disponible en: `https://<tu-usuario>.github.io/<nombre-repositorio>/`
-
-### Opción 2: Despliegue Automático con Python
-```bash
-# Instalar dependencias
-pip install PyGithub
-
-# Configurar variables de entorno
-export GITHUB_USERNAME=tu_usuario
-export GITHUB_TOKEN=tu_token
-
-# Ejecutar script de despliegue
-python deploy_github.py --repo vivae --dir . --username $GITHUB_USERNAME --token $GITHUB_TOKEN
-```
+5. Tu catálogo estará disponible en: `https://<tu-usuario>.github.io/<nombre-repositorio>/`
 
 ## 🛠️ Personalización
 
 ### Añadir/Editar Productos
-1. Edita el archivo `data/productos.json`
+1. Edita el archivo `data/productos.json` con los detalles de tus productos
 2. Añade las imágenes en la carpeta `img/`
 3. Los cambios se reflejarán automáticamente
 
-### Estilos
-- Los estilos principales están en `css/estilos.css`
-- Los estilos específicos de productos están en `css/productos/`
+### Cambiar Número de WhatsApp
+1. Abre `js/main.js`
+2. Busca la constante `WHATSAPP_NUMBER`
+3. Reemplaza el valor con tu número de WhatsApp (sin el signo +)
+
+### Estructura de Archivos
+- `index.html` - Página principal con productos destacados
+- `productos.html` - Lista completa de productos
+- `producto.html` - Página de detalle de producto
+- `js/` - Código JavaScript
+  - `main.js` - Funcionalidad principal
+  - `productos.js` - Manejo del catálogo de productos
+- `css/` - Estilos de la aplicación
+- `data/` - Archivos de datos (productos.json)
+- `img/` - Imágenes de productos y recursos
 
 ## 📱 Tecnologías Utilizadas
 

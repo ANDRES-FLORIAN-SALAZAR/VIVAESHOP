@@ -26,7 +26,7 @@
     "description": "Blusa de manga larga en lino, perfecta para cualquier ocasión.",
     "price": 60000,
     "category": "Blusas",
-    "image": "img/CamisaMangaLarga.jpg",
+    "image": "img/BlusaMangaLarga.jpg",
     "sizes": ["S", "M", "L"],
     "colors": ["Beige", "Blanco"]
   },
@@ -36,7 +36,7 @@
     "description": "Blusa corta estilo ombliguera, ideal para looks juveniles y frescos.",
     "price": 60000,
     "category": "Blusas",
-    "image": "img/CamisaOmbliguera.jpg",
+    "image": "img/BlusaOmbliguera.jpg",
     "sizes": ["S", "M"],
     "colors": ["Blanco", "Negro"]
   },
@@ -183,7 +183,7 @@
   },
   {
     "id": 19,
-    "name": "Vestido Formal2",
+    "name": "Vestido Formal Con Estampado",
     "description": "  vestido formal de color negro con estampado de flores.",
     "price": 70000,
     "category": "Vestidos",
@@ -216,7 +216,7 @@
     "name": "Falda Verde Con Flecos",
     "description": "  Falda verde con flecos, ideal para looks relajados.",
     "price": 70000,
-    "category": "Falda",
+    "category": "Faldas",
     "image": "img/FaldaVerdeConFlecos.jpg",
     "sizes": ["S", "M", "L"],
     "colors": ["Verde"]
@@ -226,7 +226,7 @@
     "name": "Falda Verde Casual",
     "description": "  Falda verde casual, ideal para looks relajados.",
     "price": 55000,
-    "category": "Falda",
+    "category": "Faldas",
     "image": "img/FaldaVerdeCasual.jpg",
     "sizes": ["S", "M", "L"],
     "colors": ["Verde"]
@@ -236,7 +236,7 @@
     "name": "Falda Negra Short",
     "description": "  Falda negra short, ideal para looks relajados.",
     "price": 60000,
-    "category": "Falda",
+    "category": "Faldas",
     "image": "img/FaldaNegraShort.jpg",
     "sizes": ["S", "M", "L"],
     "colors": ["Azul"]
@@ -246,7 +246,7 @@
     "name": "Falda Negra Con Flecos",
     "description": "  Falda negra con flecos, ideal para looks relajados.",
     "price": 70000,
-    "category": "Falda",
+    "category": "Faldas",
     "image": "img/FaldaNegraConFlecos.jpg",
     "sizes": ["S", "M", "L"],
     "colors": ["Negro"]
@@ -256,7 +256,7 @@
     "name": "Falda Gris Short",
     "description": "  Falda gris short, ideal para looks relajados.",
     "price": 60000,
-    "category": "Falda",
+    "category": "Faldas",
     "image": "img/FaldaGrisShort.jpg",
     "sizes": ["S", "M", "L"],
     "colors": ["Gris"]
@@ -266,7 +266,7 @@
     "name": "Falda Cafe Con Flecos",
     "description": "  Falda cafe con flecos, ideal para looks relajados.",
     "price": 70000,
-    "category": "Falda",
+    "category": "Faldas",
     "image": "img/FaldaCafeConFlecos.jpg",
     "sizes": ["S", "M", "L"],
     "colors": ["Cafe"]
@@ -403,8 +403,8 @@
   },
   {
     "id": 41,
-    "name": "Pantalon Brillante",
-    "description": "Pantalon brillante, ideal para looks relajados.",
+    "name": "Pantalón Brillante",
+    "description": "Pantalón brillante, ideal para looks relajados.",
     "price": 50000,
     "category": "Pantalones",
     "image": "img/PantalonBrillante.jpg",

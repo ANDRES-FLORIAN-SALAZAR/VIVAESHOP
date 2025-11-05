@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="pagina-producto">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Detalles del Producto - VIVAE</title>
-  <link rel="icon" type="image/jpg" href="img/vivae.jpg">
-  
-  <!-- Preconnect to external resources -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle del Producto - VIVAE</title>
+    <link rel="icon" type="image/jpg" href="img/vivae.jpg">
+    <link rel="shortcut icon" type="image/jpg" href="img/vivae.jpg">
+    
+    <!-- Fuentes y estilos -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- Preload critical CSS -->
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"></noscript>
@@ -194,9 +195,8 @@
       margin: 2rem 0;
     }
     
-    .btn-agregar-carrito {
-      flex: 1;
-      background: var(--color-primario);
+    .btn-contactar {
+      background: #25D366; /* Color de WhatsApp */
       color: white;
       border: none;
       border-radius: 4px;
@@ -208,15 +208,16 @@
       align-items: center;
       justify-content: center;
       transition: all 0.3s ease;
+      text-decoration: none;
     }
     
-    .btn-agregar-carrito:hover {
-      background: var(--color-primario-oscuro);
+    .btn-contactar:hover {
+      background: #128C7E; /* Color de WhatsApp oscuro */
       transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2);
+      box-shadow: 0 4px 12px rgba(18, 140, 126, 0.2);
     }
     
-    .btn-agregar-carrito i {
+    .btn-contactar i {
       margin-right: 0.5rem;
     }
     
@@ -274,16 +275,17 @@
         flex-direction: column;
       }
       
-      .btn-agregar-carrito {
+      .btn-contactar {
         width: 100%;
       }
     }
   </style>
 </head>
 <body>
-  <!-- Barra de navegación -->
+  <!-- Navigation will be loaded here -->
   <div id="navbar-placeholder">
-    <!-- La barra de navegación se cargará aquí dinámicamente -->
+    <!-- Nav will be loaded by JavaScript -->
+  </div>
   </div>
 
   <!-- Contenido principal -->
@@ -320,8 +322,11 @@
             <button class="cantidad-btn" id="aumentar-cantidad">+</button>
           </div>
           
-          
-          <!-- Botón de acción eliminado -->
+          <div class="producto-acciones">
+            <a id="btn-contactar" href="#" class="btn-contactar" target="_blank" rel="noopener noreferrer">
+              <i class="fab fa-whatsapp"></i> Contactar por WhatsApp
+            </a>
+          </div>
             
             <div class="tab-contenido activo" id="descripcion">
               <div class="descripcion-detallada">
@@ -338,95 +343,145 @@
     </div>
   </main>
 
-  <!-- Pie de página -->
-  <div id="footer-placeholder">
-    <!-- El pie de página se cargará aquí dinámicamente -->
-  </div>
+  <!-- Footer will be loaded here -->
+  <footer id="footer-placeholder">
+    <!-- Footer will be loaded by JavaScript -->
+  </footer>
 
-  <!-- Load scripts with defer -->
-  <script src="js/navbar.js" defer></script>
-  <script src="js/footer.js" defer></script>
-  <script src="js/productos.js" defer></script>
+  <!-- Scripts principales -->
+  <script src="js/notificaciones.js"></script>
   
-  <!-- Inline critical JavaScript -->
+  <!-- Script para la página de producto -->
   <script>
-    // Mobile menu functionality
-    document.addEventListener('DOMContentLoaded', function() {
-      // Cache DOM elements
+    // Función para cargar la navegación
+    async function cargarNavegacion() {
+      try {
+        const response = await fetch('includes/nav.html');
+        if (!response.ok) throw new Error('No se pudo cargar la navegación');
+        
+        const html = await response.text();
+        const nav = document.getElementById('navbar-placeholder');
+        if (nav) {
+          nav.innerHTML = html;
+          // Inicializar menú móvil
+          const menuToggle = document.querySelector('.menu-toggle');
+          const mainNav = document.querySelector('.main-nav');
+          const menuOverlay = document.querySelector('.menu-overlay');
+          
+          if (menuToggle && mainNav) {
+            menuToggle.addEventListener('click', () => {
+              mainNav.classList.toggle('active');
+              menuToggle.classList.toggle('active');
+              menuOverlay.classList.toggle('active');
+              document.body.classList.toggle('no-scroll');
+            });
+          }
+          
+          if (menuOverlay) {
+            menuOverlay.addEventListener('click', () => {
+              mainNav.classList.remove('active');
+              menuToggle.classList.remove('active');
+              menuOverlay.classList.remove('active');
+              document.body.classList.remove('no-scroll');
+            });
+          }
+        }
+      } catch (error) {
+        console.error('Error al cargar la navegación:', error);
+      }
+    }
+
+    // Función para cargar el pie de página
+    async function cargarFooter() {
+      try {
+        const response = await fetch('includes/footer.html');
+        if (!response.ok) throw new Error('No se pudo cargar el pie de página');
+        
+        const html = await response.text();
+        const footer = document.getElementById('footer-placeholder');
+        if (footer) {
+          footer.innerHTML = html;
+        }
+      } catch (error) {
+        console.error('Error al cargar el pie de página:', error);
+      }
+    }
+
+    // Cargar navegación y pie de página cuando el DOM esté listo
+    document.addEventListener('DOMContentLoaded', () => {
+      cargarNavegacion();
+      cargarFooter();
+    });
+
+    // Inicialización del menú móvil
+    function initMobileMenu() {
       const menuToggle = document.querySelector('.menu-toggle');
       const mainNav = document.querySelector('.main-nav');
-      const navOverlay = document.querySelector('.nav-overlay');
       
-      // Initialize mobile menu
-      function initMobileMenu() {
-        if (!menuToggle || !mainNav) return;
+      if (!menuToggle || !mainNav) return;
+      
+      // Toggle menu function
+      function toggleMenu() {
+        const isOpen = menuToggle.classList.toggle('active');
+        mainNav.classList.toggle('active', isOpen);
+        document.body.style.overflow = isOpen ? 'hidden' : '';
         
-        // Toggle menu function
-        function toggleMenu() {
-          const isOpen = menuToggle.classList.toggle('active');
-          mainNav.classList.toggle('active', isOpen);
-          document.body.style.overflow = isOpen ? 'hidden' : '';
-          
-          // Toggle aria-expanded for accessibility
-          menuToggle.setAttribute('aria-expanded', isOpen);
-          
-          // Focus management for accessibility
-          if (isOpen) {
-            // Focus first focusable element in the menu
-            const firstFocusable = mainNav.querySelector('a, button, [tabindex="0"]');
-            if (firstFocusable) firstFocusable.focus();
-          } else {
-            // Return focus to menu toggle when closing
-            menuToggle.focus();
-          }
+        // Toggle aria-expanded for accessibility
+        menuToggle.setAttribute('aria-expanded', isOpen);
+        
+        // Focus management for accessibility
+        if (isOpen) {
+          // Focus first focusable element in the menu
+          const firstFocusable = mainNav.querySelector('a, button, [tabindex="0"]');
+          if (firstFocusable) firstFocusable.focus();
+        } else {
+          // Return focus to menu toggle when closing
+          menuToggle.focus();
         }
-        
-        // Close menu when clicking outside
-        function handleClickOutside(e) {
-          if (mainNav.classList.contains('active') && !mainNav.contains(e.target) && e.target !== menuToggle) {
-            toggleMenu();
-          }
-        }
-        
-        // Close menu on escape key
-        function handleEscapeKey(e) {
-          if (e.key === 'Escape' && mainNav.classList.contains('active')) {
-            toggleMenu();
-          }
-        }
-        
-        // Event listeners
-        menuToggle.addEventListener('click', toggleMenu);
-        document.addEventListener('click', handleClickOutside);
-        document.addEventListener('keydown', handleEscapeKey);
-        
-        // Close menu when clicking on nav links (for single page apps)
-        const navLinks = mainNav.querySelectorAll('a[href^="#"]');
-        navLinks.forEach(link => {
-          link.addEventListener('click', () => {
-            if (window.innerWidth <= 991) {
-              toggleMenu();
-            }
-          });
-        });
       }
       
-      // Initialize mobile menu
-      initMobileMenu();
+      // Close menu when clicking outside
+      function handleClickOutside(e) {
+        if (mainNav.classList.contains('active') && !mainNav.contains(e.target) && e.target !== menuToggle) {
+          toggleMenu();
+        }
+      }
       
-      // Handle window resize
-      let resizeTimer;
-      window.addEventListener('resize', function() {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(function() {
-          if (window.innerWidth > 991 && menuToggle && menuToggle.classList.contains('active')) {
-            menuToggle.classList.remove('active');
-            mainNav.classList.remove('active');
-            document.body.style.overflow = '';
-            menuToggle.setAttribute('aria-expanded', 'false');
+      // Close menu on escape key
+      function handleEscapeKey(e) {
+        if (e.key === 'Escape' && mainNav.classList.contains('active')) {
+          toggleMenu();
+        }
+      }
+      
+      // Event listeners
+      menuToggle.addEventListener('click', toggleMenu);
+      document.addEventListener('click', handleClickOutside);
+      document.addEventListener('keydown', handleEscapeKey);
+      
+      // Close menu when clicking on nav links (for single page apps)
+      const navLinks = mainNav.querySelectorAll('a[href^="#"]');
+      navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          if (window.innerWidth <= 991) {
+            toggleMenu();
           }
-        }, 250);
+        });
       });
+    }
+    
+    // Handle window resize
+    let resizeTimer;
+    window.addEventListener('resize', function() {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function() {
+        if (window.innerWidth > 991 && menuToggle && menuToggle.classList.contains('active')) {
+          menuToggle.classList.remove('active');
+          mainNav.classList.remove('active');
+          document.body.style.overflow = '';
+          menuToggle.setAttribute('aria-expanded', 'false');
+        }
+      }, 250);
     });
   </script>
 
@@ -472,10 +527,9 @@
                 <a href="/" class="logo">VIVAE</a>
                 <div class="nav-links">
                   <a href="productos.html">Productos</a>
-                  <a href="#" class="btn-carrito">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="carrito-contador">0</span>
-                  </a>
+                  <a id="btn-contactar" href="#" class="btn-contactar" target="_blank" rel="noopener noreferrer">
+                  <i class="fab fa-whatsapp"></i> Contactar por WhatsApp
+                </a>
                 </div>
               </div>
             </nav>
@@ -520,7 +574,25 @@
       loadingIndicator.style.padding = '2rem';
       footerPlaceholder.appendChild(loadingIndicator);
       
+      // Cargar el pie de página
       fetch('includes/footer.html')
+        .then(response => {
+          if (!response.ok) throw new Error('No se pudo cargar el pie de página');
+          return response.text();
+        })
+        .then(html => {
+          footerPlaceholder.innerHTML = html;
+        })
+        .catch(error => {
+          console.error('Error al cargar el pie de página:', error);
+          footerPlaceholder.innerHTML = `
+            <footer class="footer" style="background: #f8f9fa; padding: 2rem 0; margin-top: 3rem; text-align: center;">
+              <div class="container">
+                <p>&copy; ${new Date().getFullYear()} VIVAE. Todos los derechos reservados.</p>
+              </div>
+            </footer>
+          `;
+        });
       
       // Cargar los productos
       const urlParams = new URLSearchParams(window.location.search);
@@ -765,18 +837,19 @@
           
           // Activar la pestaña seleccionada
           const tabId = btn.getAttribute('data-tab');
-          if (tabId) {
+          const tabContent = document.getElementById(tabId);
+          
+          if (tabContent) {
+            tabContent.classList.add('activo');
             btn.classList.add('activo');
-            const tabContent = document.getElementById(tabId);
-            if (tabContent) tabContent.classList.add('activo');
           }
         });
       });
       
       // Configurar botones de cantidad
-      const cantidadInput = document.getElementById('cantidad');
-      const aumentarBtn = document.getElementById('aumentar-cantidad');
-      const disminuirBtn = document.getElementById('disminuir-cantidad');
+      const aumentarBtn = document.querySelector('.aumentar');
+      const disminuirBtn = document.querySelector('.disminuir');
+      const cantidadInput = document.querySelector('.cantidad-input');
       
       if (aumentarBtn && cantidadInput) {
         aumentarBtn.addEventListener('click', () => {
@@ -791,7 +864,7 @@
           }
         });
       }
-    }
+    }})
   </script>
 </body>
 </html>
