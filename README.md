@@ -16,26 +16,6 @@
 - 🔍 Búsqueda y filtrado de productos
 - 🎨 Interfaz de usuario moderna y atractiva
 
-## 🚀 Cómo Usar
-
-1. Clona el repositorio:
-   ```bash
-   git clone https://github.com/ANDRES-FLORIAN-SALAZAR/VIVAE-SHOP.git
-   cd VIVAE-SHOP
-   ```
-
-2. Abre `index.html` en tu navegador o despliega en un servidor web
-
-3. Para personalizar el número de WhatsApp, edita la constante `WHATSAPP_NUMBER` en `js/main.js`
-
-## 🌐 Despliegue
-
-### GitHub Pages (Recomendado)
-1. Crea un nuevo repositorio en GitHub
-2. Sube los archivos
-3. Ve a `Settings` → `Pages`
-4. En `Source`, selecciona la rama `main` y la carpeta raíz `/`
-5. Tu catálogo estará disponible en: `https://<tu-usuario>.github.io/<nombre-repositorio>/`
 
 ## 🛠️ Personalización
 
