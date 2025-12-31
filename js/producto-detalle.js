@@ -79,23 +79,80 @@ function mostrarProducto(producto) {
     
     // Configurar imágenes
     const imagenes = [];
+    const imagenPorDefecto = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgNDAwIiBmaWxsPSJub25lIiBzdHJva2U9IiNlZWVlZWUiIHN0cm9rZS13aWR0aD0iMiI+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9IiNmOGY5ZmEiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBhbGlnbm1lbnQtYmFzZWxpbmU9Im1pZGRsZSIgZmlsbD0iIzk5OSI+SW1hZ2VuIG5vIGRpc3BvbmlibGU8L3RleHQ+PC9zdmc+';
+    
+    // Función para verificar si una imagen existe
+    const verificarImagen = (url) => {
+        return new Promise((resolve) => {
+            const img = new Image();
+            img.onload = () => resolve(true);
+            img.onerror = () => resolve(false);
+            img.src = url;
+        });
+    };
+
+    // Función para obtener la ruta de la imagen con manejo de errores
+    const obtenerRutaImagen = async (ruta) => {
+        if (!ruta) return null;
+        
+        // Si ya es una URL de datos, devolverla tal cual
+        if (ruta.startsWith('data:')) return ruta;
+        
+        let rutaFinal = ruta;
+        
+        // Si es una ruta relativa que no empieza con 'img/', añadir 'img/'
+        if (!ruta.startsWith('http') && !ruta.startsWith('/') && !ruta.startsWith('img/')) {
+            rutaFinal = `img/${ruta}`;
+        }
+        
+        // Verificar si la imagen existe
+        const existe = await verificarImagen(rutaFinal);
+        
+        // Si la imagen no existe, usar un placeholder
+        if (!existe) {
+            // Intentar con minúsculas
+            const rutaMinusculas = rutaFinal.toLowerCase();
+            const existeMinusculas = await verificarImagen(rutaMinusculas);
+            
+            if (existeMinusculas) {
+                return rutaMinusculas;
+            }
+            
+            return imagenPorDefecto;
+        }
+        
+        return rutaFinal;
+    };
+    
+    // Procesar imágenes del producto
     if (producto.image) {
         if (Array.isArray(producto.image)) {
-            imagenes.push(...producto.image);
+            // Procesar cada imagen del array
+            for (const img of producto.image) {
+                const ruta = await obtenerRutaImagen(img);
+                if (ruta) imagenes.push(ruta);
+            }
         } else {
-            imagenes.push(producto.image);
+            const ruta = await obtenerRutaImagen(producto.image);
+            if (ruta) imagenes.push(ruta);
         }
-    } else {
-        // Imagen por defecto si no hay imágenes
-        imagenes.push('img/placeholder-producto.jpg');
+    }
+    
+    // Si no hay imágenes, usar la imagen por defecto
+    if (imagenes.length === 0) {
+        imagenes.push(imagenPorDefecto);
     }
     
     const imagenPrincipal = document.getElementById('imagen-principal');
     const contenedorMiniaturas = document.getElementById('miniaturas');
     
-    // Establecer la imagen principal
+    // Establecer la imagen principal con manejo de errores
     imagenPrincipal.src = imagenes[0];
     imagenPrincipal.alt = producto.name || 'Imagen del producto';
+    imagenPrincipal.onerror = function() {
+        this.src = imagenPorDefecto;
+        this.onerror = null; // Prevenir bucles de error
+    };
     
     // Limpiar miniaturas existentes
     contenedorMiniaturas.innerHTML = '';
@@ -146,8 +203,23 @@ function mostrarProducto(producto) {
         listaCaracteristicas.appendChild(li);
     }
     
-    // Mostrar la sección del producto
-    document.getElementById('producto-detalle').style.display = 'grid';
+    // Mostrar la sección del producto con una transición suave
+    const productoDetalle = document.getElementById('producto-detalle');
+    productoDetalle.style.opacity = '0';
+    productoDetalle.style.display = 'grid';
+    
+    // Forzar reflow para que la animación funcione
+    void productoDetalle.offsetWidth;
+    
+    // Aplicar la transición
+    productoDetalle.style.transition = 'opacity 0.3s ease-in-out';
+    productoDetalle.style.opacity = '1';
+    
+    // Desplazamiento suave al inicio de la página
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
 }
 
 /**
