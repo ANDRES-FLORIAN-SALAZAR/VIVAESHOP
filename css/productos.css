@@ -208,25 +208,34 @@ main.contenido-principal {
     justify-content: center;
 }
 
+/* Estilos para los botones de filtro */
+.filtros-categorias {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
 .filtro-btn {
-    background: #f5f5f5;
+    background: #fff;
     border: 1px solid #e0e0e0;
     border-radius: 30px;
     padding: 8px 18px;
     font-size: 14px;
     font-weight: 500;
-    color: #555;
+    color: #333;
     cursor: pointer;
     transition: all 0.3s ease;
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 8px;
+    justify-content: center;
+    margin: 2px;
 }
 
 .filtro-btn:hover {
-    background: #e8e8e8;
+    background: #f5f5f5;
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 .filtro-btn.active {
@@ -234,10 +243,16 @@ main.contenido-principal {
     color: #000;
     border-color: #000;
     font-weight: 600;
+    transform: none;
+    box-shadow: none;
 }
 
-.filtro-btn i {
-    font-size: 16px;
+/* Estilos para los íconos */
+.filtro-btn .material-icons {
+    font-size: 18px;
+    margin-right: 6px;
+    vertical-align: middle;
+    color: inherit;
 }
 
 /* Grid de productos */

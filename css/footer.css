@@ -631,6 +631,12 @@
     display: none;
   }
   
+  /* Animación para el botón de WhatsApp */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
   .back-to-top {
     width: 45px;
     height: 45px;
