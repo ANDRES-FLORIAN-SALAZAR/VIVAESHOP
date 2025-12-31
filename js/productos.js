@@ -21,6 +21,15 @@ function domReady(callback) {
 domReady(function() {
     console.log('DOM completamente cargado, inicializando productos...');
     
+    // Verificar si ya se inicializó
+    if (window.productosInicializados) {
+        console.log('La página de productos ya fue inicializada');
+        return;
+    }
+    
+    // Marcar como inicializado
+    window.productosInicializados = true;
+    
     // Verificar si estamos en la página de productos
     if (!document.body.classList.contains('pagina-productos') && 
         !window.location.pathname.includes('productos.html')) {
@@ -51,6 +60,17 @@ domReady(function() {
  */
 async function initProductosPage() {
     try {
+        // Verificar si ya hay productos cargados (por main.js)
+        if (window.vivae && window.vivae.state && window.vivae.state.productos && window.vivae.state.productos.length > 0) {
+            console.log('Usando productos cargados desde main.js');
+            // Configurar eventos de filtrado
+            configurarFiltros();
+            return;
+        }
+        
+        // Si no hay productos cargados, cargarlos aquí
+        console.log('Cargando productos desde productos.js');
+        
         // Mostrar estado de carga
         const loading = document.getElementById('loading');
         const errorContainer = document.getElementById('error-container');
