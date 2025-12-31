@@ -1,6 +1,31 @@
 /* Estilos para la página de detalle de producto */
 .pagina-detalle {
     background-color: #f9f9f9;
+    padding-top: 2rem;
+}
+
+/* Estilos para el botón de volver */
+.btn-volver {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+    transition: color 0.3s ease;
+}
+
+.btn-volver i {
+    transition: transform 0.3s ease;
+}
+
+.btn-volver:hover {
+    color: #000;
+}
+
+.btn-volver:hover i {
+    transform: translateX(-3px);
 }
 
 /* Estilos para el contenedor principal */
