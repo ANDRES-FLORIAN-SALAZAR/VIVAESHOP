@@ -362,9 +362,9 @@ async function filtrarProductos(termino = '', categoria = 'todos') {
         // Filtrar productos
         const productosFiltrados = productos.filter(producto => {
             // Normalizar datos del producto
-            const nombre = (producto.nombre || '').toString().toLowerCase().trim();
-            const descripcion = (producto.descripcion || '').toString().toLowerCase().trim();
-            const categoria = (producto.categoria || '').toString().toLowerCase().trim();
+            const nombre = (producto.name || producto.nombre || '').toString().toLowerCase().trim();
+            const descripcion = (producto.description || producto.descripcion || '').toString().toLowerCase().trim();
+            const categoria = (producto.category || producto.categoria || '').toString().toLowerCase().trim();
             
             // Filtrar por categoría primero (más eficiente)
             const coincideCategoria = 
@@ -382,9 +382,9 @@ async function filtrarProductos(termino = '', categoria = 'todos') {
             
             // Verificar si todos los términos de búsqueda están presentes en algún campo
             return terminosBusqueda.every(termino => 
-                nombre.includes(termino) ||
-                descripcion.includes(termino) ||
-                categoria.includes(termino)
+                (nombre && nombre.includes(termino)) ||
+                (descripcion && descripcion.includes(termino)) ||
+                (categoria && categoria.includes(termino))
             );
         });
         
