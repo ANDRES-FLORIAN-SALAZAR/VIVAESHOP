@@ -242,7 +242,7 @@ async function mostrarProductos(productos) {
                         <a href="${CONFIG.getWhatsAppUrl(producto.nombre || '')}" class="btn-contactar" target="_blank" rel="noopener noreferrer" data-id="${producto.id}" aria-label="Contactar por WhatsApp">
                             <i class="fab fa-whatsapp"></i> Contactar
                         </a>
-                        <a href="producto-detalle.html?id=${producto.id}" class="btn-ver-detalle" aria-label="Ver detalles">
+                        <a href="/producto-detalle.html?id=${producto.id}" class="btn-ver-detalle" data-id="${producto.id}" aria-label="Ver detalles">
                             <i class="fas fa-eye"></i> Ver detalles
                         </a>
                     </div>
@@ -500,8 +500,11 @@ function inicializarEventosProductos() {
     // Evento para los botones de ver detalles
     document.querySelectorAll('.btn-ver-detalle').forEach(boton => {
         boton.addEventListener('click', (e) => {
+            // Obtener el ID del producto del atributo data-id
+            const productoId = boton.dataset.id;
+            console.log('Ver detalles del producto:', productoId);
             // La navegación se maneja con el href del enlace
-            console.log('Ver detalles del producto:', boton.closest('.producto')?.dataset.id);
+            // No es necesario preventDefault() ya que queremos que el enlace funcione normalmente
         });
     });
 }
