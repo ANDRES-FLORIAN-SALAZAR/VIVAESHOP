@@ -55,7 +55,7 @@ async function cargarProducto(id) {
 /**
  * Muestra los datos del producto en la página
  */
-function mostrarProducto(producto) {
+async function mostrarProducto(producto) {
     // Actualizar título de la página
     document.title = `${producto.name || 'Producto'} - VIVAE`;
     
@@ -124,30 +124,38 @@ function mostrarProducto(producto) {
         return rutaFinal;
     };
     
-    // Procesar imágenes del producto
-    if (producto.image) {
-        if (Array.isArray(producto.image)) {
-            // Procesar cada imagen del array
-            for (const img of producto.image) {
-                const ruta = await obtenerRutaImagen(img);
+    // Función para cargar las imágenes de forma asíncrona
+    const cargarImagenes = async () => {
+        if (producto.image) {
+            if (Array.isArray(producto.image)) {
+                // Procesar cada imagen del array
+                for (const img of producto.image) {
+                    const ruta = await obtenerRutaImagen(img);
+                    if (ruta) imagenes.push(ruta);
+                }
+            } else {
+                const ruta = await obtenerRutaImagen(producto.image);
                 if (ruta) imagenes.push(ruta);
             }
-        } else {
-            const ruta = await obtenerRutaImagen(producto.image);
-            if (ruta) imagenes.push(ruta);
         }
-    }
+        
+        // Si no hay imágenes, usar la imagen por defecto
+        if (imagenes.length === 0) {
+            imagenes.push(imagenPorDefecto);
+        }
+        
+        return imagenes;
+    };
     
-    // Si no hay imágenes, usar la imagen por defecto
-    if (imagenes.length === 0) {
-        imagenes.push(imagenPorDefecto);
-    }
+    // Cargar las imágenes y luego continuar
+    const imagenesCargadas = await cargarImagenes();
+    
     
     const imagenPrincipal = document.getElementById('imagen-principal');
     const contenedorMiniaturas = document.getElementById('miniaturas');
     
     // Establecer la imagen principal con manejo de errores
-    imagenPrincipal.src = imagenes[0];
+    imagenPrincipal.src = imagenesCargadas[0];
     imagenPrincipal.alt = producto.name || 'Imagen del producto';
     imagenPrincipal.onerror = function() {
         this.src = imagenPorDefecto;
@@ -158,7 +166,7 @@ function mostrarProducto(producto) {
     contenedorMiniaturas.innerHTML = '';
     
     // Agregar miniaturas
-    imagenes.forEach((imagen, index) => {
+    imagenesCargadas.forEach((imagen, index) => {
         const miniatura = document.createElement('img');
         miniatura.src = imagen;
         miniatura.alt = `Vista ${index + 1} de ${producto.name || 'producto'}`;
