@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es" class="pagina-detalle-producto">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle del Producto - VIVAE</title>
+    <link rel="icon" type="image/jpg" href="img/vivae.jpg">
+    <link rel="shortcut icon" type="image/jpg" href="img/vivae.jpg">
+    
+    <!-- Fuentes y estilos -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/producto-detalle.css">
+</head>
+<body>
+    <!-- Navigation will be loaded here -->
+    <div id="navbar-placeholder">
+      <!-- Nav will be loaded by JavaScript -->
+    </div>
+    
+    <main class="contenedor seccion">
+        <a href="productos.html" class="btn-volver">
+            <i class="fas fa-arrow-left"></i> Volver a productos
+        </a>
+        
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>Cargando producto...</p>
+        </div>
+
+        <div id="producto-detalle" class="producto-detalle" style="display: none;">
+            <div class="producto-galeria">
+                <div class="imagen-principal">
+                    <img id="imagen-principal" src="" alt="Vista principal del producto">
+                </div>
+                <div id="miniaturas" class="miniaturas"></div>
+            </div>
+
+            <div class="producto-info">
+                <h1 id="producto-nombre">Cargando...</h1>
+                <p class="producto-precio" id="producto-precio">$0.00</p>
+                <div class="producto-descripcion" id="producto-descripcion"></div>
+                
+                <div class="producto-acciones">
+                    <a id="btn-contactar" href="#" class="btn-contactar" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-whatsapp"></i> Contactar por WhatsApp
+                    </a>
+                </div>
+
+                <div class="producto-caracteristicas" id="producto-caracteristicas">
+                    <h3>Características</h3>
+                    <ul id="lista-caracteristicas">
+                        <!-- Las características se cargarán dinámicamente -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="error-container" class="error-container" style="display: none;">
+            <i class="fas fa-exclamation-circle"></i>
+            <p>No se pudo cargar la información del producto.</p>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded here -->
+    <footer id="footer-placeholder"></footer>
+
+    <!-- Scripts -->
+    <script>
+    // Función para cargar la navegación
+    async function cargarNavegacion() {
+        try {
+            const response = await fetch('includes/nav.html');
+            if (!response.ok) throw new Error('No se pudo cargar la navegación');
+            
+            const html = await response.text();
+            document.getElementById('navbar-placeholder').innerHTML = html;
+            
+            // Inicializar menú móvil
+            if (typeof initMobileMenu === 'function') {
+                initMobileMenu();
+            }
+        } catch (error) {
+            console.error('Error al cargar la navegación:', error);
+        }
+    }
+
+    // Función para cargar el pie de página
+    async function cargarFooter() {
+        try {
+            const response = await fetch('includes/footer.html');
+            if (!response.ok) throw new Error('No se pudo cargar el pie de página');
+            
+            const html = await response.text();
+            document.getElementById('footer-placeholder').innerHTML = html;
+        } catch (error) {
+            console.error('Error al cargar el pie de página:', error);
+        }
+    }
+
+    // Cargar navegación y pie de página cuando el DOM esté listo
+    document.addEventListener('DOMContentLoaded', () => {
+        cargarNavegacion();
+        cargarFooter();
+    });
+
+    // Inicialización del menú móvil
+    function initMobileMenu() {
+        const menuToggle = document.querySelector('.menu-toggle');
+        const nav = document.querySelector('nav ul');
+        
+        if (menuToggle && nav) {
+            menuToggle.addEventListener('click', () => {
+                nav.classList.toggle('show');
+            });
+        }
+    }
+    </script>
+    
+    <script src="js/producto-detalle.js"></script>
+</body>
+</html>
