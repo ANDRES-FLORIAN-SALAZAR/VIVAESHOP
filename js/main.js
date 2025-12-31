@@ -6,7 +6,12 @@
  */
 
 // Configuración global
-const CONFIG = {
+window.vivae = window.vivae || {
+    state: {
+        productos: [],
+        productosCargados: false
+    },
+    CONFIG: {
     apiUrl: 'data/productos.json',
     WHATSAPP_NUMBER: '573175535562',
     getWhatsAppUrl: function(productName = '') {
@@ -24,9 +29,7 @@ const CONFIG = {
 };
 
 // Estado global
-const state = {
-    productos: []
-};
+const state = window.vivae.state;
 
 // Función principal de inicialización
 function init() {
@@ -37,12 +40,21 @@ function init() {
         initMobileMenu();
     }
     
-    // Cargar y mostrar productos
-    if (typeof cargarProductos === 'function') {
+    // Solo cargar productos si estamos en la página de productos
+    const esPaginaProductos = document.body.classList.contains('pagina-productos') || 
+                            window.location.pathname.includes('productos.html');
+    
+    if (esPaginaProductos && !window.vivae.state.productosCargados && typeof cargarProductos === 'function') {
         cargarProductos().then(productos => {
             if (productos && productos.length > 0) {
-                state.productos = productos;
-                mostrarProductos(productos);
+                window.vivae.state.productos = productos;
+                window.vivae.state.productosCargados = true;
+                console.log('Productos cargados desde main.js');
+                
+                // Si ya está definida la función mostrarProductos, mostrarlos
+                if (typeof mostrarProductos === 'function') {
+                    mostrarProductos(productos);
+                }
             } else {
                 console.warn('No se cargaron productos o la lista está vacía.');
             }
