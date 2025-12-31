@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles del Producto - VIVAE</title>
+    <link rel="icon" type="image/jpg" href="img/vivae.jpg">
+    <link rel="shortcut icon" type="image/jpg" href="img/vivae.jpg">
+    
+    <!-- Fuentes y estilos -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/producto-detalle.css">
+</head>
+<body class="pagina-detalle">
+    <!-- Navigation -->
+    <div id="navbar-placeholder">
+        <!-- Nav se cargará con JavaScript -->
+    </div>
+    
+    <main class="contenedor seccion">
+        <a href="productos.html" class="btn-volver">
+            <i class="fas fa-arrow-left"></i> Volver a productos
+        </a>
+        
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>Cargando producto...</p>
+        </div>
+
+        <div id="producto-detalle" class="producto-detalle" style="display: none;">
+            <div class="producto-galeria">
+                <div class="imagen-principal">
+                    <img id="imagen-principal" src="" alt="Vista principal del producto">
+                </div>
+                <div id="miniaturas" class="miniaturas"></div>
+            </div>
+
+            <div class="producto-info">
+                <h1 id="producto-nombre">Cargando...</h1>
+                <p class="producto-precio" id="producto-precio">$0.00</p>
+                <div class="producto-descripcion" id="producto-descripcion"></div>
+                
+                <div class="producto-acciones">
+                    <a id="btn-contactar" href="#" class="btn-contactar" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-whatsapp"></i> Contactar por WhatsApp
+                    </a>
+                </div>
+
+                <div class="producto-caracteristicas" id="producto-caracteristicas">
+                    <h3>Características</h3>
+                    <ul id="lista-caracteristicas">
+                        <!-- Las características se cargarán dinámicamente -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="error-container" class="error-container" style="display: none;">
+            <i class="fas fa-exclamation-circle"></i>
+            <p>No se pudo cargar la información del producto.</p>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer id="footer-placeholder"></footer>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+    <script src="js/producto-detalle.js"></script>
+</body>
+</html>
