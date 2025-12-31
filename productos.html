@@ -8,8 +8,20 @@
     <link rel="shortcut icon" type="image/jpg" href="img/vivae.jpg">
     
     <!-- Fuentes y estilos -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="css/normalize.css">
+    <style>
+        .material-icons {
+            font-size: 20px;
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+        .filtro-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
     <link rel="stylesheet" href="css/estilos.css">
     <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="css/productos.css">
@@ -32,25 +44,25 @@
         <div class="filtros-container">
     <div class="filtros-categorias">
         <button class="filtro-btn active" data-categoria="todos">
-            <i class="fas fa-th-large"></i> Todos
+            <span class="material-icons">apps</span> Todos
         </button>
         <button class="filtro-btn" data-categoria="blusas">
-            <i class="fas fa-tshirt"></i> Blusas
+            <span class="material-icons">checkroom</span> Blusas
         </button>
         <button class="filtro-btn" data-categoria="conjuntos">
-            <i class="fas fa-layer-group"></i> Conjuntos
+            <span class="material-icons">layers</span> Conjuntos
         </button>
         <button class="filtro-btn" data-categoria="faldas">
-            <i class="fas fa-skirt"></i> Faldas
+            <span class="material-icons">skirt</span> Faldas
         </button>
         <button class="filtro-btn" data-categoria="licra">
-            <i class="fas fa-tshirt"></i> Licra
+            <span class="material-icons">fitness_center</span> Licra
         </button>
         <button class="filtro-btn" data-categoria="pantalones">
-            <i class="fas fa-pants"></i> Pantalones
+            <span class="material-icons">checkroom</span> Pantalones
         </button>
         <button class="filtro-btn" data-categoria="vestidos">
-            <i class="fas fa-dress"></i> Vestidos
+            <span class="material-icons">checkroom</span> Vestidos
         </button>
     </div>
 </div>
