@@ -230,9 +230,10 @@ main.contenido-principal {
 }
 
 .filtro-btn.active {
-    background: var(--color-primario);
-    color: white;
-    border-color: var(--color-primario);
+    background: #f0f0f0;
+    color: #000;
+    border-color: #000;
+    font-weight: 600;
 }
 
 .filtro-btn i {
