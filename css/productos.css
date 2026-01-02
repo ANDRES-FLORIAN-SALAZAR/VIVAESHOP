@@ -91,20 +91,23 @@ body.no-scroll {
   align-items: center;
   gap: 15px;
   font-weight: 700;
-  font-size: 24px;
+  font-size: clamp(18px, 4vw, 24px);
   color: #333;
   text-decoration: none;
   font-family: 'Playfair Display', serif;
   letter-spacing: 1px;
+  flex-shrink: 0;
 }
 
 .logo-img {
-  height: 40px;
+  height: clamp(35px, 5vw, 40px);
   width: auto;
   border-radius: 50%;
   transition: transform 0.5s ease-in-out;
   animation: float 4s ease-in-out infinite;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  object-fit: contain;
+  flex-shrink: 0;
 }
 
 @keyframes float {
@@ -114,9 +117,10 @@ body.no-scroll {
 
 .logo-text {
   color: #333;
-  font-size: 1.5rem;
+  font-size: clamp(1.1rem, 3vw, 1.5rem);
   font-weight: 700;
   line-height: 1;
+  white-space: nowrap;
 }
 
 /* Navegación */
@@ -499,6 +503,7 @@ body.no-scroll {
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
 }
 
@@ -948,7 +953,7 @@ body.no-scroll {
   .filtro-btn span:not(.material-icons) {
     display: none;
   }
-
+  
   .filtro-btn {
     padding: 0.6rem;
   }
