@@ -236,6 +236,9 @@ async function mostrarProductos(productos) {
                         <a href="producto-detalle.html?id=${producto.id}" class="btn-ver-detalle" data-id="${producto.id}" aria-label="Ver detalles" target="_self">
                             <i class="fas fa-eye"></i> Ver detalles
                         </a>
+                        <button class="btn-anadir-carrito" data-producto='${JSON.stringify(producto).replace(/'/g, "\\'")}'>
+                            <i class="fas fa-cart-plus"></i> Añadir al carrito
+                        </button>
                     </div>
                 </div>
                 <div class="producto-info">
@@ -269,6 +272,27 @@ async function mostrarProductos(productos) {
     
     // Inicializar eventos de los botones
     inicializarEventosProductos();
+    
+    // Configurar eventos para los botones de añadir al carrito
+    document.querySelectorAll('.btn-anadir-carrito').forEach(boton => {
+        boton.addEventListener('click', function(e) {
+            e.preventDefault();
+            const producto = JSON.parse(this.dataset.producto);
+            if (window.vivae && window.vivae.carrito) {
+                window.vivae.carrito.agregarProducto({
+                    id: producto.id,
+                    nombre: producto.name,
+                    precio: parseFloat(producto.price.replace(/[^0-9.-]+/g,"")),
+                    imagen: producto.image || 'img/placeholder.jpg',
+                    categoria: producto.category
+                });
+            } else {
+                console.error('El carrito no está disponible');
+            }
+        });
+    });
+    
+    return productsGrid;
 }
 
 /**

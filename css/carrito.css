@@ -1,0 +1,232 @@
+/* Estilos del carrito de compras */
+.carrito-icono {
+    position: relative;
+    cursor: pointer;
+    margin-left: 20px;
+    color: #333;
+    font-size: 1.5rem;
+    text-decoration: none;
+}
+
+.carrito-contador {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #e74c3c;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: bold;
+}
+
+.carrito-contenedor {
+    position: fixed;
+    top: 0;
+    right: -400px;
+    width: 100%;
+    max-width: 400px;
+    height: 100vh;
+    background-color: white;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    transition: right 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.carrito-contenedor.activo {
+    right: 0;
+}
+
+.carrito-cabecera {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.carrito-titulo {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.carrito-cerrar {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #666;
+}
+
+.carrito-items {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px;
+}
+
+.carrito-item {
+    display: flex;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.carrito-item:last-child {
+    border-bottom: none;
+}
+
+.carrito-item-img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    margin-right: 15px;
+    border-radius: 4px;
+}
+
+.carrito-item-detalles {
+    flex: 1;
+}
+
+.carrito-item-titulo {
+    margin: 0 0 5px 0;
+    font-size: 0.9rem;
+}
+
+.carrito-item-precio {
+    font-weight: 600;
+    color: #e74c3c;
+    margin: 5px 0;
+}
+
+.carrito-item-cantidad {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.carrito-item-cantidad button {
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.carrito-item-cantidad input {
+    width: 40px;
+    text-align: center;
+    border: 1px solid #ddd;
+    height: 25px;
+    margin: 0 5px;
+}
+
+.carrito-eliminar {
+    color: #e74c3c;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    margin-top: 5px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.carrito-eliminar i {
+    margin-right: 5px;
+}
+
+.carrito-total {
+    padding: 20px;
+    border-top: 1px solid #eee;
+}
+
+.carrito-total-texto {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.carrito-botones {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-carrito {
+    flex: 1;
+    padding: 10px;
+    text-align: center;
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-vaciar {
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+.btn-pagar {
+    background-color: #27ae60;
+    color: white;
+}
+
+.btn-pagar:hover {
+    background-color: #219653;
+}
+
+.carrito-vacio {
+    text-align: center;
+    padding: 40px 20px;
+    color: #777;
+}
+
+.carrito-vacio i {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    color: #ddd;
+}
+
+/* Overlay para el carrito */
+.carrito-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+
+.carrito-overlay.activo {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .carrito-contenedor {
+        max-width: 100%;
+    }
+    
+    .carrito-botones {
+        flex-direction: column;
+    }
+}

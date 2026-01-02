@@ -1,0 +1,22 @@
+<!-- Estilos del carrito -->
+<link rel="stylesheet" href="css/carrito.css">
+
+<!-- Script del carrito -->
+<script src="js/carrito.js" defer></script>
+
+<!-- Inicialización del carrito -->
+<script>
+// Asegurarse de que el carrito se inicialice después de cargar el DOM
+document.addEventListener('DOMContentLoaded', function() {
+    // Verificar si ya está inicializado
+    if (!window.vivae || !window.vivae.carrito) {
+        window.vivae = window.vivae || {};
+        window.vivae.carrito = new Carrito();
+    }
+    
+    // Actualizar la vista del carrito
+    if (window.vivae.carrito.actualizarVista) {
+        window.vivae.carrito.actualizarVista();
+    }
+});
+</script>

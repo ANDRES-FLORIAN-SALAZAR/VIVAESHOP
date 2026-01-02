@@ -32,8 +32,59 @@
         <a href="cuenta.html" class="user-icon">
             <i class="fas fa-user"></i>
         </a>
+        <a href="#" class="carrito-icono">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="carrito-contador">0</span>
+        </a>
     </div>
 </nav>
 
 <!-- Mobile Menu Overlay -->
 <div class="mobile-overlay"></div>
+
+<!-- Carrito de compras -->
+<div class="carrito-overlay"></div>
+<div class="carrito-contenedor">
+    <div class="carrito-cabecera">
+        <h3 class="carrito-titulo">Tu Carrito</h3>
+        <button class="carrito-cerrar">&times;</button>
+    </div>
+    
+    <div class="carrito-items">
+        <!-- Los productos del carrito se cargarán aquí dinámicamente -->
+    </div>
+    
+    <div class="carrito-total">
+        <div class="carrito-total-texto">
+            <span>Total:</span>
+            <span class="carrito-total-precio">$0.00</span>
+        </div>
+        <div class="carrito-botones">
+            <button class="btn-carrito btn-vaciar">Vaciar Carrito</button>
+            <button class="btn-carrito btn-pagar">Pagar Ahora</button>
+        </div>
+    </div>
+</div>
+
+<!-- Notificaciones -->
+<style>
+    .notificacion {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #27ae60;
+        color: white;
+        padding: 15px 25px;
+        border-radius: 4px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        transform: translateY(100px);
+        opacity: 0;
+        transition: transform 0.3s, opacity 0.3s;
+        z-index: 1100;
+    }
+    
+    .notificacion.mostrar {
+        transform: translateY(0);
+        opacity: 1;
+    }
+</style>

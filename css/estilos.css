@@ -1606,6 +1606,57 @@ body {
   transform: translateY(-2px);
 }
 
+/* Estilos para los botones de añadir al carrito */
+.btn-anadir-carrito {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background-color: var(--color-secundario);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.btn-anadir-carrito:hover {
+  background-color: #e66a50;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-anadir-carrito i {
+  font-size: 1rem;
+}
+
+/* Estilos para las acciones del producto */
+.producto-acciones {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+/* Ajustes para pantallas pequeñas */
+@media (max-width: 768px) {
+  .producto-acciones {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  
+  .btn-ver-detalle,
+  .btn-anadir-carrito {
+    flex: 1 1 calc(50% - 4px);
+    margin-top: 0;
+  }
+}
+
 .btn-contactar {
   background-color: #25D366; /* Color de WhatsApp */
   color: white;
