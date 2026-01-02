@@ -185,33 +185,33 @@ async function mostrarProductos(productos) {
             
             // Construir el HTML del producto
             productCard.innerHTML = `
-                <div class="producto-imagen">
-                    <img src="${imagenUrl}" alt="${producto.name || 'Producto'}" loading="lazy" 
+                <div class="product-image-container">
+                    <img class="product-image" src="${imagenUrl}" alt="${producto.name || 'Producto'}" loading="lazy" 
                          onerror="this.onerror=null; this.src='${imagenUrl}'">
                     ${producto.featured ? '<div class="producto-destacado">Destacado</div>' : ''}
-                    <div class="producto-acciones">
-                        <a href="producto-detalle.html?id=${producto.id}" class="btn-ver-detalle" data-id="${producto.id}" aria-label="Ver detalles" target="_self">
+                </div>
+                <div class="product-info">
+                    ${producto.category ? `<span class="producto-categoria">${producto.category}</span>` : ''}
+                    <h3 class="product-title">${producto.name || 'Producto sin nombre'}</h3>
+                    <p class="product-price">${precio}</p>
+                    ${producto.description ? `<p class="producto-descripcion">${producto.description}</p>` : ''}
+                    <div class="product-details">
+                        ${producto.sizes && producto.sizes.length > 0 ? 
+                          `<div class="producto-detalle">
+                              <i class="fas fa-ruler"></i> Tallas: ${producto.sizes.join(', ')}
+                          </div>` : ''}
+                        ${producto.colors && producto.colors.length > 0 ? 
+                          `<div class="producto-detalle">
+                              <i class="fas fa-palette"></i> Colores: ${producto.colors.join(', ')}
+                          </div>` : ''}
+                    </div>
+                    <div class="product-actions">
+                        <a href="producto-detalle.html?id=${producto.id}" class="btn-ver-detalle" data-id="${producto.id}" aria-label="Ver detalles">
                             <i class="fas fa-eye"></i> Ver detalles
                         </a>
                         <button class="btn-anadir-carrito" data-producto='${JSON.stringify(producto).replace(/'/g, "'")}'>
                             <i class="fas fa-cart-plus"></i> Añadir al carrito
                         </button>
-                    </div>
-                </div>
-                <div class="producto-info">
-                    <h3 class="producto-nombre">${producto.name || 'Producto sin nombre'}</h3>
-                    <p class="producto-precio">${precio}</p>
-                    ${producto.category ? `<span class="producto-categoria">${producto.category}</span>` : ''}
-                    <p class="producto-descripcion">${producto.description || 'Sin descripción disponible'}</p>
-                    <div class="producto-detalles">
-                        ${producto.sizes && producto.sizes.length > 0 ? 
-                          `<div class="producto-talla">
-                              <i class="fas fa-ruler"></i> Tallas: ${producto.sizes.join(', ')}
-                          </div>` : ''}
-                        ${producto.colors && producto.colors.length > 0 ? 
-                          `<div class="producto-color">
-                              <i class="fas fa-palette"></i> Colores: ${producto.colors.join(', ')}
-                          </div>` : ''}
                     </div>
                 </div>
             `;
