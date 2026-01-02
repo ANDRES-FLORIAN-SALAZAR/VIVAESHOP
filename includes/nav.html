@@ -1,39 +1,79 @@
 <!-- Barra de navegación -->
-<header class="navbar">
+<header class="navbar" role="banner">
   <div class="navbar-container">
     <!-- Logo -->
-    <a href="index.html" class="logo">
-      <img src="img/vivae.jpg" alt="Vivae Logo" class="logo-img">
+    <a href="index.html" class="logo" aria-label="Vivae - Inicio">
+      <img src="img/vivae.jpg" alt="" class="logo-img" width="40" height="40" loading="lazy">
+      <span class="logo-text">VIVAE</span>
     </a>
 
     <!-- Botón de menú móvil -->
     <button class="menu-toggle" id="menuToggle" aria-label="Menú" aria-expanded="false" aria-controls="mainNav">
-      <i class="fas fa-bars"></i>
+      <span class="hamburger"></span>
+      <span class="hamburger"></span>
+      <span class="hamburger"></span>
       <span class="sr-only">Menú</span>
     </button>
 
     <!-- Overlay para cerrar el menú -->
-    <div class="menu-overlay" id="menuOverlay"></div>
+    <div class="menu-overlay" id="menuOverlay" tabindex="-1" aria-hidden="true"></div>
 
     <!-- Menú de navegación principal -->
     <nav class="main-nav" id="mainNav" aria-label="Navegación principal">
-      <ul class="nav-links">
-        <li><a href="index.html" class="nav-link" data-active="inicio">INICIO</a></li>
-        <li><a href="productos.html" class="nav-link" data-active="productos">PRODUCTOS</a></li>
+      <ul class="nav-links" role="menubar">
+        <li role="none">
+          <a href="index.html" class="nav-link" data-active="inicio" role="menuitem">
+            INICIO
+          </a>
+        </li>
+        <li role="none">
+          <a href="productos.html" class="nav-link" data-active="productos" role="menuitem">
+            PRODUCTOS
+          </a>
+        </li>
       </ul>
     </nav>
   </div>
 </header>
 
-<!-- Script para manejar el estado activo de los enlaces -->
+<!-- Script para manejar la navegación -->
 <script>
-  // Actualizar el enlace activo según la página actual
   document.addEventListener('DOMContentLoaded', function() {
-    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    // Elementos del DOM
+    const menuToggle = document.getElementById('menuToggle');
+    const mainNav = document.getElementById('mainNav');
+    const menuOverlay = document.getElementById('menuOverlay');
     const navLinks = document.querySelectorAll('.nav-link');
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
     
+    // Función para alternar el menú
+    function toggleMenu() {
+      const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+      menuToggle.setAttribute('aria-expanded', !isExpanded);
+      mainNav.classList.toggle('active', !isExpanded);
+      menuOverlay.classList.toggle('active', !isExpanded);
+      document.body.classList.toggle('no-scroll', !isExpanded);
+      
+      if (!isExpanded) {
+        // Enfocar el primer enlace al abrir el menú
+        const firstLink = mainNav.querySelector('a');
+        if (firstLink) firstLink.focus();
+      }
+    }
+    
+    // Cerrar menú al hacer clic en un enlace
+    function closeMenu() {
+      menuToggle.setAttribute('aria-expanded', 'false');
+      mainNav.classList.remove('active');
+      menuOverlay.classList.remove('active');
+      document.body.classList.remove('no-scroll');
+    }
+    
+    // Manejar el estado activo de los enlaces
     navLinks.forEach(link => {
       const linkHref = link.getAttribute('href');
+      
+      // Establecer enlace activo
       if (currentPage === linkHref || 
           (currentPage === '' && linkHref === 'index.html') ||
           (currentPage.includes('producto') && linkHref === 'productos.html')) {
@@ -42,6 +82,42 @@
       } else {
         link.classList.remove('active');
         link.removeAttribute('aria-current');
+      }
+      
+      // Cerrar menú al hacer clic en un enlace (solo móvil)
+      link.addEventListener('click', () => {
+        if (window.innerWidth <= 992) { // Breakpoint para móvil
+          closeMenu();
+        }
+      });
+    });
+    
+    // Event listeners
+    menuToggle.addEventListener('click', toggleMenu);
+    menuOverlay.addEventListener('click', closeMenu);
+    
+    // Cerrar menú con la tecla Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && menuToggle.getAttribute('aria-expanded') === 'true') {
+        closeMenu();
+        menuToggle.focus();
+      }
+    });
+    
+    // Manejar el foco dentro del menú desplegable
+    mainNav.addEventListener('keydown', (e) => {
+      if (e.key === 'Tab') {
+        const focusableElements = mainNav.querySelectorAll('a[href], button');
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+        
+        if (e.shiftKey && document.activeElement === firstElement) {
+          e.preventDefault();
+          lastElement.focus();
+        } else if (!e.shiftKey && document.activeElement === lastElement) {
+          e.preventDefault();
+          firstElement.focus();
+        }
       }
     });
   });
