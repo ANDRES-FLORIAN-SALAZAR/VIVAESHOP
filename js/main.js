@@ -45,19 +45,8 @@ function init() {
         window.vivae.carrito = state.carrito;
     }
     
-    // Cargar y mostrar productos
-    if (typeof cargarProductos === 'function') {
-        cargarProductos().then(productos => {
-            if (productos && productos.length > 0) {
-                state.productos = productos;
-                mostrarProductos(productos);
-            } else {
-                console.warn('No se cargaron productos o la lista está vacía.');
-            }
-        }).catch(error => {
-            console.error('Error al cargar productos:', error);
-        });
-    }
+    // No cargar productos aquí, se cargarán desde productos.js
+    // para evitar la duplicación de carga
 }
 
 /**

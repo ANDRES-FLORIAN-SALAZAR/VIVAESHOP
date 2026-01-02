@@ -143,75 +143,32 @@ async function cargarProductos() {
  */
 async function mostrarProductos(productos) {
     console.log('Mostrando productos desde productos.js');
-    const productsGrid = document.getElementById('products-grid');
-    const noResults = document.getElementById('no-results');
     
-    if (!productsGrid) {
-        console.error('Error: No se encontró el contenedor de productos (products-grid)');
+    // Obtener el contenedor de productos
+    const contenedorProductos = document.querySelector('.productos-grid');
+    if (!contenedorProductos) {
+        console.error('No se encontró el contenedor de productos');
         return;
     }
     
-    // Mostrar indicador de carga
-    productsGrid.innerHTML = '<div class="loading">Cargando productos...</div>';
+    // Limpiar el contenedor para evitar duplicados
+    contenedorProductos.innerHTML = '';
     
-    if (!productos || productos.length === 0) {
-        if (noResults) noResults.style.display = 'block';
-        productsGrid.innerHTML = '';
-        return;
+    // Ordenar productos por ID (o por el campo que prefieras)
+    const productosOrdenados = [...productos].sort((a, b) => a.id - b.id);
+    
+    // Verificar si hay productos para mostrar
+    if (!productosOrdenados || productosOrdenados.length === 0) {
+        mostrarMensajeSinResultados();
+        return contenedorProductos;
     }
     
-    // Limpiar la cuadrícula
-    productsGrid.innerHTML = '';
-    
-    // Función para verificar si una imagen existe
-    const verificarImagen = (url) => {
-        return new Promise((resolve) => {
-            const img = new Image();
-            img.onload = () => resolve(true);
-            img.onerror = () => resolve(false);
-            img.src = url;
-        });
-    };
-
-    // Función para obtener la ruta de la imagen con manejo de errores
-    const obtenerRutaImagen = async (ruta) => {
-        if (!ruta) return null;
-        
-        // Si ya es una URL de datos, devolverla tal cual
-        if (ruta.startsWith('data:')) return ruta;
-        
-        let rutaFinal = ruta;
-        
-        // Si es una ruta relativa que no empieza con 'img/', añadir 'img/'
-        if (!ruta.startsWith('http') && !ruta.startsWith('/') && !ruta.startsWith('img/')) {
-            rutaFinal = `img/${ruta}`;
-        }
-        
-        // Verificar si la imagen existe
-        const existe = await verificarImagen(rutaFinal);
-        
-        // Si la imagen no existe, usar un placeholder
-        if (!existe) {
-            // Intentar con minúsculas
-            const rutaMinusculas = rutaFinal.toLowerCase();
-            const existeMinusculas = await verificarImagen(rutaMinusculas);
-            
-            if (existeMinusculas) {
-                return rutaMinusculas;
-            }
-            
-            // Mantener el orden original del array
-            return 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgNDAwIiBmaWxsPSJub25lIiBzdHJva2U9IiNlZWVlZWUiIHN0cm9rZS13aWR0aD0iMiI+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9IiNmOGY5ZmEiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBhbGlnbm1lbnQtYmFzZWxpbmU9Im1pZGRsZSIgZmlsbD0iIzk5OSI+SW1hZ2VuIG5vIGRpc3BvbmlibGU8L3RleHQ+PC9zdmc+';
-        }
-        
-        return rutaFinal;
-    };
-    
-    // Usar una imagen transparente 1x1 como fallback
-    const transparentPixel = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+    // Crear la cuadrícula de productos
+    const productosGrid = document.createElement('div');
+    productosGrid.className = 'productos-grid';
     
     // Crear elementos para cada producto
-    for (const producto of productos) {
+    for (const producto of productosOrdenados) {
         const productCard = document.createElement('div');
         productCard.className = 'producto-card';
         
@@ -224,13 +181,13 @@ async function mostrarProductos(productos) {
         
         try {
             // Obtener la URL de la imagen de forma asíncrona
-            const imagenUrl = await obtenerRutaImagen(producto.image) || transparentPixel;
+            const imagenUrl = await obtenerRutaImagen(producto.image) || 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
             
             // Construir el HTML del producto
             productCard.innerHTML = `
                 <div class="producto-imagen">
                     <img src="${imagenUrl}" alt="${producto.name || 'Producto'}" loading="lazy" 
-                         onerror="this.onerror=null; this.src='${transparentPixel}'">
+                         onerror="this.onerror=null; this.src='${imagenUrl}'">
                     ${producto.featured ? '<div class="producto-destacado">Destacado</div>' : ''}
                     <div class="producto-acciones">
                         <a href="producto-detalle.html?id=${producto.id}" class="btn-ver-detalle" data-id="${producto.id}" aria-label="Ver detalles" target="_self">
@@ -259,7 +216,7 @@ async function mostrarProductos(productos) {
                 </div>
             `;
             
-            productsGrid.appendChild(productCard);
+            productosGrid.appendChild(productCard);
         } catch (error) {
             console.error('Error al cargar la imagen del producto:', producto.id, error);
             // Continuar con el siguiente producto si hay un error
@@ -267,7 +224,11 @@ async function mostrarProductos(productos) {
         }
     }
     
+    // Agregar la cuadrícula al contenedor
+    contenedorProductos.appendChild(productosGrid);
+    
     // Ocultar mensaje de sin resultados si está visible
+    const noResults = document.getElementById('no-results');
     if (noResults) noResults.style.display = 'none';
     
     // Inicializar eventos de los botones
@@ -292,7 +253,7 @@ async function mostrarProductos(productos) {
         });
     });
     
-    return productsGrid;
+    return contenedorProductos;
 }
 
 /**
