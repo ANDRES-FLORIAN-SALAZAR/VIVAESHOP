@@ -42,15 +42,9 @@ domReady(function() {
     // Configurar eventos de los botones de contacto
     document.addEventListener('click', function(e) {
         const btnContactar = e.target.closest('.btn-contactar');
-        if (btnContactar) {
-            e.preventDefault();
-            const productoId = btnContactar.dataset.id;
-            if (productoId && window.vivae && typeof window.vivae.manejarContacto === 'function') {
-                window.vivae.manejarContacto(productoId);
-            } else if (btnContactar.href && btnContactar.href.includes('whatsapp')) {
-                // Si ya tiene un enlace a WhatsApp, permitir la navegación normal
-                return true;
-            }
+        if (btnContactar && btnContactar.href && btnContactar.href.includes('whatsapp')) {
+            // Permitir la navegación normal a WhatsApp
+            return true;
         }
     });
 });
@@ -284,68 +278,47 @@ function configurarFiltros() {
     const buscador = document.getElementById('buscador');
     const botonesCategoria = document.querySelectorAll('.filtro-btn');
     
-    // Eliminar manejadores de eventos anteriores si existen
-    if (buscador && buscadorHandler) {
-        buscador.removeEventListener('input', buscadorHandler);
-    }
-    
-    // Eliminar manejadores de botones de categoría anteriores
-    botonesCategoriaHandlers.forEach(({boton, handler}) => {
-        boton.removeEventListener('click', handler);
-    });
-    botonesCategoriaHandlers = [];
-    
-    // Filtrar al escribir en el buscador
+    // Configurar el buscador
     if (buscador) {
-        // Eliminar el manejador anterior si existe
-        if (buscadorHandler) {
-            buscador.removeEventListener('input', buscadorHandler);
-        }
-        
-        // Crear un nuevo manejador con debounce para mejorar el rendimiento
+        // Usar delegación de eventos para el buscador
         let timeoutId;
-        buscadorHandler = (e) => {
+        const handleSearch = (e) => {
             clearTimeout(timeoutId);
             timeoutId = setTimeout(() => {
                 const termino = e.target.value.trim().toLowerCase();
                 const categoriaActiva = document.querySelector('.filtro-btn.active')?.dataset.categoria || 'todos';
-                console.log('Búsqueda activada. Término:', termino, 'Categoría:', categoriaActiva);
                 filtrarProductos(termino, categoriaActiva);
-            }, 300); // 300ms de retraso
+            }, 300);
         };
         
-        // Agregar el evento de búsqueda
-        buscador.addEventListener('input', buscadorHandler);
-        
-        // Permitir búsqueda al presionar Enter
+        // Configurar eventos del buscador
+        buscador.addEventListener('input', handleSearch);
         buscador.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 const termino = e.target.value.trim().toLowerCase();
                 const categoriaActiva = document.querySelector('.filtro-btn.active')?.dataset.categoria || 'todos';
-                console.log('Búsqueda con Enter. Término:', termino, 'Categoría:', categoriaActiva);
                 filtrarProductos(termino, categoriaActiva);
             }
         });
     }
     
-    // Filtrar por categoría
-    botonesCategoria.forEach(boton => {
-        const handler = (e) => {
-            e.preventDefault();
-            
-            // Actualizar botón activo
-            botonesCategoria.forEach(btn => btn.classList.remove('active'));
-            boton.classList.add('active');
-            
-            const categoria = boton.dataset.categoria || 'todos';
-            const termino = buscador ? buscador.value.trim().toLowerCase() : '';
-            
-            filtrarProductos(termino, categoria);
-        };
-        
-        boton.addEventListener('click', handler);
-        botonesCategoriaHandlers.push({boton, handler});
-    });
+    // Configurar botones de categoría con delegación de eventos
+    const contenedorFiltros = document.querySelector('.filtros-categorias');
+    if (contenedorFiltros) {
+        contenedorFiltros.addEventListener('click', (e) => {
+            const boton = e.target.closest('.filtro-btn');
+            if (boton) {
+                // Actualizar botón activo
+                document.querySelectorAll('.filtro-btn').forEach(btn => btn.classList.remove('active'));
+                boton.classList.add('active');
+                
+                // Filtrar productos
+                const termino = document.getElementById('buscador')?.value.trim().toLowerCase() || '';
+                const categoria = boton.dataset.categoria || 'todos';
+                filtrarProductos(termino, categoria);
+            }
+        });
+    }
 }
 
 /**
@@ -483,14 +456,11 @@ function inicializarEventosProductos() {
     // Evento para los botones de contacto
     document.querySelectorAll('.btn-contactar').forEach(boton => {
         boton.addEventListener('click', (e) => {
-            e.preventDefault();
-            const productoId = boton.dataset.id;
-            if (window.vivae && typeof window.vivae.manejarContacto === 'function') {
-                window.vivae.manejarContacto(productoId);
-            } else if (boton.href && boton.href.includes('whatsapp')) {
-                // Si ya tiene un enlace a WhatsApp, permitir la navegación normal
+            if (boton.href && boton.href.includes('whatsapp')) {
+                // Permitir la navegación normal a WhatsApp
                 return true;
             }
+            e.preventDefault();
         });
     });
 
@@ -506,10 +476,8 @@ function inicializarEventosProductos() {
     });
 }
 
-// Variables globales
+// Variable para controlar la inicialización
 let isInitialized = false;
-let buscadorHandler = null;
-let botonesCategoriaHandlers = [];
 
 // Hacer las funciones disponibles globalmente si es necesario
 window.vivae = window.vivae || {};
@@ -528,14 +496,7 @@ window.vivae.productos = {
     },
     cargarProductos,
     mostrarProductos,
-    filtrarProductos,
-    manejarContacto: function(productoId) {
-        const producto = this.state?.productos?.find(p => p.id == productoId);
-        if (producto) {
-            const url = CONFIG.getWhatsAppUrl(producto.nombre || '');
-            window.open(url, '_blank', 'noopener,noreferrer');
-        }
-    }
+    filtrarProductos
 };
 
 // Inicializar la página cuando el DOM esté listo
