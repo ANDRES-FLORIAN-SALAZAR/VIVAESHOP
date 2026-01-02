@@ -59,36 +59,9 @@
 
 .products-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 2rem;
     padding: 1rem;
-    max-width: 1800px;
-    margin: 0 auto;
-}
-
-/* Estilos responsivos */
-@media (max-width: 1800px) {
-    .products-grid {
-        grid-template-columns: repeat(4, 1fr);
-    }
-}
-
-@media (max-width: 1400px) {
-    .products-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-@media (max-width: 1024px) {
-    .products-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 640px) {
-    .products-grid {
-        grid-template-columns: 1fr;
-    }
 }
 
 /* Estilos de la tarjeta de producto */
