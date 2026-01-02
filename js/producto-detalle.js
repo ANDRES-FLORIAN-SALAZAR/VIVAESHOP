@@ -242,8 +242,17 @@ function mostrarError(mensaje) {
 }
 
 // Cargar la navegación y el pie de página
-cargarNavegacion();
-cargarFooter();
+document.addEventListener('DOMContentLoaded', function() {
+    cargarNavegacion().then(() => {
+        // Inicializar menú móvil después de cargar la navegación
+        if (typeof initMobileMenu === 'function') {
+            initMobileMenu();
+        }
+        // Asegurar que los enlaces del menú funcionen correctamente
+        setupMenuLinks();
+    });
+    cargarFooter();
+});
 
 // Función para cargar la navegación
 async function cargarNavegacion() {
@@ -252,10 +261,36 @@ async function cargarNavegacion() {
         if (!response.ok) throw new Error('No se pudo cargar la navegación');
         
         const html = await response.text();
-        document.getElementById('navbar-placeholder').innerHTML = html;
+        const navElement = document.getElementById('navbar-placeholder');
+        if (navElement) {
+            navElement.innerHTML = html;
+            return true;
+        }
+        return false;
     } catch (error) {
         console.error('Error al cargar la navegación:', error);
+        return false;
     }
+}
+
+// Configurar los enlaces del menú
+function setupMenuLinks() {
+    // Actualizar el enlace activo según la página actual
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    navLinks.forEach(link => {
+        const linkHref = link.getAttribute('href');
+        if (currentPage === linkHref || 
+            (currentPage === '' && linkHref === 'index.html') ||
+            (currentPage.includes('producto') && linkHref === 'productos.html')) {
+            link.classList.add('active');
+            link.setAttribute('aria-current', 'page');
+        } else {
+            link.classList.remove('active');
+            link.removeAttribute('aria-current');
+        }
+    });
 }
 
 // Función para cargar el pie de página
