@@ -109,9 +109,6 @@ async function mostrarProductos(productos) {
             <div class="producto-info">
                 <h3>${producto.nombre || 'Producto sin nombre'}</h3>
                 <p class="precio">${precio}</p>
-                <a href="${CONFIG.getWhatsAppUrl(producto.nombre || '')}" class="btn-contactar" target="_blank" rel="noopener noreferrer">
-                    <i class="fab fa-whatsapp"></i> Contactar
-                </a>
                 <a href="producto.html?id=${producto.id}" class="btn-ver">Ver detalles</a>
             </div>
         </div>`;

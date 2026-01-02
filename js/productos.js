@@ -239,9 +239,6 @@ async function mostrarProductos(productos) {
                          onerror="this.onerror=null; this.src='${transparentPixel}'">
                     ${producto.featured ? '<div class="producto-destacado">Destacado</div>' : ''}
                     <div class="producto-acciones">
-                        <a href="${CONFIG.getWhatsAppUrl(producto.nombre || '')}" class="btn-contactar" target="_blank" rel="noopener noreferrer" data-id="${producto.id}" aria-label="Contactar por WhatsApp">
-                            <i class="fab fa-whatsapp"></i> Contactar
-                        </a>
                         <a href="producto-detalle.html?id=${producto.id}" class="btn-ver-detalle" data-id="${producto.id}" aria-label="Ver detalles" target="_self">
                             <i class="fas fa-eye"></i> Ver detalles
                         </a>

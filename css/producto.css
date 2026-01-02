@@ -1,0 +1,634 @@
+/* Estilos específicos para la página de detalles del producto */
+.pagina-producto {
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background-color: #f9f9f9;
+}
+
+/* Estilos críticos */
+* { 
+  margin: 0; 
+  padding: 0; 
+  box-sizing: border-box; 
+}
+
+/* Estilos de carga */
+.loading-spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255,255,255,.3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin { 
+  to { 
+    transform: rotate(360deg); 
+  } 
+}
+
+/* Estilos del menú */
+.menu-toggle { 
+  display: none; 
+}
+
+.main-nav { 
+  display: none; 
+}
+
+.main-nav.active { 
+  display: block; 
+}
+
+.pagina-producto {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.producto-detalle {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+  flex: 1;
+}
+
+.producto-contenedor {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin-top: 2rem;
+  padding: 1rem;
+}
+
+@media (min-width: 768px) {
+  .producto-contenedor {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Estilos para las imágenes */
+.producto-galeria {
+  position: relative;
+  padding: 1rem;
+}
+
+.producto-imagen-principal {
+  width: 100%;
+  height: 400px;
+  object-fit: contain;
+  margin-bottom: 1rem;
+}
+
+.producto-miniaturas {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding: 0.5rem 0;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e0 #f1f5f9;
+}
+
+.producto-miniaturas::-webkit-scrollbar {
+  height: 6px;
+}
+
+.producto-miniaturas::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+
+.producto-miniaturas::-webkit-scrollbar-thumb {
+  background-color: #cbd5e0;
+  border-radius: 3px;
+}
+
+.miniatura {
+  width: 70px;
+  height: 70px;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+  flex: 0 0 auto;
+}
+
+.miniatura:hover, 
+.miniatura.activa {
+  border-color: var(--color-primario, #3182ce);
+}
+
+.miniatura img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.producto-imagenes {
+  position: relative;
+  background: #f8f9fa;
+  padding: 1.5rem;
+}
+
+.imagen-principal-contenedor {
+  position: relative;
+  width: 100%;
+  padding-top: 100%;
+  overflow: hidden;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+.imagen-principal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: opacity 0.3s ease;
+}
+
+.miniaturas-contenedor {
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  padding: 0.5rem 0;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e0 #f1f5f9;
+}
+
+.miniaturas-contenedor::-webkit-scrollbar {
+  height: 6px;
+}
+
+.miniaturas-contenedor::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+
+.miniaturas-contenedor::-webkit-scrollbar-thumb {
+  background-color: #cbd5e0;
+  border-radius: 3px;
+}
+
+.miniatura {
+  flex: 0 0 60px;
+  height: 60px;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: white;
+  padding: 0.25rem;
+}
+
+.miniatura img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.miniatura.activa {
+  border-color: #3182ce;
+}
+
+/* Estilos para la información del producto */
+.producto-info {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.producto-categoria {
+  color: var(--color-primario, #3182ce);
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.5px;
+}
+
+.producto-titulo {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-texto, #1a202c);
+  margin: 0 0 1rem 0;
+}
+
+.producto-precio {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-primario, #3182ce);
+  margin: 1rem 0;
+}
+
+.producto-descripcion {
+  color: var(--color-texto-claro, #4a5568);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.producto-meta {
+  margin: 1.5rem 0;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  color: var(--color-texto, #1a202c);
+}
+
+.meta-item i {
+  color: var(--color-primario, #3182ce);
+  margin-right: 0.75rem;
+  width: 20px;
+  text-align: center;
+}
+
+.producto-categoria {
+  display: inline-block;
+  font-size: 0.875rem;
+  color: #718096;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.producto-titulo {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1a202c;
+  margin: 0 0 1rem 0;
+  line-height: 1.2;
+}
+
+.producto-precio {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 1.5rem;
+}
+
+.caracteristicas-destacadas {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 6px;
+}
+
+.caracteristicas-destacadas h3 {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  font-size: 1.125rem;
+  color: #2d3748;
+}
+
+.caracteristicas-destacadas ul {
+  margin: 0;
+  padding-left: 1.5rem;
+  list-style: none;
+}
+
+.caracteristicas-destacadas li {
+  position: relative;
+  margin-bottom: 0.5rem;
+  padding-left: 1.75rem;
+  color: #4a5568;
+}
+
+.caracteristicas-destacadas li i {
+  position: absolute;
+  left: 0;
+  top: 0.25rem;
+  color: #3182ce;
+}
+
+/* Estilos para la cantidad */
+.producto-cantidad {
+  display: flex;
+  align-items: center;
+  margin: 1.5rem 0;
+}
+
+.cantidad-btn {
+  background: #f1f5f9;
+  border: none;
+  width: 40px;
+  height: 40px;
+  font-size: 1.25rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.cantidad-btn:hover {
+  background: #e2e8f0;
+}
+
+.cantidad-input {
+  width: 60px;
+  height: 40px;
+  text-align: center;
+  border: 1px solid #e2e8f0;
+  border-left: none;
+  border-right: none;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.producto-acciones {
+  display: flex;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.btn-contactar {
+  background: #25D366; /* Color de WhatsApp */
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.btn-contactar:hover {
+  background: #128C7E; /* Color de WhatsApp oscuro */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(18, 140, 126, 0.2);
+}
+
+.btn-contactar i {
+  margin-right: 0.5rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .producto-contenedor {
+    grid-template-columns: 1fr;
+  }
+  
+  .btn-contactar {
+    width: 100%;
+  }
+}
+
+.cantidad-btn {
+  width: 40px;
+  height: 40px;
+  background: #f8f9fa;
+  border: none;
+  font-size: 1.25rem;
+  color: #4a5568;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.cantidad-btn:hover {
+  background: #e2e8f0;
+}
+
+.cantidad-input {
+  width: 60px;
+  height: 40px;
+  text-align: center;
+  border: 1px solid #e2e8f0;
+  border-left: none;
+  border-right: none;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.producto-acciones {
+  display: flex;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+/* Estilos para las pestañas */
+.tabs {
+  margin-top: 2rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.tabs-cabecera {
+  display: flex;
+  border-bottom: 1px solid #e2e8f0;
+  background-color: #f8f9fa;
+}
+
+.tab-btn {
+  padding: 0.75rem 1.5rem;
+  background: none;
+  border: none;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: #4a5568;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.tab-btn:after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #3182ce;
+  transform: scaleX(0);
+  transition: transform 0.2s ease;
+}
+
+.tab-btn.activo {
+  color: #3182ce;
+}
+
+.tab-btn.activo:after {
+  transform: scaleX(1);
+}
+
+.tab-contenido {
+  display: none;
+  padding: 1.5rem;
+}
+
+.tab-contenido.activo {
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Estilos para la descripción */
+.descripcion-detallada {
+  line-height: 1.6;
+  color: #4a5568;
+}
+
+.descripcion-detallada h3 {
+  color: #2d3748;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  font-size: 1.25rem;
+}
+
+.descripcion-detallada p {
+  margin-bottom: 1rem;
+}
+
+.descripcion-detallada ul,
+.descripcion-detallada ol {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+}
+
+.descripcion-detallada li {
+  margin-bottom: 0.5rem;
+}
+
+/* Estilos para el botón de WhatsApp */
+.btn-whatsapp {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #25D366;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  margin-top: 1rem;
+}
+
+.btn-whatsapp:hover {
+  background-color: #128C7E;
+  transform: translateY(-1px);
+}
+
+/* Estilos para el contenedor de carga */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3182ce;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Estilos para mensajes de error */
+.error-message {
+  text-align: center;
+  padding: 2rem;
+  color: #e53e3e;
+  background-color: #fff5f5;
+  border-radius: 4px;
+  margin: 1rem 0;
+}
+
+.error-message i {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+/* Estilos responsivos */
+@media (max-width: 767px) {
+  .producto-titulo {
+    font-size: 1.5rem;
+  }
+  
+  .producto-precio {
+    font-size: 1.25rem;
+  }
+  
+  .tabs-cabecera {
+    flex-wrap: wrap;
+  }
+  
+  .tab-btn {
+    flex: 1;
+    text-align: center;
+    padding: 0.75rem 0.5rem;
+    font-size: 0.875rem;
+  }
+}
+
+/* Estilos para el botón de volver */
+.btn-volver {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #4a5568;
+  text-decoration: none;
+  margin-bottom: 1.5rem;
+  transition: color 0.2s ease;
+}
+
+.btn-volver:hover {
+  color: #3182ce;
+}
+
+.btn-volver i {
+  font-size: 0.875rem;
+}
+
+/* Estilos para la galería de imágenes en móvil */
+@media (max-width: 639px) {
+  .producto-imagenes {
+    padding: 1rem;
+  }
+  
+  .imagen-principal-contenedor {
+    margin-bottom: 0.75rem;
+  }
+  
+  .miniaturas-contenedor {
+    padding: 0.25rem 0;
+  }
+  
+  .miniatura {
+    flex: 0 0 50px;
+    height: 50px;
+  }
+}
