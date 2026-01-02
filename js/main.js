@@ -25,8 +25,7 @@ const CONFIG = {
 
 // Estado global
 const state = {
-    productos: [],
-    carrito: null
+    productos: []
 };
 
 // Función principal de inicialización
@@ -36,13 +35,6 @@ function init() {
     // Inicializar menú móvil
     if (typeof initMobileMenu === 'function') {
         initMobileMenu();
-    }
-    
-    // Inicializar el carrito si existe
-    if (typeof Carrito !== 'undefined') {
-        state.carrito = new Carrito();
-        window.vivae = window.vivae || {};
-        window.vivae.carrito = state.carrito;
     }
     
     // No cargar productos aquí, se cargarán desde productos.js

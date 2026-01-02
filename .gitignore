@@ -1,3 +1,37 @@
+# =========================
+# Archivos del sistema operativo
+# =========================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# =========================
+# Entornos y configuraciones
+# =========================
+# Variables de entorno
+.env
+.env.*
+!.env.example
+
+# Archivos de configuración local
+config.local.*
+*.local
+
+# =========================
+# Dependencias y paquetes
+# =========================
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnp.*
+
 # Python
 __pycache__/
 *.py[cod]
@@ -20,54 +54,176 @@ wheels/
 .installed.cfg
 *.egg
 
-# Node.js
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnp.*
+# Otros gestores de paquetes
+bower_components/
+.jam-cache/
 
-# Environment variables
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# Editor directories and files
+# =========================
+# Entornos de desarrollo y editores
+# =========================
+# VS Code
 .vscode/*
 !.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+
+# IntelliJ/WebStorm
 .idea/
+*.iml
+*.iws
+*.ipr
+.idea_modules/
+
+# Otros editores
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+*.sublime-workspace
+*.sublime-project
 
-# System Files
-.DS_Store
-Thumbs.db
-desktop.ini
+# =========================
+# Archivos de construcción y despliegue
+# =========================
+# Directorios de salida de compilación
+/dist
+/build
+/out
+/.next
+/.nuxt
+/.output
 
-# Dependency directories
-bower_components/
+# Despliegues
+.netlify
+.vercel
+.netlify/
+.vercel/
 
-# Debug logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Local development
+# =========================
+# Archivos temporales y caché
+# =========================
+# Archivos de caché
 .cache/
 .temp/
 .tmp/
+.temp/
+.tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
 
-# Build output
-/dist
-/build
-
-# Local Netlify folder
-.netlify
-
-# Misc
+# Logs
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs
+*.log
+
+# =========================
+# Archivos de base de datos
+# =========================
+*.sqlite
+*.sqlite3
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# =========================
+# Archivos de respaldo
+# =========================
+*.bak
+*.swp
+*~
+*.backup
+*.backup.*
+*_backup
+*.save
+*.sav
+
+# =========================
+# Archivos específicos del proyecto
+# =========================
+# Archivos de configuración local
+config.local.*
+
+# Archivos de usuario
+data/
+!.gitkeep
+
+# Archivos de carga
+uploads/
+media/
+!media/.gitkeep
+
+# Archivos de sesión
+sessions/
+
+# Archivos de caché personalizados
+.cache/
+
+# Archivos de entorno virtual
+venv/
+ENV/
+
+# Archivos de paquetes de sistema operativo
+*.pkg
+*.dmg
+*.app
+*.exe
+*.msi
+*.msm
+*.msp
+
+# Archivos comprimidos
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+*.zipx
+
+# Archivos de documentación generados
+docs/_build/
+docs/api/
+
+# Archivos de cobertura de pruebas
+coverage/
+.nyc_output/
+
+# Archivos de depuración
+*.pdb
+*.idb
+*.pch
+*.obj
+*.tlog
+*.ilk
+*.dll
+*.so
+*.dylib
+*.lib
+*.a
+*.la
+*.lo
+*.o
+*.pyc
+*.pyo
+*.pyd
+*.pyz
+*.pyw
+*.pyc
+*.pyo
+*.pyd
+*.pyz
+*.pyw
+*.pyc
+*.pyo
+*.pyd
+*.pyz
+*.pyw

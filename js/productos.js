@@ -193,9 +193,6 @@ async function mostrarProductos(productos) {
                         <a href="producto-detalle.html?id=${producto.id}" class="btn-ver-detalle" data-id="${producto.id}" aria-label="Ver detalles" target="_self">
                             <i class="fas fa-eye"></i> Ver detalles
                         </a>
-                        <button class="btn-anadir-carrito" data-producto='${JSON.stringify(producto).replace(/'/g, "\\'")}'>
-                            <i class="fas fa-cart-plus"></i> Añadir al carrito
-                        </button>
                     </div>
                 </div>
                 <div class="producto-info">
@@ -234,25 +231,6 @@ async function mostrarProductos(productos) {
     // Inicializar eventos de los botones
     inicializarEventosProductos();
     
-    // Configurar eventos para los botones de añadir al carrito
-    document.querySelectorAll('.btn-anadir-carrito').forEach(boton => {
-        boton.addEventListener('click', function(e) {
-            e.preventDefault();
-            const producto = JSON.parse(this.dataset.producto);
-            if (window.vivae && window.vivae.carrito) {
-                window.vivae.carrito.agregarProducto({
-                    id: producto.id,
-                    nombre: producto.name,
-                    precio: parseFloat(producto.price.replace(/[^0-9.-]+/g,"")),
-                    imagen: producto.image || 'img/placeholder.jpg',
-                    categoria: producto.category
-                });
-            } else {
-                console.error('El carrito no está disponible');
-            }
-        });
-    });
-    
     return contenedorProductos;
 }
 
@@ -260,39 +238,60 @@ async function mostrarProductos(productos) {
  * Configura los filtros de búsqueda y categorías
  */
 function configurarFiltros() {
+    // Si ya se configuraron los filtros, salir
+    if (window.filtrosConfigurados) return;
+    
     const buscador = document.getElementById('buscador');
-    const botonesCategoria = document.querySelectorAll('.filtro-btn');
+    const contenedorFiltros = document.querySelector('.filtros-categorias');
+    
+    // Limpiar eventos anteriores si existen
+    if (window.handleSearch) {
+        buscador?.removeEventListener('input', window.handleSearch);
+        buscador?.removeEventListener('keypress', window.handleSearchKeypress);
+    }
+    if (window.handleFilterClick) {
+        contenedorFiltros?.removeEventListener('click', window.handleFilterClick);
+    }
     
     // Configurar el buscador
     if (buscador) {
-        // Usar delegación de eventos para el buscador
-        let timeoutId;
-        const handleSearch = (e) => {
-            clearTimeout(timeoutId);
-            timeoutId = setTimeout(() => {
+        // Función para manejar la búsqueda con debounce
+        window.handleSearch = (e) => {
+            clearTimeout(window.searchTimeout);
+            window.searchTimeout = setTimeout(() => {
                 const termino = e.target.value.trim().toLowerCase();
                 const categoriaActiva = document.querySelector('.filtro-btn.active')?.dataset.categoria || 'todos';
                 filtrarProductos(termino, categoriaActiva);
             }, 300);
         };
         
-        // Configurar eventos del buscador
-        buscador.addEventListener('input', handleSearch);
-        buscador.addEventListener('keypress', (e) => {
+        // Función para manejar la tecla Enter
+        window.handleSearchKeypress = (e) => {
             if (e.key === 'Enter') {
+                e.preventDefault();
                 const termino = e.target.value.trim().toLowerCase();
                 const categoriaActiva = document.querySelector('.filtro-btn.active')?.dataset.categoria || 'todos';
                 filtrarProductos(termino, categoriaActiva);
             }
-        });
+        };
+        
+        // Agregar eventos del buscador
+        buscador.addEventListener('input', window.handleSearch);
+        buscador.addEventListener('keypress', window.handleSearchKeypress);
     }
     
     // Configurar botones de categoría con delegación de eventos
-    const contenedorFiltros = document.querySelector('.filtros-categorias');
     if (contenedorFiltros) {
-        contenedorFiltros.addEventListener('click', (e) => {
+        // Función para manejar clics en los botones de categoría
+        window.handleFilterClick = (e) => {
             const boton = e.target.closest('.filtro-btn');
             if (boton) {
+                // Prevenir comportamiento por defecto
+                e.preventDefault();
+                
+                // Si ya está activo, no hacer nada
+                if (boton.classList.contains('active')) return;
+                
                 // Actualizar botón activo
                 document.querySelectorAll('.filtro-btn').forEach(btn => btn.classList.remove('active'));
                 boton.classList.add('active');
@@ -302,8 +301,14 @@ function configurarFiltros() {
                 const categoria = boton.dataset.categoria || 'todos';
                 filtrarProductos(termino, categoria);
             }
-        });
+        };
+        
+        // Agregar evento de clic al contenedor de filtros
+        contenedorFiltros.addEventListener('click', window.handleFilterClick);
     }
+    
+    // Marcar como configurado
+    window.filtrosConfigurados = true;
 }
 
 /**
@@ -311,103 +316,118 @@ function configurarFiltros() {
  */
 async function filtrarProductos(termino = '', categoria = 'todos') {
     try {
+        console.log(`Filtrando productos: término="${termino}", categoría="${categoria}"`);
+        
         const loading = document.getElementById('loading');
-        const productsGrid = document.getElementById('products-grid');
+        const productsGrid = document.querySelector('.productos-grid');
         const noResults = document.getElementById('no-results');
         
-        if (loading) loading.style.display = 'flex';
-        if (productsGrid) productsGrid.innerHTML = '';
+        // Mostrar indicador de carga
+        if (loading) loading.style.display = 'block';
+        if (productsGrid) productsGrid.style.opacity = '0.5';
         if (noResults) noResults.style.display = 'none';
         
-        // Cargar productos (usará la caché si está disponible)
-        let productos = await cargarProductos();
+        // Obtener los productos
+        let productos = [];
+        if (window.vivae?.state?.productos?.length > 0) {
+            productos = window.vivae.state.productos;
+            console.log(`Usando ${productos.length} productos del estado existente`);
+        } else {
+            console.log('Cargando productos...');
+            productos = await cargarProductos();
+            if (window.vivae) {
+                window.vivae.state = window.vivae.state || {};
+                window.vivae.state.productos = productos;
+                console.log(`Se cargaron ${productos.length} productos`);
+            }
+        }
         
+        // Si no hay productos, mostrar mensaje
         if (!productos || productos.length === 0) {
-            mostrarMensajeSinResultados();
+            console.warn('No hay productos para mostrar');
+            if (noResults) noResults.style.display = 'block';
+            if (productsGrid) productsGrid.innerHTML = '';
             return;
         }
         
-        console.log('Filtrando productos. Total cargados:', productos.length);
-        console.log('Filtrando productos con término:', termino, 'y categoría:', categoria);
+        // Convertir el término de búsqueda a minúsculas para la comparación
+        const terminoBusqueda = termino.toLowerCase().trim();
+        const categoriaFiltro = categoria.toLowerCase().trim();
         
-        // Normalizar términos de búsqueda
-        const terminoBusqueda = termino ? termino.toString().toLowerCase().trim() : '';
-        const categoriaFiltro = categoria ? categoria.toString().toLowerCase().trim() : 'todos';
+        console.log(`Filtrando ${productos.length} productos por término "${terminoBusqueda}" y categoría "${categoriaFiltro}"`);
         
         // Filtrar productos
         const productosFiltrados = productos.filter(producto => {
-            // Normalizar datos del producto
-            const nombre = (producto.name || producto.nombre || '').toString().toLowerCase().trim();
-            const descripcion = (producto.description || producto.descripcion || '').toString().toLowerCase().trim();
-            const categoria = (producto.category || producto.categoria || '').toString().toLowerCase().trim();
-            
-            // Filtrar por categoría primero (más eficiente)
-            const coincideCategoria = 
-                categoriaFiltro === 'todos' || 
-                categoria === categoriaFiltro;
-            
-            // Si la categoría no coincide, no es necesario verificar el término de búsqueda
-            if (!coincideCategoria) return false;
-            
-            // Si no hay término de búsqueda, devolver true si coincide la categoría
-            if (!terminoBusqueda) return true;
-            
-            // Filtrar por término de búsqueda
-            const terminosBusqueda = terminoBusqueda.split(' ').filter(t => t.length > 0);
-            
-            // Verificar si todos los términos de búsqueda están presentes en algún campo
-            return terminosBusqueda.every(termino => 
-                (nombre && nombre.includes(termino)) ||
-                (descripcion && descripcion.includes(termino)) ||
-                (categoria && categoria.includes(termino))
-            );
+            try {
+                // Obtener valores de los campos, asegurando que sean cadenas
+                const nombre = (producto.name || producto.nombre || '').toString().toLowerCase().trim();
+                const descripcion = (producto.description || producto.descripcion || '').toString().toLowerCase().trim();
+                const categoria = (producto.category || producto.categoria || '').toString().toLowerCase().trim();
+                
+                // Filtrar por categoría
+                const coincideCategoria = 
+                    categoriaFiltro === 'todos' || 
+                    categoria === categoriaFiltro;
+                
+                // Si la categoría no coincide, no es necesario verificar el término de búsqueda
+                if (!coincideCategoria) return false;
+                
+                // Si no hay término de búsqueda, devolver true si coincide la categoría
+                if (!terminoBusqueda) return true;
+                
+                // Filtrar por término de búsqueda
+                const terminosBusqueda = terminoBusqueda.split(' ').filter(t => t.length > 0);
+                
+                // Verificar si todos los términos de búsqueda están presentes en algún campo
+                return terminosBusqueda.every(termino => 
+                    (nombre && nombre.includes(termino)) ||
+                    (descripcion && descripcion.includes(termino)) ||
+                    (categoria && categoria.includes(termino))
+                );
+            } catch (error) {
+                console.error('Error al filtrar producto:', error, producto);
+                return false;
+            }
         });
         
-        console.log('Productos encontrados:', productosFiltrados.length);
+        console.log(`Se encontraron ${productosFiltrados.length} productos que coinciden con los criterios`);
         
         // Mostrar resultados
-        console.log('Productos después de filtrar:', productosFiltrados);
         if (productosFiltrados.length > 0) {
-            // Mostrar el contador de resultados
+            // Mostrar el contador de resultados si existe
             const contadorResultados = document.getElementById('contador-resultados');
             if (contadorResultados) {
                 contadorResultados.textContent = `${productosFiltrados.length} ${productosFiltrados.length === 1 ? 'producto encontrado' : 'productos encontrados'}`;
                 contadorResultados.style.display = 'block';
             }
             
-            // Usar la versión segura de mostrarProductos
-            const mostrarFn = window.mostrarProductosVIVAE || mostrarProductos;
-            if (typeof mostrarFn === 'function') {
-                mostrarFn(productosFiltrados);
+            // Usar la función mostrarProductos actualizada
+            if (typeof mostrarProductos === 'function') {
+                await mostrarProductos(productosFiltrados);
             } else {
-                console.error('No se encontró una función válida para mostrar productos');
-                // Intentar con la función de main.js si está disponible
-                if (window.vivae && typeof window.vivae.mostrarProductos === 'function') {
-                    window.vivae.mostrarProductos(productosFiltrados);
-                } else {
-                    console.error('No se pudo mostrar los productos: función no encontrada');
-                    // Mostrar un mensaje de error al usuario
-                    const productsGrid = document.getElementById('products-grid');
-                    if (productsGrid) {
-                        productsGrid.innerHTML = `
-                            <div class="error-message">
-                                <p>Error al cargar los productos. Por favor, recarga la página.</p>
-                            </div>
-                        `;
-                    }
+                console.error('La función mostrarProductos no está disponible');
+                // Mostrar un mensaje de error al usuario
+                if (productsGrid) {
+                    productsGrid.innerHTML = '<p class="error">Error al cargar los productos. Por favor, recarga la página.</p>';
                 }
             }
         } else {
             console.log('No se encontraron productos que coincidan con los criterios de búsqueda');
+            // Mostrar mensaje de "sin resultados"
             mostrarMensajeSinResultados();
         }
-        
     } catch (error) {
         console.error('Error al filtrar productos:', error);
         mostrarError('Ocurrió un error al filtrar los productos. Por favor, inténtalo de nuevo.');
     } finally {
+        // Ocultar indicador de carga
         const loading = document.getElementById('loading');
+        const productsGrid = document.querySelector('.productos-grid');
+        
         if (loading) loading.style.display = 'none';
+        if (productsGrid) productsGrid.style.opacity = '1';
+        
+        console.log('Filtrado de productos completado');
     }
 }
 
