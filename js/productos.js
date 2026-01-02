@@ -180,8 +180,8 @@ async function mostrarProductos(productos) {
         }).format(producto.price) : 'Precio no disponible';
         
         try {
-            // Obtener la URL de la imagen de forma asíncrona
-            const imagenUrl = await obtenerRutaImagen(producto.image) || 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+            // Obtener la URL de la imagen directamente del producto
+            const imagenUrl = producto.image || 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
             
             // Construir el HTML del producto
             productCard.innerHTML = `
