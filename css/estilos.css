@@ -3521,7 +3521,6 @@ main {
   #search, #filter-category {
     width: 100%;
   }
-}
 
 /* Product buttons */
 .product-buttons {
@@ -3531,9 +3530,9 @@ main {
 }
 
 .btn-view {
-  background-color: #f0f0f0;
-  color: #333;
-  border: 1px solid #ddd;
+  background: #f8f9fa;
+  color: #555;
+  border: 1px solid #e9ecef;
   padding: 8px 15px;
   border-radius: 4px;
   text-decoration: none;
@@ -3546,8 +3545,9 @@ main {
 }
 
 .btn-view:hover {
-  background-color: #e0e0e0;
-  color: #000;
+  background: #e9ecef;
+  color: #333;
+  transform: translateY(-2px);
 }
 
 
