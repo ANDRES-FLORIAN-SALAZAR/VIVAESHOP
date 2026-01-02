@@ -839,28 +839,10 @@ body.no-scroll {
   background-color: var(--color-primario);
 }
 
-/* ======================
-   PRODUCTOS
-   ====================== */
-.products-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.5rem;
-  margin: 2rem auto;
-  width: 100%;
-  max-width: 1400px;
-  padding: 0 1rem;
-}
+/* Product grid styles are now in productos.css */
 
+/* Product card styles are now in productos.css */
 .product-card {
-  background: #fff;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  border: 1px solid #f0f0f0;
   position: relative;
   height: 100%;
 }
