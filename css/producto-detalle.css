@@ -4,25 +4,34 @@
     padding-top: 2rem;
 }
 
+/* Contenedor del botón de volver */
+.volver-contenedor {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+    padding: 1.5rem 0;
+    border-top: 1px solid #e9ecef;
+}
+
 /* Estilos para el botón de volver */
 .btn-volver {
-    display: inline-flex !important;
+    display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
-    color: #fff !important;
-    background-color: #4a6fa5 !important;
+    color: #fff;
+    background-color: #4a6fa5;
     text-decoration: none;
     font-weight: 600;
-    margin: 1.5rem 0;
-    padding: 10px 20px !important;
-    border-radius: 6px !important;
+    padding: 10px 20px;
+    border-radius: 6px;
     transition: all 0.3s ease;
-    position: relative;
-    z-index: 1000;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     border: none;
     cursor: pointer;
     font-size: 1rem;
+    text-align: center;
 }
 
 .btn-volver i {
@@ -30,10 +39,10 @@
 }
 
 .btn-volver:hover {
-    background-color: #3a5a8c !important;
+    background-color: #3a5a8c;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    color: #fff !important;
+    color: #fff;
 }
 
 .btn-volver:hover i {
