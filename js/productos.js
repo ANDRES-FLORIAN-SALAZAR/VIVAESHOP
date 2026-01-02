@@ -145,7 +145,7 @@ async function mostrarProductos(productos) {
     console.log('Mostrando productos desde productos.js');
     
     // Obtener el contenedor de productos
-    const contenedorProductos = document.querySelector('.productos-grid');
+    const contenedorProductos = document.getElementById('products-grid');
     if (!contenedorProductos) {
         console.error('No se encontró el contenedor de productos');
         return;
@@ -193,6 +193,9 @@ async function mostrarProductos(productos) {
                         <a href="producto-detalle.html?id=${producto.id}" class="btn-ver-detalle" data-id="${producto.id}" aria-label="Ver detalles" target="_self">
                             <i class="fas fa-eye"></i> Ver detalles
                         </a>
+                        <button class="btn-anadir-carrito" data-producto='${JSON.stringify(producto).replace(/'/g, "'")}'>
+                            <i class="fas fa-cart-plus"></i> Añadir al carrito
+                        </button>
                     </div>
                 </div>
                 <div class="producto-info">
