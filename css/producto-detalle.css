@@ -6,14 +6,23 @@
 
 /* Estilos para el botón de volver */
 .btn-volver {
-    display: inline-flex;
+    display: inline-flex !important;
     align-items: center;
     gap: 0.5rem;
-    color: #333;
+    color: #fff !important;
+    background-color: #4a6fa5 !important;
     text-decoration: none;
-    font-weight: 500;
-    margin-bottom: 1.5rem;
-    transition: color 0.3s ease;
+    font-weight: 600;
+    margin: 1.5rem 0;
+    padding: 10px 20px !important;
+    border-radius: 6px !important;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
 }
 
 .btn-volver i {
@@ -21,7 +30,10 @@
 }
 
 .btn-volver:hover {
-    color: #000;
+    background-color: #3a5a8c !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    color: #fff !important;
 }
 
 .btn-volver:hover i {
