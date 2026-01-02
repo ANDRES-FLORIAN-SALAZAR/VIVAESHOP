@@ -81,9 +81,9 @@ body {
    ====================== */
 .navbar {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  padding: 15px 40px;
+  padding: 15px 20px;
   background: white;
   position: fixed;
   width: 100%;
@@ -156,17 +156,30 @@ body {
   vertical-align: middle;
 }
 
+/* Contenedor principal de navegación */
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
 /* Contenedores de navegación */
 .nav-center {
   flex: 1;
   display: flex;
   justify-content: center;
+  margin: 0 20px;
 }
 
 .nav-right {
   display: flex;
   align-items: center;
   gap: 15px;
+  margin-left: auto;
 }
 
 /* Menú de navegación */
@@ -177,6 +190,12 @@ body {
   margin: 0;
   padding: 0;
   justify-content: center;
+  width: 100%;
+}
+
+/* Ajustes para el logo */
+.logo {
+  margin-right: auto;
 }
 
 .nav-links li {
