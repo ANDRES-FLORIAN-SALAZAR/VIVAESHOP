@@ -188,7 +188,6 @@ async function mostrarProductos(productos) {
                 <div class="product-image-container">
                     <img class="product-image" src="${imagenUrl}" alt="${producto.name || 'Producto'}" loading="lazy" 
                          onerror="this.onerror=null; this.src='${imagenUrl}'">
-                    ${producto.featured ? '<div class="producto-destacado">Destacado</div>' : ''}
                 </div>
                 <div class="product-info">
                     ${producto.category ? `<span class="producto-categoria">${producto.category}</span>` : ''}
