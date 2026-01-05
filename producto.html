@@ -92,12 +92,6 @@
   <script type="module">
     import { cargarNavegacion, cargarFooter } from './js/utils.js';
 
-    // Cargar navegación y pie de página cuando el DOM esté listo
-    document.addEventListener('DOMContentLoaded', () => {
-      cargarNavegacion();
-      cargarFooter();
-    });
-
     // Inicialización del menú móvil
     function initMobileMenu() {
       const menuToggle = document.querySelector('.menu-toggle');
@@ -153,27 +147,29 @@
           }
         });
       });
+      
+      // Handle window resize
+      let resizeTimer;
+      window.addEventListener('resize', function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function() {
+          if (window.innerWidth > 991 && menuToggle && menuToggle.classList.contains('active')) {
+            menuToggle.classList.remove('active');
+            mainNav.classList.remove('active');
+            document.body.style.overflow = '';
+            menuToggle.setAttribute('aria-expanded', 'false');
+          }
+        }, 250);
+      });
     }
     
-    // Handle window resize
-    let resizeTimer;
-    window.addEventListener('resize', function() {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(function() {
-        if (window.innerWidth > 991 && menuToggle && menuToggle.classList.contains('active')) {
-          menuToggle.classList.remove('active');
-          mainNav.classList.remove('active');
-          document.body.style.overflow = '';
-          menuToggle.setAttribute('aria-expanded', 'false');
-        }
-      }, 250);
-    });
-  </script>
-
-  <script>
-    // Cargar el producto
-    document.addEventListener('DOMContentLoaded', function() {
-      // Obtener el ID del producto de la URL
+    // Cargar navegación, pie de página y menú móvil cuando el DOM esté listo
+    document.addEventListener('DOMContentLoaded', () => {
+      cargarNavegacion();
+      cargarFooter();
+      initMobileMenu();
+      
+      // Cargar el producto
       const urlParams = new URLSearchParams(window.location.search);
       const productId = urlParams.get('id');
       
@@ -184,20 +180,140 @@
         // Redirigir a la página de productos si no hay ID
         window.location.href = 'productos.html';
       }
+    });
+    
+    // Función para cargar los productos
+    async function cargarProducto(productId) {
+      try {
+        const response = await fetch('js/productos.json');
+        if (!response.ok) throw new Error('No se pudieron cargar los productos');
+        
+        const productos = await response.json();
+        const producto = productos.find(p => p.id === parseInt(productId));
+        
+        if (producto) {
+          mostrarProducto(producto);
+        } else {
+          mostrarError('Producto no encontrado');
+        }
+      } catch (error) {
+        console.error('Error al cargar el producto:', error);
+        mostrarError('Error al cargar el producto. Por favor, inténtalo de nuevo.');
+      }
+    }
+    
+    // Función para mostrar los datos del producto
+    function mostrarProducto(producto) {
+      // Actualizar los elementos del DOM con los datos del producto
+      const titulo = document.getElementById('producto-titulo');
+      const categoria = document.getElementById('producto-categoria');
+      const precio = document.getElementById('producto-precio');
+      const descripcion = document.getElementById('descripcion-detallada');
+      const imagenPrincipal = document.getElementById('imagen-principal');
+      const miniaturas = document.getElementById('miniaturas');
       
-      // Cargar la barra de navegación de forma asíncrona
-    function loadNavbar() {
-      const navbarPlaceholder = document.getElementById('navbar-placeholder');
-      if (!navbarPlaceholder) return;
+      if (titulo) titulo.textContent = producto.nombre;
+      if (categoria) categoria.textContent = producto.categoria;
+      if (precio) precio.textContent = `$${producto.precio.toFixed(2)}`;
+      if (descripcion) descripcion.textContent = producto.descripcion || 'Sin descripción disponible';
       
-      // Mostrar un indicador de carga sutil
-      navbarPlaceholder.innerHTML = '<div style="height: 60px; background: #f8f9fa;"></div>';
+      // Configurar imagen principal
+      if (imagenPrincipal && producto.imagen) {
+        imagenPrincipal.src = producto.imagen;
+        imagenPrincipal.alt = producto.nombre;
+      }
       
-      // Cargar la barra de navegación
-      fetch('includes/navbar.html')
-        .then(response => {
-          if (!response.ok) throw new Error('Error al cargar la barra de navegación');
-          return response.text();
+      // Configurar miniaturas
+      if (miniaturas) {
+        miniaturas.innerHTML = ''; // Limpiar miniaturas existentes
+        
+        // Agregar la imagen principal como miniatura
+        if (producto.imagen) {
+          agregarMiniatura(producto.imagen, 0);
+        }
+        
+        // Agregar miniaturas adicionales si existen
+        if (producto.imagenesAdicionales && producto.imagenesAdicionales.length > 0) {
+          producto.imagenesAdicionales.forEach((imagen, index) => {
+            agregarMiniatura(imagen, index + 1);
+          });
+        }
+      }
+      
+      // Configurar eventos
+      configurarEventos();
+    }
+    
+    // Función para agregar una miniatura
+    function agregarMiniatura(src, index) {
+      const miniaturas = document.getElementById('miniaturas');
+      if (!miniaturas) return;
+      
+      const miniatura = document.createElement('div');
+      miniatura.className = 'miniatura';
+      miniatura.innerHTML = `<img src="${src}" alt="Vista previa ${index + 1}">`;
+      
+      miniatura.addEventListener('click', () => {
+        const imagenPrincipal = document.getElementById('imagen-principal');
+        if (imagenPrincipal) {
+          imagenPrincipal.src = src;
+          // Actualizar clase activa
+          document.querySelectorAll('.miniatura').forEach(m => m.classList.remove('activa'));
+          miniatura.classList.add('activa');
+        }
+      });
+      
+      miniaturas.appendChild(miniatura);
+    }
+    
+    // Función para manejar errores
+    function mostrarError(mensaje) {
+      console.error(mensaje);
+      // Aquí puedes agregar lógica para mostrar el error en la interfaz
+      const errorContainer = document.createElement('div');
+      errorContainer.className = 'error-mensaje';
+      errorContainer.textContent = mensaje;
+      
+      const mainContent = document.querySelector('main');
+      if (mainContent) {
+        mainContent.prepend(errorContainer);
+      }
+    }
+    
+    // Función para configurar los eventos
+    function configurarEventos() {
+      // Controles de cantidad
+      const btnDisminuir = document.getElementById('disminuir-cantidad');
+      const btnAumentar = document.getElementById('aumentar-cantidad');
+      const inputCantidad = document.getElementById('cantidad');
+      
+      if (btnDisminuir) {
+        btnDisminuir.addEventListener('click', () => {
+          let cantidad = parseInt(inputCantidad.value) || 1;
+          if (cantidad > 1) {
+            inputCantidad.value = --cantidad;
+          }
+        });
+      }
+      
+      if (btnAumentar) {
+        btnAumentar.addEventListener('click', () => {
+          let cantidad = parseInt(inputCantidad.value) || 1;
+          inputCantidad.value = ++cantidad;
+        });
+      }
+      
+      // Validar entrada manual
+      if (inputCantidad) {
+        inputCantidad.addEventListener('input', () => {
+          let valor = parseInt(inputCantidad.value);
+          if (isNaN(valor) || valor < 1) {
+            inputCantidad.value = 1;
+          }
+        });
+      }
+    }
+  </script>
         })
         .then(html => {
           navbarPlaceholder.innerHTML = html;
