@@ -50,10 +50,54 @@
                 </div>
                 <div class="galeria-imagen" id="galeria-imagen-2"></div>
             </div>
-            
-            <div class="galeria-item">
-                <div class="galeria-texto">
-                    <h2>Hecho a mano con amor</h2>
+        </section>
+
+        <!-- Frase inspiradora -->
+        <section class="frase-inspiradora">
+            <div class="container">
+                <div class="coco-card">
+                    <div class="border-glow"></div>
+                    <div class="glow-top"></div>
+                    <span class="quote-mark left">"</span>
+                    <span class="quote-mark right">"</span>
+                    
+                    <div class="content">
+                        <p class="quote-text">La moda no es algo que existe solo en los vestidos. La moda está en el cielo, en la calle, la moda tiene que ver con las ideas, con la forma en que vivimos, lo que está sucediendo.</p>
+                        
+                        <div class="divider-container">
+                            <div class="divider"></div>
+                            <div class="diamond"></div>
+                            <div class="divider"></div>
+                        </div>
+                        
+                        <p class="author">— Coco Chanel</p>
+                    </div>
+                    
+                    <div class="sparkle"></div>
+                    <div class="sparkle"></div>
+                    <div class="sparkle"></div>
+                    <div class="sparkle"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Proceso creativo -->
+        <section class="proceso-creativo">
+            <h2>Nuestro Proceso</h2>
+            <div class="proceso-grid">
+                <div class="proceso-paso">
+                    <div class="proceso-icono">✏️</div>
+                    <h3>Diseño</h3>
+                    <p>Cada pieza comienza como un boceto, una idea que cobra vida en nuestras manos.</p>
+                </div>
+                <div class="proceso-paso">
+                    <div class="proceso-icono">✂️</div>
+                    <h3>Confección</h3>
+                    <p>Hecho a mano con atención al detalle y materiales de la más alta calidad.</p>
+                </div>
+                <div class="proceso-paso">
+                    <div class="proceso-icono">✨</div>
+                    <h3>Estilo</h3>
                     <p>Piezas únicas que se adaptan a tu personalidad y estilo de vida.</p>
                 </div>
             </div>
@@ -65,16 +109,80 @@
       <!-- Footer will be loaded by JavaScript -->
     </footer>
 
-    <!-- Scripts -->
-    <script type="module">
-      import { cargarNavegacion, cargarFooter, configurarImagenes } from './js/index.js';
-      
-      // Inicialización cuando el DOM esté listo
-      document.addEventListener('DOMContentLoaded', () => {
-        cargarNavegacion();
-        cargarFooter();
-        configurarImagenes();
-      });
+    <script>
+      // Función para cargar la navegación
+      async function cargarNavegacion() {
+        try {
+          const response = await fetch('includes/nav.html');
+          if (!response.ok) throw new Error('No se pudo cargar la navegación');
+          
+          const html = await response.text();
+          const nav = document.getElementById('navbar-placeholder');
+          if (nav) {
+            nav.innerHTML = html;
+            // Inicializar menú móvil
+            const menuToggle = document.querySelector('.menu-toggle');
+            const mainNav = document.querySelector('.main-nav');
+            const menuOverlay = document.querySelector('.menu-overlay');
+            
+            if (menuToggle && mainNav) {
+              menuToggle.addEventListener('click', () => {
+                mainNav.classList.toggle('active');
+                menuToggle.classList.toggle('active');
+                if (menuOverlay) {
+                  menuOverlay.classList.toggle('active');
+                }
+                document.body.classList.toggle('no-scroll');
+              });
+            }
+            
+            if (menuOverlay) {
+              menuOverlay.addEventListener('click', () => {
+                mainNav.classList.remove('active');
+                menuToggle.classList.remove('active');
+                menuOverlay.classList.remove('active');
+                document.body.classList.remove('no-scroll');
+              });
+            }
+          }
+        } catch (error) {
+          console.error('Error al cargar la navegación:', error);
+        }
+      }
+
+      // Función para cargar el pie de página
+      async function cargarFooter() {
+        try {
+          const response = await fetch('includes/footer.html');
+          if (!response.ok) throw new Error('No se pudo cargar el pie de página');
+          
+          const html = await response.text();
+          const footer = document.getElementById('footer-placeholder');
+          if (footer) {
+            footer.innerHTML = html;
+          }
+        } catch (error) {
+          console.error('Error al cargar el pie de página:', error);
+        }
+      }
+
+      // Función para configurar las imágenes de fondo
+      function configurarImagenes() {
+        // Establecer imagen del banner
+        const bannerImagen = document.getElementById('banner-imagen');
+        if (bannerImagen) {
+          bannerImagen.style.backgroundImage = "url('img/VestidoFloral.jpg')";
+        }
+        
+        // Establecer imágenes de la galería
+        const galeriaImagen1 = document.getElementById('galeria-imagen-1');
+        if (galeriaImagen1) {
+          galeriaImagen1.style.backgroundImage = "url('img/BlusaCasual.jpg')";
+        }
+        
+        const galeriaImagen2 = document.getElementById('galeria-imagen-2');
     </script>
+    <script src="js/index.js"></script>
+  }
 </body>
 </html>
