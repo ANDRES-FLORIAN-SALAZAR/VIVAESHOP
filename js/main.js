@@ -151,53 +151,110 @@ function mostrarError(mensaje) {
  * Inicializa el menú móvil
  */
 function initMobileMenu() {
-    const menuToggle = document.getElementById('menu-toggle');
-    const mainNav = document.getElementById('main-nav');
+    const menuToggle = document.getElementById('menuToggle');
+    const mainNav = document.getElementById('mainNav');
+    const menuOverlay = document.getElementById('menuOverlay');
     const navLinks = document.querySelectorAll('.nav-link');
-
+    let menuOpen = false;
+    
     if (!menuToggle || !mainNav) return;
 
-    function toggleMenu() {
-        const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
-        menuToggle.setAttribute('aria-expanded', !isExpanded);
-        mainNav.classList.toggle('active');
-        document.body.style.overflow = isExpanded ? '' : 'hidden';
-    }
-
-    function handleLinkClick() {
-        if (window.innerWidth <= 768) {
-            toggleMenu();
+    // Función para abrir el menú
+    function openMenu() {
+        menuToggle.setAttribute('aria-expanded', 'true');
+        mainNav.classList.add('active');
+        if (menuOverlay) menuOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        menuOpen = true;
+        
+        // Enfocar el primer enlace del menú cuando se abre
+        const firstLink = mainNav.querySelector('a');
+        if (firstLink) {
+            firstLink.focus();
         }
+        
+        // Agregar event listener para atrapar el foco dentro del menú
+        mainNav.addEventListener('keydown', trapFocus);
     }
-
-    function handleDocumentClick(e) {
-        if (!menuToggle.contains(e.target) && !mainNav.contains(e.target)) {
-            if (mainNav.classList.contains('active')) {
-                toggleMenu();
+    
+    // Función para cerrar el menú
+    function closeMenu() {
+        menuToggle.setAttribute('aria-expanded', 'false');
+        mainNav.classList.remove('active');
+        if (menuOverlay) menuOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+        menuOpen = false;
+        
+        // Enfocar el botón del menú al cerrar
+        menuToggle.focus();
+        
+        // Remover el event listener de atrapado de foco
+        mainNav.removeEventListener('keydown', trapFocus);
+    }
+    
+    // Función para atrapar el foco dentro del menú
+    function trapFocus(e) {
+        if (e.key === 'Tab') {
+            const focusableElements = Array.from(mainNav.querySelectorAll('a, button, [tabindex="0"]'));
+            const firstElement = focusableElements[0];
+            const lastElement = focusableElements[focusableElements.length - 1];
+            
+            if (e.shiftKey) {
+                if (document.activeElement === firstElement) {
+                    e.preventDefault();
+                    lastElement.focus();
+                }
+            } else {
+                if (document.activeElement === lastElement) {
+                    e.preventDefault();
+                    firstElement.focus();
+                }
             }
+        } else if (e.key === 'Escape') {
+            closeMenu();
         }
     }
-
-    function handleResize() {
-        if (window.innerWidth > 768) {
-            menuToggle.setAttribute('aria-expanded', 'false');
-            mainNav.classList.remove('active');
-            document.body.style.overflow = '';
+    
+    // Función para alternar el menú
+    function toggleMenu() {
+        if (menuOpen) {
+            closeMenu();
+        } else {
+            openMenu();
         }
     }
-
-    // Configurar eventos
+    
+    // Event listeners
     menuToggle.addEventListener('click', (e) => {
         e.stopPropagation();
         toggleMenu();
     });
-
+    
+    if (menuOverlay) {
+        menuOverlay.addEventListener('click', closeMenu);
+    }
+    
+    // Cerrar menú al hacer clic en un enlace
     navLinks.forEach(link => {
-        link.addEventListener('click', handleLinkClick);
+        link.addEventListener('click', closeMenu);
     });
-
-    document.addEventListener('click', handleDocumentClick);
-    window.addEventListener('resize', handleResize);
+    
+    // Cerrar menú al cambiar el tamaño de la ventana
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 768 && menuOpen) {
+            closeMenu();
+        }
+    });
+    
+    // Manejar el teclado para accesibilidad
+    menuToggle.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            toggleMenu();
+        } else if (e.key === 'Escape' && menuOpen) {
+            closeMenu();
+        }
+    });
 }
 
 // Inicializar la aplicación cuando el DOM esté listo
