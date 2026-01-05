@@ -110,15 +110,32 @@
     </footer>
 
     <script type="module">
-  import { cargarNavegacion, cargarFooter, configurarImagenes } from './js/utils.js';
-  
-  document.addEventListener('DOMContentLoaded', () => {
-    cargarNavegacion();
-    cargarFooter();
-    configurarImagenes();
-  });
-</script>
+      import { cargarNavegacion, cargarFooter } from './js/utils.js';
+      
+      // Función para configurar imágenes
+      function configurarImagenes() {
+        const bannerImagen = document.getElementById('banner-imagen');
+        if (bannerImagen) {
+          bannerImagen.style.backgroundImage = "url('img/VestidoFloral.jpg')";
+        }
 
-<script src="js/index.js"></script>
+        const galeriaImagen1 = document.getElementById('galeria-imagen-1');
+        if (galeriaImagen1) {
+          galeriaImagen1.style.backgroundImage = "url('img/BlusaCasual.jpg')";
+        }
+
+        const galeriaImagen2 = document.getElementById('galeria-imagen-2');
+        if (galeriaImagen2) {
+          galeriaImagen2.style.backgroundImage = "url('img/VestidoBlancoLiso.jpg')";
+        }
+      }
+
+      // Inicialización
+      document.addEventListener('DOMContentLoaded', () => {
+        cargarNavegacion();
+        cargarFooter();
+        configurarImagenes();
+      });
+    </script>
 </body>
 </html>
