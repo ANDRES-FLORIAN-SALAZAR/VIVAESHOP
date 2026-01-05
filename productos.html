@@ -90,84 +90,30 @@
     </footer>
 
     <!-- Scripts -->
-    <script>
-    // Función para cargar la navegación
-    async function cargarNavegacion() {
-        try {
-          const response = await fetch('includes/nav.html');
-          if (!response.ok) throw new Error('No se pudo cargar la navegación');
-          
-          const html = await response.text();
-          const nav = document.getElementById('navbar-placeholder');
-          if (nav) {
-            nav.innerHTML = html;
-            // Inicializar menú móvil
-            const menuToggle = document.querySelector('.menu-toggle');
-            const mainNav = document.querySelector('.main-nav');
-            const menuOverlay = document.querySelector('.menu-overlay');
-            
-            if (menuToggle && mainNav) {
-              menuToggle.addEventListener('click', () => {
-                mainNav.classList.toggle('active');
-                menuToggle.classList.toggle('active');
-                menuOverlay.classList.toggle('active');
-                document.body.classList.toggle('no-scroll');
-              });
-            }
-            
-            if (menuOverlay) {
-              menuOverlay.addEventListener('click', () => {
-                mainNav.classList.remove('active');
-                menuToggle.classList.remove('active');
-                menuOverlay.classList.remove('active');
-                document.body.classList.remove('no-scroll');
-              });
-            }
-          }
-        } catch (error) {
-          console.error('Error al cargar la navegación:', error);
-        }
-      }
-
-      // Función para cargar el pie de página
-      async function cargarFooter() {
-        try {
-          const response = await fetch('includes/footer.html');
-          if (!response.ok) throw new Error('No se pudo cargar el pie de página');
-          
-          const html = await response.text();
-          const footer = document.getElementById('footer-placeholder');
-          if (footer) {
-            footer.innerHTML = html;
-          }
-        } catch (error) {
-          console.error('Error al cargar el pie de página:', error);
-        }
-      }
+    <script type="module">
+      import { cargarNavegacion, cargarFooter } from './js/utils.js';
 
       // Cargar navegación y pie de página cuando el DOM esté listo
       // Inicialización de la página
       document.addEventListener('DOMContentLoaded', () => {
         console.log('Inicializando página de productos...');
-        
-        // Cargar navegación y pie de página
         cargarNavegacion();
         cargarFooter();
         
         // Inicializar productos
         if (window.vivae && window.vivae.productos && typeof window.vivae.productos.init === 'function') {
-            window.vivae.productos.init();
+          window.vivae.productos.init();
         } else {
-            console.error('No se pudo inicializar la página de productos');
-            const errorContainer = document.getElementById('error-container');
-            if (errorContainer) {
-                errorContainer.style.display = 'block';
-                errorContainer.innerHTML = `
-                    <div class="error-message">
-                        <i class="fas fa-exclamation-circle"></i>
-                        <p>Error al cargar los productos. Por favor, recarga la página.</p>
-                    </div>`;
-            }
+          console.error('No se pudo inicializar el módulo de productos');
+          const errorContainer = document.getElementById('error-container');
+          if (errorContainer) {
+              errorContainer.style.display = 'block';
+              errorContainer.innerHTML = `
+                  <div class="error-message">
+                      <i class="fas fa-exclamation-circle"></i>
+                      <p>Error al cargar los productos. Por favor, recarga la página.</p>
+                  </div>`;
+          }
         }
       });
       

@@ -249,20 +249,7 @@ function mostrarError(mensaje) {
 }
 
 // Función para cargar la navegación y el pie de página
-async function cargarContenidoCompartido() {
-    await cargarNavegacion();
-    await cargarFooter();
-}
-
-// Función para cargar el pie de página
-async function cargarFooter() {
-    try {
-        const response = await fetch('includes/footer.html');
-        if (!response.ok) throw new Error('No se pudo cargar el pie de página');
-        
-        const html = await response.text();
-        document.getElementById('footer-placeholder').innerHTML = html;
-    } catch (error) {
-        console.error('Error al cargar el pie de página:', error);
-    }
+function cargarContenidoCompartido() {
+    cargarNavegacion();
+    cargarFooter();
 }
