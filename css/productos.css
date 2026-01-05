@@ -409,11 +409,12 @@ body.no-scroll {
 .products-grid,
 .productos-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1.5rem;
-  margin: 2rem 0;
+  padding: 1.5rem 0;
   width: 100%;
-  padding: 0 1rem;
+  max-width: 1400px;
+  margin: 0 auto;
   box-sizing: border-box;
 }
 
@@ -795,16 +796,18 @@ body.no-scroll {
 @media (min-width: 1201px) {
   .products-grid,
   .productos-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 1.5rem;
+    padding: 1.5rem 2%;
   }
 }
 
 @media (max-width: 1400px) {
   .products-grid,
   .productos-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 1.25rem;
+    padding: 1.5rem 2%;
   }
 }
 
@@ -812,8 +815,9 @@ body.no-scroll {
 @media (max-width: 1200px) {
   .products-grid,
   .productos-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 1.25rem;
+    padding: 1.5rem 2%;
   }
   
   .navbar {
@@ -880,8 +884,9 @@ body.no-scroll {
   
   .products-grid,
   .productos-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 1rem;
+    padding: 1.25rem 3%;
   }
   
   .footer-content {
@@ -911,7 +916,6 @@ body.no-scroll {
   }
 }
 
-/* Tablets */
 @media (max-width: 768px) {
   .navbar {
     padding: 12px 20px;
@@ -959,37 +963,12 @@ body.no-scroll {
 }
 
 /* Móviles */
-@media (max-width: 768px) {
-  .products-grid,
-  .productos-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1rem;
-    padding: 0 0.75rem;
-  }
-  
-  .product-card,
-  .producto-card {
-    max-width: 100%;
-    margin: 0;
-  }
-  
-  .product-image-container {
-    padding-top: 100%; /* Mantener relación de aspecto 1:1 */
-  }
-  
-  .product-title {
-    font-size: 0.95rem;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
-  }
-}
-
 @media (max-width: 480px) {
   .products-grid,
   .productos-grid {
     grid-template-columns: 1fr;
     gap: 1.25rem;
-    padding: 0 1rem;
+    padding: 1rem 5%;
   }
   
   .product-card,
