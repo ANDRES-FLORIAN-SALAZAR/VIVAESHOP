@@ -170,8 +170,17 @@ async function cargarNavegacion() {
 /**
  * Carga el pie de página en el elemento con id 'footer-placeholder'
  */
-async function cargarFooter() {
-    await loadHTML('includes/footer.html', 'footer-placeholder');
+export async function cargarFooter() {
+  try {
+    const response = await fetch('includes/footer.html');
+    if (!response.ok) throw new Error('No se pudo cargar el pie de página');
+    
+    const html = await response.text();
+    const footer = document.getElementById('footer-placeholder');
+    if (footer) footer.innerHTML = html;
+  } catch (error) {
+    console.error('Error al cargar el pie de página:', error);
+  }
 }
 
 // Exportar funciones para uso en otros módulos

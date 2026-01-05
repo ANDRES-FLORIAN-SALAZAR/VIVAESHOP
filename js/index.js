@@ -70,3 +70,4 @@ document.addEventListener('DOMContentLoaded', function() {
         return productCard;
     }
 });
+
