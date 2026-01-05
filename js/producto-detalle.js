@@ -253,6 +253,22 @@ async function cargarNavegacion() {
         
         const html = await response.text();
         document.getElementById('navbar-placeholder').innerHTML = html;
+        
+        // Inicializar el menú móvil después de cargar la navegación
+        if (typeof initMobileMenu === 'function') {
+            initMobileMenu();
+        } else {
+            console.warn('La función initMobileMenu no está disponible');
+            // Intentar cargar main.js si no está disponible
+            const script = document.createElement('script');
+            script.src = 'js/main.js';
+            script.onload = function() {
+                if (typeof initMobileMenu === 'function') {
+                    initMobileMenu();
+                }
+            };
+            document.head.appendChild(script);
+        }
     } catch (error) {
         console.error('Error al cargar la navegación:', error);
     }
