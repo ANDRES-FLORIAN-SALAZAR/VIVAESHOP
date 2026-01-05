@@ -409,13 +409,22 @@ body.no-scroll {
 .products-grid,
 .productos-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem;
-  padding: 1.5rem 0;
+  padding: 1.5rem 2%;
   width: 100%;
-  max-width: 1400px;
+  max-width: 1600px;
   margin: 0 auto;
   box-sizing: border-box;
+}
+
+/* Ensure grid items have consistent height */
+.products-grid > *,
+.productos-grid > * {
+  height: 100%;
+  min-height: 350px; /* Ajusta según sea necesario */
+  display: flex;
+  flex-direction: column;
 }
 
 /* Ensure grid items don't exceed container width */
@@ -423,15 +432,64 @@ body.no-scroll {
 .productos-grid > * {
   max-width: 100%;
   box-sizing: border-box;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover effect for product cards */
+.products-grid > *:hover,
+.productos-grid > *:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
 /* Responsive container for the products grid */
 .products-container {
   width: 100%;
-  max-width: 1440px;
+  max-width: 1600px;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 0 2%;
   box-sizing: border-box;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1400px) {
+  .products-grid,
+  .productos-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    padding: 1.5rem 3%;
+  }
+}
+
+@media (max-width: 1024px) {
+  .products-grid,
+  .productos-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+    padding: 1.25rem 4%;
+  }
+  
+  .products-grid > *,
+  .productos-grid > * {
+    min-height: 320px;
+  }
+}
+
+@media (max-width: 640px) {
+  .products-grid,
+  .productos-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 1rem 5%;
+  }
+  
+  .products-grid > *,
+  .productos-grid > * {
+    min-height: 300px;
+    max-width: 400px;
+    margin: 0 auto;
+    width: 100%;
+  }
 }
 
 .product-card,
