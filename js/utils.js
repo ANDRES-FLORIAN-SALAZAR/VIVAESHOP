@@ -5,7 +5,12 @@ export async function cargarNavegacion() {
     if (!response.ok) throw new Error('No se pudo cargar la navegación');
 
     const navHTML = await response.text();
-    document.querySelector('header').innerHTML = navHTML;
+    const navContainer = document.getElementById('navbar-placeholder');
+    if (!navContainer) {
+      console.error('No se encontró el contenedor de navegación');
+      return;
+    }
+    navContainer.innerHTML = navHTML;
 
     // Configurar el menú móvil
     const menuToggle = document.querySelector('.menu-toggle');
