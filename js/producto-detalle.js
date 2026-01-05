@@ -255,19 +255,50 @@ async function cargarNavegacion() {
         document.getElementById('navbar-placeholder').innerHTML = html;
         
         // Inicializar el menú móvil después de cargar la navegación
-        if (typeof initMobileMenu === 'function') {
-            initMobileMenu();
-        } else {
-            console.warn('La función initMobileMenu no está disponible');
-            // Intentar cargar main.js si no está disponible
-            const script = document.createElement('script');
-            script.src = 'js/main.js';
-            script.onload = function() {
-                if (typeof initMobileMenu === 'function') {
-                    initMobileMenu();
+        const menuToggle = document.getElementById('menuToggle');
+        const mainNav = document.getElementById('mainNav');
+        const menuOverlay = document.getElementById('menuOverlay');
+        const navLinks = document.querySelectorAll('.nav-link');
+        
+        if (menuToggle && mainNav) {
+            // Función para alternar el menú
+            function toggleMenu() {
+                const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+                menuToggle.setAttribute('aria-expanded', !isExpanded);
+                mainNav.classList.toggle('active');
+                menuOverlay.classList.toggle('active');
+                document.body.style.overflow = isExpanded ? '' : 'hidden';
+            }
+            
+            // Función para cerrar el menú
+            function closeMenu() {
+                menuToggle.setAttribute('aria-expanded', 'false');
+                mainNav.classList.remove('active');
+                menuOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+            
+            // Event listeners
+            menuToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleMenu();
+            });
+            
+            if (menuOverlay) {
+                menuOverlay.addEventListener('click', closeMenu);
+            }
+            
+            // Cerrar menú al hacer clic en un enlace
+            navLinks.forEach(link => {
+                link.addEventListener('click', closeMenu);
+            });
+            
+            // Cerrar menú al cambiar el tamaño de la ventana
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 768) {
+                    closeMenu();
                 }
-            };
-            document.head.appendChild(script);
+            });
         }
     } catch (error) {
         console.error('Error al cargar la navegación:', error);
