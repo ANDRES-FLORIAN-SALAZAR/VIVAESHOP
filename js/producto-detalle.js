@@ -252,22 +252,33 @@ async function cargarNavegacion() {
         if (!response.ok) throw new Error('No se pudo cargar la navegación');
         
         const html = await response.text();
-        document.getElementById('navbar-placeholder').innerHTML = html;
+        const placeholder = document.getElementById('navbar-placeholder');
+        placeholder.innerHTML = html;
         
         // Inicializar el menú móvil después de cargar la navegación
         const menuToggle = document.getElementById('menuToggle');
         const mainNav = document.getElementById('mainNav');
         const menuOverlay = document.getElementById('menuOverlay');
         const navLinks = document.querySelectorAll('.nav-link');
+        let menuOpen = false;
         
         if (menuToggle && mainNav) {
-            // Función para alternar el menú
-            function toggleMenu() {
-                const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
-                menuToggle.setAttribute('aria-expanded', !isExpanded);
-                mainNav.classList.toggle('active');
-                menuOverlay.classList.toggle('active');
-                document.body.style.overflow = isExpanded ? '' : 'hidden';
+            // Función para abrir el menú
+            function openMenu() {
+                menuToggle.setAttribute('aria-expanded', 'true');
+                mainNav.classList.add('active');
+                menuOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                menuOpen = true;
+                
+                // Enfocar el primer enlace del menú cuando se abre
+                const firstLink = mainNav.querySelector('a');
+                if (firstLink) {
+                    firstLink.focus();
+                }
+                
+                // Agregar event listener para atrapar el foco dentro del menú
+                mainNav.addEventListener('keydown', trapFocus);
             }
             
             // Función para cerrar el menú
@@ -276,6 +287,45 @@ async function cargarNavegacion() {
                 mainNav.classList.remove('active');
                 menuOverlay.classList.remove('active');
                 document.body.style.overflow = '';
+                menuOpen = false;
+                
+                // Enfocar el botón del menú al cerrar
+                menuToggle.focus();
+                
+                // Remover el event listener de atrapado de foco
+                mainNav.removeEventListener('keydown', trapFocus);
+            }
+            
+            // Función para atrapar el foco dentro del menú
+            function trapFocus(e) {
+                if (e.key === 'Tab') {
+                    const focusableElements = Array.from(mainNav.querySelectorAll('a, button, [tabindex="0"]'));
+                    const firstElement = focusableElements[0];
+                    const lastElement = focusableElements[focusableElements.length - 1];
+                    
+                    if (e.shiftKey) {
+                        if (document.activeElement === firstElement) {
+                            e.preventDefault();
+                            lastElement.focus();
+                        }
+                    } else {
+                        if (document.activeElement === lastElement) {
+                            e.preventDefault();
+                            firstElement.focus();
+                        }
+                    }
+                } else if (e.key === 'Escape') {
+                    closeMenu();
+                }
+            }
+            
+            // Función para alternar el menú
+            function toggleMenu() {
+                if (menuOpen) {
+                    closeMenu();
+                } else {
+                    openMenu();
+                }
             }
             
             // Event listeners
@@ -284,10 +334,6 @@ async function cargarNavegacion() {
                 toggleMenu();
             });
             
-            if (menuOverlay) {
-                menuOverlay.addEventListener('click', closeMenu);
-            }
-            
             // Cerrar menú al hacer clic en un enlace
             navLinks.forEach(link => {
                 link.addEventListener('click', closeMenu);
@@ -295,7 +341,17 @@ async function cargarNavegacion() {
             
             // Cerrar menú al cambiar el tamaño de la ventana
             window.addEventListener('resize', () => {
-                if (window.innerWidth > 768) {
+                if (window.innerWidth > 768 && menuOpen) {
+                    closeMenu();
+                }
+            });
+            
+            // Manejar el teclado para accesibilidad
+            menuToggle.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggleMenu();
+                } else if (e.key === 'Escape' && menuOpen) {
                     closeMenu();
                 }
             });
