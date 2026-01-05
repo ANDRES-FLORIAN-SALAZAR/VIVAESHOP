@@ -248,12 +248,47 @@ cargarFooter();
 // Función para cargar la navegación
 async function cargarNavegacion() {
     try {
-        const response = await fetch('includes/nav.html');
-        if (!response.ok) throw new Error('No se pudo cargar la navegación');
+        // Crear la estructura del menú directamente en lugar de cargarla desde nav.html
+        const navbarHTML = `
+            <header class="navbar" role="banner">
+                <div class="navbar-container">
+                    <!-- Logo -->
+                    <a href="index.html" class="logo" aria-label="Vivae - Inicio">
+                        <img src="img/vivae.jpg" alt="VIVAE" class="logo-img" width="50" height="50" loading="lazy">
+                    </a>
+
+                    <!-- Botón de menú móvil -->
+                    <button class="menu-toggle" id="menuToggle" aria-label="Menú" aria-expanded="false" aria-controls="mainNav">
+                        <span class="hamburger"></span>
+                        <span class="hamburger"></span>
+                        <span class="hamburger"></span>
+                        <span class="sr-only">Menú</span>
+                    </button>
+
+                    <!-- Overlay para cerrar el menú -->
+                    <div class="menu-overlay" id="menuOverlay"></div>
+
+                    <!-- Menú de navegación principal -->
+                    <nav class="main-nav" id="mainNav" aria-label="Navegación principal">
+                        <ul class="nav-links" role="menubar">
+                            <li role="none">
+                                <a href="index.html" class="nav-link" data-active="inicio" role="menuitem">
+                                    INICIO
+                                </a>
+                            </li>
+                            <li role="none">
+                                <a href="productos.html" class="nav-link" data-active="productos" role="menuitem">
+                                    MENÚ Y PRODUCTOS
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </header>
+        `;
         
-        const html = await response.text();
         const placeholder = document.getElementById('navbar-placeholder');
-        placeholder.innerHTML = html;
+        placeholder.innerHTML = navbarHTML;
         
         // Inicializar el menú móvil después de cargar la navegación
         const menuToggle = document.getElementById('menuToggle');
